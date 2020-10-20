@@ -1,0 +1,377 @@
+body {
+    /*    background: #000 url(../images/monts.png) no-repeat fixed bottom;*/
+    position: relative;
+}
+
+header {
+    width: 16%;
+    max-width: 240px;
+    /*    background-color: red;*/
+}
+
+nav {
+    width: auto;
+    margin: 5%;
+    background-color: transparent;
+    /*    background-color: blue;*/
+}
+
+nav li {
+    width: 100%;
+    margin: .4em 0;
+}
+
+nav li:hover {
+    color: #fff;
+}
+
+main,
+footer {
+    min-width: 60%;
+    margin-top: 2%;
+    margin-right: 17%;
+}
+
+main {
+    border-radius: 6px;
+    -webkit-box-shadow: -10px 15px 50px 0px rgba(0, 0, 0);
+    box-shadow: -10px 15px 50px 0px rgba(0, 0, 0);
+    /*    font-size: 1em;*/
+    letter-spacing: .05em;
+    overflow: hidden;
+    min-height: 728px;
+    position: relative;
+    border: 2px solid rgba(127, 127, 127, .4);
+    color: #555;
+}
+
+/*tmp*/
+/*
+main h3 {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: .7em;
+}
+*/
+
+/*tmp*/
+/*
+main h4 {
+    font-size: 1.3em;
+    margin: .7em 0;
+    margin-left: .7em;
+}
+*/
+
+/*tmp*/
+main div strong {
+    font-weight: bold;
+}
+
+/*tmp*/
+main blockquote {
+    text-align: center;
+}
+
+/*tmp*/
+main p {
+    margin: 0 2em 2%;
+}
+
+}
+
+/*tmp*/
+main ul {
+    margin-bottom: 2%;
+    margin-left: 4em;
+}
+
+/*tmp*/
+main li {
+    list-style: inside circle none;
+}
+
+/*tmp*/
+main em {
+    font-weight: bold;
+}
+
+.forecast {
+    border: 2px solid rgba(127, 127, 127, .4);
+    background-color: #fff;
+
+    border-radius: 8px;
+}
+
+.theme_1 .forecast {
+    background-color: rgba(255, 255, 229, 0.7);
+}
+
+.theme_2 .forecast {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.theme_3 .forecast {
+    background-color: rgba(236, 255, 229, 0.7);
+}
+
+.theme_4 .forecast {
+    background-color: rgba(229, 242, 255, 0.7);
+}
+
+.theme_5 .forecast {
+    background-color: rgba(238, 229, 255, 0.7);
+}
+
+.theme_6 .forecast {
+    background-color: rgba(255, 242, 229, 0.7);
+}
+
+.theme_7 .forecast {
+    background-color: rgba(255, 229, 229, 0.7);
+}
+
+.forecast p {
+    clear: both;
+}
+
+.forecast p.date {
+    text-align: center;
+}
+
+.forecast p.adr {
+    display: block;
+    width: 200px;
+    margin: 0 auto 4%;
+    clear: none;
+}
+
+.forecast a {
+    text-decoration: none;
+    color: #000;
+    border-bottom: 1px dashed #bbb;
+}
+
+.forecast a:hover {
+    border-bottom: 1px solid #bbb;
+}
+
+.forecast a.file {
+    color: #AF6326;
+    border-bottom: 1px dashed rgba(175, 99, 38, .3);
+}
+
+.forecast a.file:hover {
+    color: #FF7200;
+    border-bottom: 1px solid rgba(255, 114, 0, .3);
+}
+
+.forecast a.link {
+    color: #267EAF;
+    border-bottom: 1px dashed rgba(38, 126, 175, .3);
+}
+
+.forecast a.link:hover {
+    color: #00A4FF;
+    border-bottom: 1px solid rgba(0, 164, 255, .3);
+}
+
+.forecast h3 {
+    font-family: rosemaryroman, Garamond, serif;
+    font-size: 1.1em;
+    color: #999;
+    margin: 1% 2% 8%;
+}
+
+.forecast h4 {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0 2em 5%;
+}
+
+.forecast img {
+    display: block;
+    margin: 0 auto 4%;
+    width: 70%;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: normal;
+    font-size: 1em;
+}
+
+@font-face {
+    font-family: "rosemaryroman";
+    font-weight: normal;
+    font-style: normal;
+    src: url(../fonts/rosemaryroman.woff) format("woff"), url(../fonts/rosemaryroman.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "manksansmedium";
+    font-weight: normal;
+    font-style: normal;
+    src: url(../fonts/manksansmedium.woff) format("woff"), url(../fonts/manksansmedium.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "raspoutineclassic";
+    font-weight: normal;
+    font-style: normal;
+    src: url(../fonts/raspoutineclassic.woff) format("woff"), url(../fonts/raspoutineclassic.ttf) format("truetype");
+}
+
+table {
+    vertical-align: top;
+    text-align: left;
+    letter-spacing: .03em;
+    line-height: 1.4em;
+    font-size: 1em;
+}
+
+table.full-page,
+table.half-page {
+    border: none;
+    -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .2);
+}
+
+th,
+td {
+    float: none;
+}
+
+th {
+    font-size: 1.1em;
+    letter-spacing: normal;
+    font-weight: normal;
+}
+
+tr {
+    background-color: #fff;
+}
+
+table.half-page th,
+table.half-page td {
+    padding: .5% 0 .5% 6%;
+    width: 10em;
+}
+
+
+.gradient-format table *,
+table.stripped-format * {
+    letter-spacing: .03em;
+    line-height: 1.6em;
+}
+
+.gradient-format table th,
+.gradient-format table td {
+    padding: .5% 0 .5% 2%;
+}
+
+table.stripped-format th,
+table.stripped-format td {
+    padding: .5% 0 .5% 2%;
+}
+
+.gradient-format table th {
+    border-right: 1px solid rgba(127, 127, 127, .4);
+}
+
+.gradient-format table tr,
+table.stripped-format tr {
+    background-color: #fff;
+}
+
+.gradient-format th,
+.half-page tr:nth-child(even),
+.stripped-format tr:nth-child(even) {
+    background-color: #ffffd1;
+}
+
+.gradient-format tr:nth-child(n+2),
+.half-page tr:nth-child(n+2),
+.stripped-format tr:nth-child(n+2) {
+    border-top: 1px solid rgba(127, 127, 127, .4);
+}
+
+.gradient-format th {
+    background-color: #ffffd1;
+    width: 22%;
+    min-width: 110px;
+    border-bottom: none;
+}
+
+.gradient-format td {
+    width: 39%;
+    min-width: 210px;
+}
+
+.gradient-format tr:first-child td:nth-child(2),
+.gradient-format td:first-child {
+    min-width: 170px;
+    width: 39%;
+}
+
+.gradient-format tr:nth-child(1) {
+    background-color: #fff;
+}
+
+.gradient-format tr:nth-child(2) {
+    background-color: #daf6d1;
+}
+
+.gradient-format tr:nth-child(3) {
+    background-color: #daedff;
+}
+
+.stripped-format th {
+    width: 50%;
+}
+
+.stripped-format td {
+    width: 50%;
+}
+
+footer {
+    max-height: 2em;
+}
+
+footer h1 {
+    text-align: center;
+    font-size: 2em;
+    margin: .2em auto;
+    letter-spacing: .1em;
+    font-family: raspoutineclassic, Verdana, Geneva, sans-serif;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+footer p {
+    display: inline-block;
+}
+
+footer a {
+    display: inline;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, .6);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #333;
+    border: none;
+    border-top: 2px solid #fff;
+    box-shadow: inset 0 9px 5px -9px #fff;
+    text-shadow: 0 -1px 1px #FFFFFF;
+}
+h1{font-size: 2em}
+h2{font-size: 1.5em}

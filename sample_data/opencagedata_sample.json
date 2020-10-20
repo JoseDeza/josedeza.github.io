@@ -1,0 +1,68 @@
+{
+    "documentation": "https://opencagedata.com/api",
+    "licenses": [
+        {
+            "name": "see attribution guide",
+            "url": "https://opencagedata.com/credits"
+        }
+    ],
+    "rate": {
+        "limit": 2500,
+        "remaining": 2324,
+        "reset": 1600819200
+    },
+    "results": [
+        {
+            "bounds": {
+                "northeast": {
+                    "lat": 48.8534249,
+                    "lng": 2.3489596
+                },
+                "southwest": {
+                    "lat": 48.8532249,
+                    "lng": 2.3487596
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "FR",
+                "ISO_3166-1_alpha-3": "FRA",
+                "_category": "road",
+                "_type": "road",
+                "city": "Paris",
+                "city_district": "4th Arrondissement",
+                "continent": "Europe",
+                "country": "France",
+                "country_code": "fr",
+                "county": "Paris",
+                "pedestrian": "Parvis Notre-Dame - Place Jean-Paul II",
+                "political_union": "European Union",
+                "postcode": "75004",
+                "state": "Ile-de-France",
+                "state_code": "IDF",
+                "state_district": "Paris",
+                "suburb": "Quartier Les Îles",
+                "unknown": "Point zéro des Routes de France"
+            },
+            "confidence": 9,
+            "formatted": "Point zéro des Routes de France, Parvis Notre-Dame - Place Jean-Paul II, 75004 Paris, France",
+            "geometry": {
+                "lat": 48.8533249,
+                "lng": 2.3488596
+            }
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "OK"
+    },
+    "stay_informed": {
+        "blog": "https://blog.opencagedata.com",
+        "twitter": "https://twitter.com/OpenCage"
+    },
+    "thanks": "For using an OpenCage API",
+    "timestamp": {
+        "created_http": "Tue, 22 Sep 2020 13:18:51 GMT",
+        "created_unix": 1600780731
+    },
+    "total_results": 1
+}

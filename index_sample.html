@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Jose's Weather App</title>
+
+    <meta http-equiv="Content-Type" content="text/html, charset=utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" media="screen" type="text/css" href="/style/main.css" />
+
+    <link rel="stylesheet" media="screen and (min-width: 745px)" type="text/css" href="/style/main_large.css" />
+
+    <link rel="stylesheet" href="/style/graph.css" media="screen">
+</head>
+
+<body class="theme_1">
+
+    <noscript>The page scripts could not be executed!</noscript>
+
+    <header>
+        <div id="locality">
+            <ul>
+                <li class="location">location</li>
+                <li class="date">date</li>
+                <li class="time">time</li>
+            </ul>
+        </div>
+        <nav>
+            <ul>
+                <li class="current here"><a href="#current">now</a></li>
+                <li class="minutely"><a href="#minutely">minutely</a></li>
+                <li class="hourly"><a href="#hourly">hourly</a></li>
+                <li class="daily"><a href="#daily">daily</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="current" class="forecast">
+            <h1 class="location"></h1>
+            <h2 class="date"></h2>
+            <h2 class="time"></h2>
+            <h1 class="temperature"></h1>
+            <h2 class="description"></h2>
+        </div>
+        <div id="minutely" class="forecast clearFloats">
+
+            <table class="half-page">
+
+                    <tr>
+                        <th>Casual</th>
+                        <td>$10.00</td>
+                    </tr>
+                    <tr>
+                        <th>Monthly</th>
+                        <td>$50.00</td>
+                    </tr>
+                    <tr>
+                        <th>2 Months</th>
+                        <td>$75.00</td>
+                    </tr>
+                    <tr>
+                        <th>3 Months</th>
+                        <td>$100.00</td>
+                    </tr>
+                    <tr>
+                        <th>6 Months</th>
+                        <td>$190.00</td>
+                    </tr>
+                    <tr>
+                        <th>12 Months</th>
+                        <td>$350.00</td>
+                    </tr>
+                    <tr>
+                        <th>Life Training</th>
+                        <td>$750.00</td>
+                    </tr>
+
+            </table>
+
+            <table class="half-page">
+
+                    <tr>
+                        <th>White Belt</th>
+                        <td>$65 **</td>
+                    </tr>
+                    <tr>
+                        <th>Green Belt</th>
+                        <td>$70</td>
+                    </tr>
+                    <tr>
+                        <th>Blue Belt</th>
+                        <td>$90</td>
+                    </tr>
+                    <tr>
+                        <th>Higher Grades</th>
+                        <td>(upon request)</td>
+                    </tr>
+
+            </table>
+
+        </div>
+        <div id="hourly" class="forecast">
+
+            <table class="full-page gradient-format">
+
+                        <tr>
+                            <th rowspan="3">Monday</th>
+                            <td>5:00pm 6:00pm</td>
+                            <td>Tai Chi</td>
+                        </tr>
+                        <tr>
+                            <td>8:00pm 9:30pm</td>
+                            <td>Beginner &amp; White Belt</td>
+                        </tr>
+                        <tr>
+                            <td>8:00pm 10:00pm</td>
+                            <td>Personal Training</td>
+                        </tr>
+
+                </table>
+
+
+        </div>
+        <div id="daily" class="forecast">
+
+            <table class="full-page stripped-format">
+
+                    <tr>
+                        <th>President</th>
+                        <td>Justin YEE</td>
+                    </tr>
+                    <tr>
+                        <th>Vice President</th>
+                        <td>Jos&eacute;&nbsp;Deza</td>
+                    </tr>
+                    <tr>
+                        <th>Treasurer</th>
+                        <td>Brodie MACDOUGALL</td>
+                    </tr>
+                    <tr>
+                        <th>Secretary</th>
+                        <td>Son NGHIEM</td>
+                    </tr>
+                    <tr>
+                        <th>Advisor</th>
+                        <td>David COLBERT</td>
+                    </tr>
+                    <tr>
+                        <th>Projects</th>
+                        <td>Jeffrey JOHNSON-ABDELMALIK</td>
+                    </tr>
+
+            </table>
+
+        </div>
+    </main>
+
+    <footer>
+        <h1>Ze Weather App</h1>
+        <p id="designby">Graphic Design / Web Development&nbsp;&nbsp;&nbsp;<a href="http://www.josedeza.com">Jos&eacute;&nbsp;Deza</a>
+        </p>
+        <p id="copyright">&copy; Ze Weather App 2020. All Rights Reserved.</p>
+    </footer>
+
+    <!--   Scripts at the end-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha384-mlceH9HlqLp7GMKHrj5Ara1+LvdTZVMx4S1U43/NxCvAkzIo8WJ0FE7duLel3wVo" crossorigin="anonymous"></script>
+
+    <script src="/scripts/dynamic_data.js" type="text/javascript" defer="true"></script>
+
+</body>
+
+</html>

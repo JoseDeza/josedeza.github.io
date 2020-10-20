@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Jose's Weather App</title>
+    <meta http-equiv="Content-Type" content="text/html, charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" type="text/css" href="/style/main.css" />
+    <link rel="stylesheet" media="screen and (min-width: 745px)" type="text/css" href="/style/main_large.css" />
+    <link rel="stylesheet" href="/style/graph.css" media="screen">
+</head>
+
+<body class="theme_1">
+
+    <noscript>The page scripts could not be executed!</noscript>
+
+    <header>
+        <div id="locality">
+            <ul>
+                <li class="location">location</li>
+                <li class="date">date</li>
+                <li class="time">time</li>
+            </ul>
+        </div>
+        <nav>
+            <ul>
+                <li class="current here"><a href="#current">Now</a></li>
+                <li class="minutely"><a href="#minutely">Soon</a></li>
+                <li class="hourly"><a href="#hourly">Today</a></li>
+                <li class="daily"><a href="#daily">This Week</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="current">
+            <div class="forecast clearFloats">
+                <h1 class="location"></h1>
+                <h2 class="date"></h2>
+                <h2 class="time"></h2>
+                <h1 class="temperature"></h1>
+                <h2 class="description"></h2>
+            </div>
+        </section>
+
+        <section id="minutely">
+            <div class="forecast clearFloats"></div>
+        </section>
+
+        <section id="hourly">
+            <div class="forecast clearFloats"></div>
+        </section>
+
+
+        <section id="daily">
+            <div class="forecast clearFloats"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <h1>Ze Weather App</h1>
+        <p id="designby">Graphic Design / Web Development&nbsp;&nbsp;&nbsp;<a href="http://www.josedeza.com">Jos&eacute;&nbsp;Deza</a>
+        </p>
+        <p id="copyright">&copy; Ze Weather App 2020. All Rights Reserved.</p>
+    </footer>
+
+    <!--   Scripts at the end-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha384-mlceH9HlqLp7GMKHrj5Ara1+LvdTZVMx4S1U43/NxCvAkzIo8WJ0FE7duLel3wVo" crossorigin="anonymous"></script>
+
+    <script src="/scripts/dynamic_data.js" type="text/javascript" defer="true"></script>
+
+</body></html>

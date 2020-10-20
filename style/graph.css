@@ -1,0 +1,50 @@
+
+table.temperatureGraph th {
+/*    width: 5%;*/
+}
+
+.temperatureGraph td.temperatureRange {
+    text-align: right;
+/*    background-color: red;*/
+        margin: auto;
+}
+
+.rangeBar {
+    background-color: orange;
+    height: 24px;
+    position: relative;
+    width: 10%;
+
+    /* cool-hot gradient */
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#8ccbff+0,ffe575+100 */
+background: #8ccbff; /* Old browsers */
+background: -moz-linear-gradient(left,  #8ccbff 0%, #ffe575 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left,  #8ccbff 0%,#ffe575 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right,  #8ccbff 0%,#ffe575 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8ccbff', endColorstr='#ffe575',GradientType=1 ); /* IE6-9 */
+
+
+
+}
+
+.minTemperature:after,
+.maxTemperature:after {
+content: "ºC";
+}
+
+.minTemperature,
+.maxTemperature {
+    /*    color: white;*/
+    position: absolute;
+    padding: 5px;
+}
+
+.minTemperature {
+    left: -2.5em;
+    text-align: left;
+}
+
+.maxTemperature {
+    right: -2.5em;
+    text-align: right;
+}
