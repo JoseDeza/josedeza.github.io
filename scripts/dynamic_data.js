@@ -463,7 +463,13 @@ function getWeatherData(appid, lat, lon) {
 
 /*****/
 
+function displayCalendarData(calendarData){
+    console.log("dipslayed calendar data!");
+}
 
+function getCalendarData(calendarData){
+            console.log("retrieved calendar data!");
+}
 
 /*****/
 
@@ -567,12 +573,11 @@ function useSampleData() {
             console.log("Calendar Data * Loaded");
             return calendarResponse.json(); // parse the Json data and return it to following function
         })
-        .then(displayLocationName)
+        .then(displayCalendarData)
         .catch(function (calendarError) {
-            alert("The \"brisbane-city-council\"sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
+            alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
         });
 }
-
 
 
 /* $(document).ready(function*(){}); */
