@@ -399,7 +399,7 @@ function displayLocationName(locationData) {
 }
 
 // Display the wheater data
-function displayWeatherData(weatherData) {
+function displayWeather(weatherData) {
 
     "use strict";
 
@@ -412,7 +412,7 @@ function displayWeatherData(weatherData) {
 }
 
 // Display the calendar data
-function displayCalendarData(calendarData) {
+function displayCalendar(calendarData) {
 
     "use strict";
 
@@ -435,32 +435,32 @@ function processLocationName(locationData) {
     console.log("processed location name!");
 }
 
-function processWeatherData(weatherData) {
+function processWeather(weatherData) {
 
     "use strict";
 
     //TODO process weather data
 
-    displayWeatherData(weatherData);
+    displayWeather(weatherData);
 
     /* DEBUG */
     console.log("processed weather data!");
 }
 
-function processCalendarData(calendarData) {
+function processCalendar(calendarData) {
 
     "use strict";
 
     //TODO process calendar data
 
     // call calendar data display
-    displayCalendarData(calendarData);
+    displayCalendar(calendarData);
 
     /* DEBUG */
     console.log("processed calendar data!");
 }
 
-function processGatheredData(gatheredData){
+function processGatheredResponses(gatheredData){
     //TODO process Object containing all data
 }
 
@@ -483,7 +483,7 @@ function getLocationName(key, lat, lon) {
 }
 
 // Get wheater data using the following REST API service: api.openweathermap.org
-function getWeatherData(appid, lat, lon) {
+function getWeather(appid, lat, lon) {
 
     "use strict";
 
@@ -506,7 +506,7 @@ function getWeatherData(appid, lat, lon) {
     url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + units + exclude + "&appid=" + appid; // API call
 
     //Make API call through Http GET request / call weather data processing
-    $.get(url, processWeatherData);
+    $.get(url, processWeather);
 
     /* DEBUG */
     console.log(url);
@@ -514,14 +514,14 @@ function getWeatherData(appid, lat, lon) {
 }
 
 // Get Calendar Data as JSON file from the following service: trumba.com
-function getCalendarData(calendarData) {
+function getCalendar(calendarData) {
 
     "use strict";
 
     url = "http://trumba.com/calendars/brisbane-city-council.json"; // API call
 
     //get JSON file through Http GET request / call calendar data processing
-    $.get(url, processCalendarData);
+    $.get(url, processCalendar);
 
     /* DEBUG */
     console.log(url);
@@ -529,7 +529,7 @@ function getCalendarData(calendarData) {
 
 /*****/
 
-function gatherData(latitude, longitude) {
+function gatherResponses(latitude, longitude) {
 
     "use strict";
 
@@ -538,10 +538,10 @@ function gatherData(latitude, longitude) {
     // Using quotes to help considering all following properties type as string?
 
     // Call API to get weather data and format display
-    getWeatherData("393d283150e7d7ced1c524ff318a8870", latitude, longitude);
+    getWeather("393d283150e7d7ced1c524ff318a8870", latitude, longitude);
 
     // Call API to get Brisbane City Council data and format display
-    getCalendarData();
+    getCalendar();
 
     //TODO Return all gathered data as an object
 
@@ -563,7 +563,7 @@ function geolocSuccess(geolocReport) {
         geolocLongitude = geolocReport.coords.longitude;
 
     // gather all the data based on geolocation
-    gatherData(geolocLatitude, geolocLongitude);
+    gatherResponses(geolocLatitude, geolocLongitude);
 
     /* DEBUG */
     //console.log(navigator.geolocation);
@@ -597,14 +597,14 @@ function geolocError(errorReport) {
         defaultLongitude = locations.Brisbane.lon;
 
     // gather all the data based on default location
-    gatherData(defaultLatitude, defaultLongitude);
+    gatherResponses(defaultLatitude, defaultLongitude);
 
     /* DEBUG */
     //console.log(errorReport.message);
 }
 
 // Executed when in "Dev Mode" / API calls are replaced by sample data to prevent reaching quotas.
-function useSampleData() {
+function useSampleFile() {
 
     "use strict";
 
@@ -614,7 +614,7 @@ function useSampleData() {
             console.log("Weather Data * Loaded");
             return weatherResponse.json(); // parse the Json data and return it to following function
         })
-        .then(processWeatherData)
+        .then(processWeather)
         .catch(function (weatherError) {
             alert("The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"");
         });
@@ -636,7 +636,7 @@ function useSampleData() {
             console.log("Calendar Data * Loaded");
             return calendarResponse.json(); // parse the Json data and return it to following function
         })
-        .then(processCalendarData)
+        .then(processCalendar)
         .catch(function (calendarError) {
             alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
         });
@@ -647,11 +647,19 @@ function useSampleData() {
 
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
-function fetchData(locationData,weatherData,calendarData,devMode) {
+function fetchDataSources(dataSources,devMode) {
 
     "use strict";
 
+if(devMode===true){
 
+    dataSource = {};
+
+} else {
+
+
+
+}
 
     // fetch the Open Weather Map sample file in the app folder
     fetch("/sample_data/openweathermap_brisbane.json")
@@ -659,7 +667,7 @@ function fetchData(locationData,weatherData,calendarData,devMode) {
             console.log("Weather Data * Loaded");
             return weatherResponse.json(); // parse the Json data and return it to following function
         })
-        .then(processWeatherData)
+        .then(processWeather)
         .catch(function (weatherError) {
             alert("The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"");
         });
@@ -681,7 +689,7 @@ function fetchData(locationData,weatherData,calendarData,devMode) {
             console.log("Calendar Data * Loaded");
             return calendarResponse.json(); // parse the Json data and return it to following function
         })
-        .then(processCalendarData)
+        .then(processCalendar)
         .catch(function (calendarError) {
             alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
         });
@@ -702,7 +710,7 @@ $(function () {
 
     if (devMode === true) {
 
-        useSampleData();
+        useSampleFile();
         console.log("DEV MODE * Enabled");
 
     } else {
