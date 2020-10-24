@@ -460,7 +460,7 @@ function processCalendar(calendarData) {
     console.log("processed calendar data!");
 }
 
-function processGatheredResponses(gatheredData){
+function processResponses(gatheredData) {
     //TODO process Object containing all data
 }
 
@@ -645,59 +645,94 @@ function useSampleFile() {
 
 }
 
+/*****/
+
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
-function fetchDataSources(dataSources,devMode) {
+function fetchDataSources(dataSets, devMode) {
 
     "use strict";
 
-if(devMode===true){
+    if (devMode === true) {
 
-    dataSource = {};
-
-} else {
+    } else {
 
 
 
-}
-
-    // fetch the Open Weather Map sample file in the app folder
-    fetch("/sample_data/openweathermap_brisbane.json")
-        .then(function (weatherResponse) {
-            console.log("Weather Data * Loaded");
-            return weatherResponse.json(); // parse the Json data and return it to following function
-        })
-        .then(processWeather)
-        .catch(function (weatherError) {
-            alert("The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"");
-        });
+    }
 
     // fetch the Open Cage Data sample file in the app folder
-    fetch("/sample_data/opencagedata_brisbane.json")
+    fetch(dataSets.location.data.source)
         .then(function (locationResponse) {
             console.log("Location Data * Loaded");
             return locationResponse.json(); // parse the Json data and return it to following function
         })
         .then(processLocationName)
         .catch(function (locationError) {
-            alert("The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + locationError + "\"");
+            alert(errorMessages.location);
+        });
+
+
+    // fetch the Open Weather Map sample file in the app folder
+    fetch(dataSets.weatherData)
+        .then(function (weatherResponse) {
+            console.log("Weather Data * Loaded");
+            return weatherResponse.json(); // parse the Json data and return it to following function
+        })
+        .then(processWeather)
+        .catch(function (weatherError) {
+            alert(errorMessages.weather);
         });
 
     // fetch the City Council Calendar Data sample file in the app folder
-    fetch("/sample_data/calendardata_brisbane.json")
+    fetch(dataSets.calendarData)
         .then(function (calendarResponse) {
             console.log("Calendar Data * Loaded");
             return calendarResponse.json(); // parse the Json data and return it to following function
         })
         .then(processCalendar)
         .catch(function (calendarError) {
-            alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
+            alert(errorMessages.calendar);
         });
 
     /* DEBUG */
 
 }
 
+//TODO Declare Functions inside Objects!
+function initialiseDataSets() {
+
+    "use strict";
+
+    var dataSets = [{
+            data: {
+                type: "location",
+                source: "/sample_data/opencagedata_brisbane.json",
+                process: function () {},
+            },
+            errorMessage: "The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + locationError + "\"",
+
+        },
+        {
+            data: {
+                type: "weather",
+                source: "/sample_data/openweathermap_brisbane.json",
+                processData: function () {},
+            },
+            errorMessage: "The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"",
+
+        },
+        {
+            data: {
+                type: "calendar",
+                source: "/sample_data/calendardata_brisbane.json",
+                processData: function () {},
+            },
+            errorMessage: "The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"",
+
+        }
+    ];
+}
 
 /* $(document).ready(function*(){}); */
 /************** START ****************/
