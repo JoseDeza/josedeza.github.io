@@ -296,7 +296,7 @@ function minutelyTable(weatherData) {
         next60minutes[i].date = new Date(d.dt * 1000); // Get the date of that minute
         next60minutes[i].minute = next60minutes[i].date.getMinutes();
         next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
-        next60minutes[i].precipitation = d.precipitation;
+        next60minutes[i].precipitation = Math.round(d.precipitation);
 
     }
 
@@ -546,7 +546,7 @@ function useSampleData() {
     "use strict";
 
     // fetch the Open Weather Map sample file in the app folder
-    fetch("/sample_data/openweathermap_paris.json")
+    fetch("/sample_data/openweathermap_brisbane.json")
         .then(function (weatherResponse) {
             console.log("Weather Data * Loaded");
             return weatherResponse.json(); // parse the Json data and return it to following function
@@ -557,7 +557,7 @@ function useSampleData() {
         });
 
     // fetch the Open Cage Data sample file in the app folder
-    fetch("/sample_data/opencagedata_paris.json")
+    fetch("/sample_data/opencagedata_brisbane.json")
         .then(function (locationResponse) {
             console.log("Location Data * Loaded");
             return locationResponse.json(); // parse the Json data and return it to following function

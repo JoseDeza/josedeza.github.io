@@ -1,0 +1,3 @@
+Brisbane
+https://api.openweathermap.org/data/2.5/onecall?lat=-27.470125&lon=153.021072&units=metric&appid=393d283150e7d7ced1c524ff318a8870
+https://api.opencagedata.com/geocode/v1/json?key=41f101eecefa4f808fa8adfc924a3063&q=-27.470125+153.021072&pretty=1&no_annotations=1

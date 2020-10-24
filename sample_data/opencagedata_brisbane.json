@@ -1,0 +1,65 @@
+{
+    "documentation": "https://opencagedata.com/api",
+    "licenses": [
+        {
+            "name": "see attribution guide",
+            "url": "https://opencagedata.com/credits"
+        }
+    ],
+    "rate": {
+        "limit": 2500,
+        "remaining": 2495,
+        "reset": 1603584000
+    },
+    "results": [
+        {
+            "bounds": {
+                "northeast": {
+                    "lat": -27.4693112,
+                    "lng": 153.0215169
+                },
+                "southwest": {
+                    "lat": -27.4699844,
+                    "lng": 153.0208638
+                }
+            },
+            "components": {
+                "ISO_3166-1_alpha-2": "AU",
+                "ISO_3166-1_alpha-3": "AUS",
+                "_category": "travel/tourism",
+                "_type": "hotel",
+                "city": "Brisbane City",
+                "continent": "Oceania",
+                "country": "Australia",
+                "country_code": "au",
+                "hotel": "Mercure",
+                "house_number": "85",
+                "postcode": "4004",
+                "road": "North Quay",
+                "state": "Queensland",
+                "state_code": "QLD",
+                "suburb": "Brisbane City"
+            },
+            "confidence": 9,
+            "formatted": "Mercure, 85 North Quay, Brisbane City QLD 4004, Australia",
+            "geometry": {
+                "lat": -27.4695813,
+                "lng": 153.0212493
+            }
+        }
+    ],
+    "status": {
+        "code": 200,
+        "message": "OK"
+    },
+    "stay_informed": {
+        "blog": "https://blog.opencagedata.com",
+        "twitter": "https://twitter.com/OpenCage"
+    },
+    "thanks": "For using an OpenCage API",
+    "timestamp": {
+        "created_http": "Sat, 24 Oct 2020 01:54:49 GMT",
+        "created_unix": 1603504489
+    },
+    "total_results": 1
+}
