@@ -2,60 +2,6 @@
 
 /***** Functions ********/
 
-
-// Display the location Name
-function displayLocationName(locationData) {
-
-    "use strict";
-
-    var i = 0,
-        locationComponents = {},
-        locationName = "",
-        locationTags = [];
-
-    locationComponents = locationData.results[0].components;
-
-    // Retrieved the city or town name depending on the data output
-    if (locationComponents.city) {
-        locationName = locationComponents.city;
-    } else if (locationComponents.town) {
-        locationName = locationComponents.town;
-    }
-
-    //        locationTag = $("<h1>").html(locationName); // Set the tag to display the time and date // html() vs text()
-    //        $("#current").append(locationTag); // Display the time and date
-
-
-    locationTags = $(".location");
-
-    for (i = 0; i < locationTags.length; i++) {
-        locationTags[i].textContent = locationName;
-    }
-
-    /* DEBUG */
-    console.log(locationData);
-    //    console.log(locationData.results[0].components.city);
-    //    console.log(locationData.results[0].components.town);
-}
-
-// Get location name using the following REST API service: api.opencagedata.com
-function getLocationName(key, lat, lon) {
-
-    "use strict";
-
-    /* Using Open Cage Data Map API // Documentation @ hhttps://opencagedata.com/api */
-
-    var geoCodeUrl = "https://api.opencagedata.com/geocode/v1/json?key=" + key + "&q=" + lat + "+" + lon + "&pretty=1&no_annotations=1"; // API call
-
-    $.get(geoCodeUrl, displayLocationName);
-
-    /* DEBUG */
-    console.log(geoCodeUrl);
-}
-
-
-/*****/
-
 // Generate the Daily Forecast table
 function dailyTable(weatherData) {
 
@@ -225,7 +171,6 @@ function hourlyTable(weatherData) {
 
     l = next48Hours.length;
 
-    //TODO next
     // Set a New table
     table1 = $("<table class='half-page stripped-format'>");
     table2 = $("<table class='half-page stripped-format'>");
@@ -302,7 +247,6 @@ function minutelyTable(weatherData) {
 
     l = next60minutes.length;
 
-    //TODO next
     // Set a New table
     table1 = $("<table class='half-page stripped-format'>");
     table2 = $("<table class='half-page stripped-format'>");
@@ -417,6 +361,43 @@ function currentMarkup(weatherData) {
 
 }
 
+/*****/
+
+// Display the location Name
+function displayLocationName(locationData) {
+
+    "use strict";
+
+    var i = 0,
+        locationComponents = {},
+        locationName = "",
+        locationTags = [];
+
+    locationComponents = locationData.results[0].components;
+
+    // Retrieved the city or town name depending on the data output
+    if (locationComponents.city) {
+        locationName = locationComponents.city;
+    } else if (locationComponents.town) {
+        locationName = locationComponents.town;
+    }
+
+    //        locationTag = $("<h1>").html(locationName); // Set the tag to display the time and date // html() vs text()
+    //        $("#current").append(locationTag); // Display the time and date
+
+
+    locationTags = $(".location");
+
+    for (i = 0; i < locationTags.length; i++) {
+        locationTags[i].textContent = locationName;
+    }
+
+    /* DEBUG */
+    console.log(locationData);
+    //    console.log(locationData.results[0].components.city);
+    //    console.log(locationData.results[0].components.town);
+}
+
 // Display the wheater data
 function displayWeatherData(weatherData) {
 
@@ -428,6 +409,73 @@ function displayWeatherData(weatherData) {
     hourlyTable(weatherData);
     minutelyTable(weatherData);
 
+}
+
+// Display the calendar data
+function displayCalendarData(calendarData) {
+
+    "use strict";
+
+    /* DEBUG */
+    console.log(calendarData);
+}
+
+/*****/
+
+function processLocationName(locationData) {
+
+    "use strict";
+
+    //TODO process location name
+
+    // Call location name display
+    displayLocationName(locationData);
+
+    /* DEBUG */
+    console.log("processed location name!");
+}
+
+function processWeatherData(weatherData) {
+
+    "use strict";
+
+    //TODO process weather data
+
+    displayWeatherData(weatherData);
+
+    /* DEBUG */
+    console.log("processed weather data!");
+}
+
+function processCalendarData(calendarData) {
+
+    "use strict";
+
+    //TODO process calendar data
+
+    // call calendar data display
+    displayCalendarData(calendarData);
+
+    /* DEBUG */
+    console.log("processed calendar data!");
+}
+
+/*****/
+
+// Get location name using the following REST API service: api.opencagedata.com
+function getLocationName(key, lat, lon) {
+
+    "use strict";
+
+    /* Using Open Cage Data Map API // Documentation @ hhttps://opencagedata.com/api */
+
+    var geoCodeUrl = "https://api.opencagedata.com/geocode/v1/json?key=" + key + "&q=" + lat + "+" + lon + "&pretty=1&no_annotations=1"; // API call
+
+    //Make API call through Http GET request / call location name data processing
+    $.get(geoCodeUrl, processLocationName);
+
+    /* DEBUG */
+    console.log(geoCodeUrl);
 }
 
 // Get wheater data using the following REST API service: api.openweathermap.org
@@ -453,26 +501,49 @@ function getWeatherData(appid, lat, lon) {
 
     url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + units + exclude + "&appid=" + appid; // API call
 
-    $.get(url, displayWeatherData);
+    //Make API call through Http GET request / call weather data processing
+    $.get(url, processWeatherData);
 
     /* DEBUG */
     console.log(url);
 
 }
 
+// Get Calendar Data as JSON file from the following service: trumba.com
+function getCalendarData(calendarData) {
+
+    "use strict";
+
+    url = "http://trumba.com/calendars/brisbane-city-council.json"; // API call
+
+    //get JSON file through Http GET request / call calendar data processing
+    $.get(url, processCalendarData);
+
+    /* DEBUG */
+    console.log(url);
+}
 
 /*****/
 
-function displayCalendarData(calendarData){
-    console.log("dipslayed calendar data!");
-}
+function gatherData(latitude, longitude) {
 
-function getCalendarData(calendarData){
-            console.log("retrieved calendar data!");
+    "use strict";
+
+    // Call API to get location name and format display
+    getLocationName("41f101eecefa4f808fa8adfc924a3063", latitude, longitude);
+    // Using quotes to help considering all following properties type as string?
+
+    // Call API to get weather data and format display
+    getWeatherData("393d283150e7d7ced1c524ff318a8870", latitude, longitude);
+
+    // Call API to get Brisbane City Council data and format display
+    getCalendarData();
+
+    /* DEBUG */
+    console.log("gathered all the data");
 }
 
 /*****/
-
 
 // Executed if the browser geolocation is successful
 function geolocSuccess(geolocReport) {
@@ -483,16 +554,8 @@ function geolocSuccess(geolocReport) {
     var geolocLatitude = geolocReport.coords.latitude,
         geolocLongitude = geolocReport.coords.longitude;
 
-
-    // Call API to get location name and format display
-    getLocationName("41f101eecefa4f808fa8adfc924a3063", geolocLatitude, geolocLongitude);
-    // Using quotes to help considering all following properties type as string?
-
-    // Call API to get weather data and format display
-    getWeatherData("393d283150e7d7ced1c524ff318a8870", geolocLatitude, geolocLongitude);
-
-    // Call API to get Brisbane City Council data and format display
-    getCalendarData();
+    // gather all the data based on geolocation
+    gatherData(geolocLatitude, geolocLongitude);
 
     /* DEBUG */
     //console.log(navigator.geolocation);
@@ -525,16 +588,8 @@ function geolocError(errorReport) {
         defaultLatitude = locations.Brisbane.lat,
         defaultLongitude = locations.Brisbane.lon;
 
-
-    // Call API to get location name and format display
-    getLocationName("41f101eecefa4f808fa8adfc924a3063", defaultLatitude, defaultLongitude);
-    // Using quotes to help considering all following properties type as string?
-
-    // Call API to get weather data and format display
-    getWeatherData("393d283150e7d7ced1c524ff318a8870", defaultLatitude, defaultLongitude);
-
-    // Call API to get Brisbane City Council data and format display
-    getCalendarData();
+    // gather all the data based on default location
+    gatherData(defaultLatitude, defaultLongitude);
 
     /* DEBUG */
     //console.log(errorReport.message);
@@ -551,7 +606,7 @@ function useSampleData() {
             console.log("Weather Data * Loaded");
             return weatherResponse.json(); // parse the Json data and return it to following function
         })
-        .then(displayWeatherData)
+        .then(processWeatherData)
         .catch(function (weatherError) {
             alert("The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"");
         });
@@ -562,21 +617,24 @@ function useSampleData() {
             console.log("Location Data * Loaded");
             return locationResponse.json(); // parse the Json data and return it to following function
         })
-        .then(displayLocationName)
+        .then(processLocationName)
         .catch(function (locationError) {
             alert("The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + locationError + "\"");
         });
 
-        // fetch the City Council Calendar Data sample file in the app folder
+    // fetch the City Council Calendar Data sample file in the app folder
     fetch("/sample_data/calendardata_brisbane.json")
         .then(function (calendarResponse) {
             console.log("Calendar Data * Loaded");
             return calendarResponse.json(); // parse the Json data and return it to following function
         })
-        .then(displayCalendarData)
+        .then(processCalendarData)
         .catch(function (calendarError) {
             alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
         });
+
+    /* DEBUG */
+
 }
 
 
