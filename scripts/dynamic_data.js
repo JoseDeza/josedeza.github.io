@@ -460,6 +460,10 @@ function processCalendarData(calendarData) {
     console.log("processed calendar data!");
 }
 
+function processGatheredData(gatheredData){
+    //TODO process Object containing all data
+}
+
 /*****/
 
 // Get location name using the following REST API service: api.opencagedata.com
@@ -539,8 +543,12 @@ function gatherData(latitude, longitude) {
     // Call API to get Brisbane City Council data and format display
     getCalendarData();
 
+    //TODO Return all gathered data as an object
+
+    //TODO call gathered data processing
+
     /* DEBUG */
-    console.log("gathered all the data");
+    console.log("All data gathered!");
 }
 
 /*****/
@@ -599,6 +607,51 @@ function geolocError(errorReport) {
 function useSampleData() {
 
     "use strict";
+
+    // fetch the Open Weather Map sample file in the app folder
+    fetch("/sample_data/openweathermap_brisbane.json")
+        .then(function (weatherResponse) {
+            console.log("Weather Data * Loaded");
+            return weatherResponse.json(); // parse the Json data and return it to following function
+        })
+        .then(processWeatherData)
+        .catch(function (weatherError) {
+            alert("The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"");
+        });
+
+    // fetch the Open Cage Data sample file in the app folder
+    fetch("/sample_data/opencagedata_brisbane.json")
+        .then(function (locationResponse) {
+            console.log("Location Data * Loaded");
+            return locationResponse.json(); // parse the Json data and return it to following function
+        })
+        .then(processLocationName)
+        .catch(function (locationError) {
+            alert("The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + locationError + "\"");
+        });
+
+    // fetch the City Council Calendar Data sample file in the app folder
+    fetch("/sample_data/calendardata_brisbane.json")
+        .then(function (calendarResponse) {
+            console.log("Calendar Data * Loaded");
+            return calendarResponse.json(); // parse the Json data and return it to following function
+        })
+        .then(processCalendarData)
+        .catch(function (calendarError) {
+            alert("The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"");
+        });
+
+    /* DEBUG */
+
+}
+
+//TODO use one function to fetch all data
+//TODO fetch data based on object containing API calls
+function fetchData(locationData,weatherData,calendarData,devMode) {
+
+    "use strict";
+
+
 
     // fetch the Open Weather Map sample file in the app folder
     fetch("/sample_data/openweathermap_brisbane.json")
