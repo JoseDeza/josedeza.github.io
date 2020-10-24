@@ -699,7 +699,8 @@ function fetchDataSources(dataSets, devMode) {
 
 }
 
-//TODO Declare Functions inside Objects!
+//TODO Initialise data sets with consistent properties definition for each type of data to retrieve
+//TODO Move Functions declaration inside Object (scope-wise)
 function initialiseDataSets() {
 
     "use strict";
@@ -717,7 +718,7 @@ function initialiseDataSets() {
             data: {
                 type: "weather",
                 source: "/sample_data/openweathermap_brisbane.json",
-                processData: function () {},
+                process: function () {},
             },
             errorMessage: "The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"",
 
@@ -726,7 +727,7 @@ function initialiseDataSets() {
             data: {
                 type: "calendar",
                 source: "/sample_data/calendardata_brisbane.json",
-                processData: function () {},
+                process: function () {},
             },
             errorMessage: "The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"",
 

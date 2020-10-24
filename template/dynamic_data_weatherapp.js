@@ -526,7 +526,7 @@ function geolocError(errorReport) {
 }
 
 // Executed when in "Dev Mode" / API calls are replaced by sample data to prevent reaching quotas.
-function useSampleData() {
+function useSampleFile() {
 
     "use strict";
 
@@ -566,7 +566,7 @@ $(function () {
 
     if (devMode === true) {
 
-        useSampleData();
+        useSampleFile();
         console.log("DEV MODE * Enabled");
 
     } else {
