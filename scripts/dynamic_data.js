@@ -461,6 +461,9 @@ function processCalendar(calendarData) {
 }
 
 function processResponses(gatheredData) {
+
+    "use strict";
+
     //TODO process Object containing all data
 }
 
@@ -475,11 +478,11 @@ function locationUrl(appID, lat, lon) {
 
     var url = "https://api.opencagedata.com/geocode/v1/json?key=" + appID + "&q=" + lat + "+" + lon + "&pretty=1&no_annotations=1"; // API call
 
-    //Make API call through Http GET request / call location name data processing
-    return url;
-
     /* DEBUG */
     console.log(url);
+
+    //Make API call through Http GET request / call location name data processing
+    return url;
 }
 
 // Get wheater data using the following REST API service: api.openweathermap.org
@@ -505,10 +508,10 @@ function weatherUrl(appID, lat, lon) {
 
     url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + units + exclude + "&appid=" + appID; // API call
 
-    return url;
-
     /* DEBUG */
     console.log(url);
+
+    return url;
 
 }
 
@@ -519,10 +522,10 @@ function calendarUrl() {
 
     var url = "http://trumba.com/calendars/brisbane-city-council.json"; // API call
 
-    return url;
-
     /* DEBUG */
     console.log(url);
+
+    return url;
 }
 
 /*****/
@@ -574,28 +577,8 @@ function geolocError(errorReport) {
 
     "use strict";
 
-    //window.alert(errorReport.message + "\n\"Brisbane\" will be used as a default location.");
+    window.alert(errorReport.message + "the default location will be used.");
 
-    // Set the default location as a fallback for latitude and longitude
-    var locations = {
-            Paris: { // Because Brisbane and Pomona don't provide minutely data
-                lat: 48.85341,
-                lon: 2.3488
-            },
-            Brisbane: { // As a local city
-                lat: -27.470125,
-                lon: 153.021072
-            },
-            Pomona: { // As a local town
-                lat: -26.3630,
-                lon: 152.8560
-            }
-        },
-        defaultLatitude = locations.Brisbane.lat,
-        defaultLongitude = locations.Brisbane.lon;
-
-    // gather all the data based on default location
-    gatherResponses(defaultLatitude, defaultLongitude);
 
     /* DEBUG */
     //console.log(errorReport.message);
@@ -605,24 +588,24 @@ function geolocError(errorReport) {
 
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
-function advancedFetching(devModeEnabled) {
+function advancedFetching(devMode) {
 
     "use strict";
 
-    var = "source";
+    var url = "";
 
-    if (devModeEnabled === true) {
-        source = this.source.sampleFile;
+    if (devMode === true) {
+        url = this.source.sampleFile;
     } else {
-        source = this.source.apiCall.setUrl;
+        url = this.source.apiCall.setUrl;
     }
 
     // fetch the Data sample file or API call response
     fetch(source)
         //.then(function(response) {/*TODO store processed data into a file? in client local storage?*/})
         .then(function (response) {
-            return response.json(); // return as structured Json data and return it to following function
             console.log(this.type + " Data * Loaded");
+            return response.json(); // return as structured Json data and return it to following function
         })
         .then(function (response) {
             /*TODO parse the data into an object*/
@@ -636,92 +619,97 @@ function advancedFetching(devModeEnabled) {
 
 }
 
-//TODO Initialise data sets with consistent properties definition for each type of data to retrieve
-//TODO Move Functions declaration inside Object (scope-wise)
-function initialiseDataSets(devModeEnabled, geolocationEnabled) {
+function initialiseDataSets(devMode, geoMode) {
 
     "use strict";
 
-    var i = 0,
-        l = dataSets.length,
+    var geolocations = {
+            Paris: { // Because Brisbane and Pomona don't provide minutely data
+                lat: 48.85341,
+                lon: 2.3488
+            },
+            Brisbane: { // As a local city
+                lat: -27.470125,
+                lon: 153.021072
+            },
+            Pomona: { // As a local town
+                lat: -26.3630,
+                lon: 152.8560
+            }
+        },
+        defaultGeolocation = geolocations.Brisbane, //Pick the default geolocation
 
         dataSets = [{
                 type: "Location",
                 source: {
                     apiCall: {
                         appID: "41f101eecefa4f808fa8adfc924a3063",
-                        latitude: "",
-                        longitude: "",
+                        latitude: defaultGeolocation.lat,
+                        longitude: defaultGeolocation.lon,
                         setUrl: locationUrl
                     },
                     clientFile: "",
                     serverFile: "",
-                    sampleFile: "/sample_data/opencagedata_brisbane.json",
+                    sampleFile: "/sample_data/opencagedata_brisbane.json"
                 },
-                fetched: advancedFetching, //method using boolean parameter
+                getData: advancedFetching, //method
                 error: {
                     type: "unidentified",
                     message: function () {
-                        return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + This.error.type + "\""
+                        return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + This.error.type + "\"";
                     }
                 }
-
         },
             {
                 type: "Weather",
                 source: {
                     apiCall: {
                         appID: "393d283150e7d7ced1c524ff318a8870",
-                        latitude: "",
-                        longitude: "",
+                        latitude: defaultGeolocation.lat,
+                        longitude: defaultGeolocation.lon,
                         setUrl: weatherUrl
                     },
                     clientFile: "",
                     serverFile: "",
                     sampleFile: "/sample_data/openweathermap_brisbane.json",
                 },
-                fetched: advancedFetching,
+                getData: advancedFetching,
                 error: {
                     type: "unidentified",
                     message: function () {
                         return "\"api.openweathermap.org\" data could not be loaded due to the following error:\n\n\"" + This.error.type + "\""
                     }
                 }
-
-
         },
             {
                 type: "Calendar",
                 source: {
                     apiCall: {
                         appID: "",
-                        latitude: "",
-                        longitude: "",
+                        latitude: defaultGeolocation.lat,
+                        longitude: defaultGeolocation.lon,
                         setUrl: calendarUrl
                     },
                     clientFile: "",
                     serverFile: "",
                     sampleFile: "/sample_data/calendardata_brisbane.json",
                 },
-                fetched: advancedFetching,
+                getData: advancedFetching,
                 error: {
                     type: "unidentified",
                     message: function () {
                         return "Brisbane City Council data could not be loaded due to the following error:\n\n\"" + This.error.type + "\""
                     }
                 }
-
         }
-    ];
+    ],
+        i = 0,
+        l = dataSets.length; //for loops
 
-    //TODO order this //////////////////////
 
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geolocSuccess, geolocError); // browser geolocation prompt
-    }
-    ////////////////////////////////////
-
+    /*DEBUG*/
+    console.log(dataSets);
 
 
 }
@@ -733,19 +721,22 @@ $(function () {
 
     "use strict";
 
-    var devModeEnabled = true, // "Dev Mode" toggle to use sample json files instead of API calls
-        geolocationEnabled = false; // "Geolocation" toggle to use geolocation / Using Brisbane as fallback
+    var devMode = true, // "Dev Mode" toggle to use sample json files instead of API calls
+        geoMode = false; // "Geo Mode" toggle to use browser geolocation / "Brisbane" as fallback
 
-    initialiseDataSets(devModeEnabled, geolocationEnabled)
-        .then(function () { //Get the data from each source
-            for (i = 0; i < l; i++) {
-
-
-                dataSets[i].advancedFetching(devModeEnabled); //Use sample files if "DEV Mode" is enabled
+    initialiseDataSets(devMode, geoMode);
+        /*.then(function () {
+            if (geoMode === true) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(geolocSuccess, geolocError); // geolocation prompt
+                }
             }
         })
-
-}
+        .then(function () { //Get the data from each source
+            for (i = 0; i < l; i++) {
+                dataSets[i].getData(devMode); //Use sample files if "DEV Mode" is enabled
+            }
+        })*/
 
 });
 
