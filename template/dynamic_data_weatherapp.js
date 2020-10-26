@@ -225,7 +225,6 @@ function hourlyTable(weatherData) {
 
     l = next48Hours.length;
 
-    //TODO next
     // Set a New table
     table1 = $("<table class='half-page stripped-format'>");
     table2 = $("<table class='half-page stripped-format'>");
@@ -302,7 +301,6 @@ function minutelyTable(weatherData) {
 
     l = next60minutes.length;
 
-    //TODO next
     // Set a New table
     table1 = $("<table class='half-page stripped-format'>");
     table2 = $("<table class='half-page stripped-format'>");

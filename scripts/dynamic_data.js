@@ -649,7 +649,7 @@ function useSampleFile() {
 
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
-function fetchDataSources(dataSets, devMode) {
+function loadDataSources(dataSets, devMode) {
 
     "use strict";
 
@@ -669,7 +669,7 @@ function fetchDataSources(dataSets, devMode) {
         })
         .then(processLocationName)
         .catch(function (locationError) {
-            alert(errorMessages.location);
+            alert(location.errorMessage);
         });
 
 
@@ -681,7 +681,7 @@ function fetchDataSources(dataSets, devMode) {
         })
         .then(processWeather)
         .catch(function (weatherError) {
-            alert(errorMessages.weather);
+            alert(weather.errorMessage);
         });
 
     // fetch the City Council Calendar Data sample file in the app folder
@@ -692,10 +692,25 @@ function fetchDataSources(dataSets, devMode) {
         })
         .then(processCalendar)
         .catch(function (calendarError) {
-            alert(errorMessages.calendar);
+            alert(calendar.errorMessage);
         });
 
     /* DEBUG */
+
+}
+
+function fecthSource() {
+    // fetch the Data sample file or API call response
+    fetch(this.source)
+        //.then(function(response) {/*TODO store processed data into a file? in client local storage?*/})
+        .then(function (response) {
+            return response.json(); // return as structured Json data and return it to following function
+            console.log(this.type + " Data * Loaded");
+        })
+        .then(function(response) {/*TODO parse the data into an object*/})
+        .catch(function (Error) {
+            alert(this.error.message);
+        });
 
 }
 
@@ -706,30 +721,72 @@ function initialiseDataSets() {
     "use strict";
 
     var dataSets = [{
-            data: {
-                type: "location",
-                source: "/sample_data/opencagedata_brisbane.json",
-                process: function () {},
-            },
-            errorMessage: "The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + locationError + "\"",
+            type: "location",
+            source: "/sample_data/opencagedata_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
 
         },
         {
-            data: {
-                type: "weather",
-                source: "/sample_data/openweathermap_brisbane.json",
-                process: function () {},
-            },
-            errorMessage: "The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + weatherError + "\"",
+            type: "weather",
+            source: "/sample_data/openweathermap_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
+
 
         },
         {
-            data: {
-                type: "calendar",
-                source: "/sample_data/calendardata_brisbane.json",
-                process: function () {},
-            },
-            errorMessage: "The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + calendarError + "\"",
+            type: "calendar",
+            source: "/sample_data/calendardata_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
+
+        }
+    ];
+}
+
+function useSampleFiles(dataSets) {
+
+    "use strict";
+
+    var dataSets = [{
+            type: "location",
+            source: "/sample_data/opencagedata_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The \"api.opencagedata.com\"sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
+
+        },
+        {
+            type: "weather",
+            source: "/sample_data/openweathermap_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The \"api.openweathermap.org\" sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
+
+
+        },
+        {
+            type: "calendar",
+            source: "/sample_data/calendardata_brisbane.json",
+            fetchSource: function () {},
+            error: {
+                type: "unidentified",
+                message: function() {return "The Brisbane City Council sample Json file could not be loaded due to the following error:\n\n\"" + This.error + "\""}
+            }
 
         }
     ];
