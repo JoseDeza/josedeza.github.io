@@ -6,7 +6,7 @@ $(function () {
         Geolocation = true, // "Geo Mode" toggle to store browser geolocation coordinates
         configObj = {
             source: {
-                url: undefined,
+                url: "",
                 appId: "393d283150e7d7ced1c524ff318a8870",
                 latitude: 0,
                 longitude: 0,
@@ -48,7 +48,7 @@ $(function () {
 
     setSourceUrl(sampleFile, configObj).then(function (obj) {
         console.log(obj);
-        console.log("The url is: " + obj.source.url);
+        console.log("The url is now: " + obj.source.url);
     }).catch(function (error) {
         console.log(error.message);
     });
@@ -72,8 +72,7 @@ function setSourceUrl(toggleBool, configurationObject) {
                 console.log("fulfilled!");
                 resolve(configurationObject);
             } else {
-                var reason = new Error('the Url is undefined! man...');
-                reject(reason);
+                reject(new Error("The Url could not be assigned by the function setSourceUrl"));
             }
 
         }
