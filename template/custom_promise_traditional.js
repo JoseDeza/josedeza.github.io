@@ -46,19 +46,33 @@ $(function () {
     console.log(configObj);
     console.log("The url is: " + configObj.source.url);
 
-    setSourceUrl(sampleFile, configObj).then(function (obj) {
+    setGeolocation(Geolocation, configObj).then(function (obj) {
         console.log(obj);
-        console.log("The url is now: " + obj.source.url);
     }).catch(function (error) {
         console.log(error.message);
     });
+
+    //    console.log(configObj);
+    //    console.log("The url is: " + configObj.source.url);
+    //
+    //    setSourceUrl(sampleFile, configObj).then(function (obj) {
+    //        console.log(obj);
+    //        console.log("The url is now: " + obj.source.url);
+    //    }).catch(function (error) {
+    //        console.log(error.message);
+    //    });
+
+
 
 
 
 });
 
-//Declare function with promise functionality
+//Declare functions with promise functionality ///////
+
 function setSourceUrl(toggleBool, configurationObject) {
+    "use strict";
+
     return new Promise(
         function (resolve, reject) {
 
@@ -77,4 +91,50 @@ function setSourceUrl(toggleBool, configurationObject) {
 
         }
     );
+}
+
+function setGeolocation(toggleBool, configurationObject) {
+    "use strict";
+
+    return new Promise(
+        function (resolve, reject) {
+
+            if (toggleBool === true && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(geolocSuccess, geolocError); // geolocation prompt
+            }
+
+
+
+        }
+    );
+
+}
+
+// Executed if the browser geolocation is successful
+function geolocSuccess(geolocReport) {
+
+    "use strict";
+
+    // Store latitude and longitude from the geolocated data
+    var geolocLatitude = geolocReport.coords.latitude,
+        geolocLongitude = geolocReport.coords.longitude;
+
+    // gather all the data based on geolocation
+    //    setCoordinates(geolocLatitude, geolocLongitude);
+
+    /* DEBUG */
+    console.log(navigator.geolocation);
+    console.log(geolocReport);
+
+}
+
+// Executed if the browser geolocation is unsuccessful
+function geolocError(errorReport) {
+
+    "use strict";
+
+    //    window.alert(errorReport.message + "the default location will be used.");
+
+    /* DEBUG */
+    console.log(errorReport.message);
 }

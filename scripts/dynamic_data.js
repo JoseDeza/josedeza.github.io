@@ -24,7 +24,12 @@ $(function () {
         }, // list of candidate locations
         activePosition = worldPositions.Brisbane; // Currently used location
 
-    //setConfiguration
+    //Initalise Configuration Object
+    initialConfiguration().then(function (obj) {
+        console.log(obj);
+    }).catch(function (error) {
+        console.log(error.message);
+    });
 
     //setGeolocation
 
@@ -37,188 +42,167 @@ $(function () {
 
 /***** Functions *****/
 
-// Set Initial parameters
-function setConfiguration() {
-
+// Set Initial parameters (promise functionality)
+function initialConfiguration() {
     "use strict";
 
-    var configurationSet = [{
-            label: "Location",
-            source: {
-                url: "",
-                appId: "41f101eecefa4f808fa8adfc924a3063",
-                latitude: 0, // Brisbane: {latitude: -27.470125, longitude: 153.021072}
-                longitude: 0,
+    return new Promise(
+        function (resolve, reject) {
 
-                // Get location name using the following REST API service: api.opencagedata.com
-                // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                apiCall: function () {
-                    "use strict";
+                            var configurationSet = [{
+                    label: "Location",
+                    source: {
+                        url: "",
+                        appId: "41f101eecefa4f808fa8adfc924a3063",
+                        latitude: 0, // Brisbane: {latitude: -27.470125, longitude: 153.021072}
+                        longitude: 0,
 
-                    var url = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
-                    console.log(url); //DEBUG
+                        // Get location name using the following REST API service: api.opencagedata.com
+                        // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                        apiCall: function () {
+                            "use strict";
 
-                    return url;
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/opencagedata_brisbane.json"
-            },
+                            var url = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
+                            console.log(url); //DEBUG
 
-            apiData: fetchingManager, //fetch data consistently
-            error: {
-                code: "",
-                message: function () {
-                    return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + this.code + "\"";
-                }
-            },
-            configurationSubset: function () {
-                return this
-            }
-        },
-        {
-            label: "Weather",
-            source: {
-                url: "",
-                appId: "393d283150e7d7ced1c524ff318a8870",
-                latitude: 0,
-                longitude: 0,
-                units: "metric", // unit system // metric,imperial
-                exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                            return url;
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/opencagedata_brisbane.json"
+                    },
 
-                // Get wheater data using the following REST API service: api.openweathermap.org
-                // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                apiCall: function () {
-                    "use strict";
-
-                    var i = 0,
-                        unitsParameter = "", // unit system // metric,imperial
-                        excludeParameter = "",
-                        url = "";
-
-                    if (this.units) { // Add parameter call only if needed
-                        unitsParameter = "&units=" + this.units;
+                    apiData: fetchingManager, //fetch data consistently
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + this.code + "\"";
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this
                     }
-                    if (this.exclude) { // Add parameter call only if needed
-                        excludeParameter = "&exclude=" + this.exclude;
-                    }
-
-                    url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
-                    console.log(url); //DEBUG
-
-                    return url;
-
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/openweathermap_brisbane.json",
-            },
-            apiData: fetchingManager,
-            error: {
-                code: "",
-                message: function () {
-                    return "\"api.openweathermap.org\" data could not be loaded due to the following error:\n\n\"" + this.code + "\""
-                }
-            },
-            configurationSubset: function () {
-                return this
-            }
         },
-        {
-            label: "Calendar",
-            source: {
-                url: "",
-                appId: "",
-                latitude: 0,
-                longitude: 0,
+                {
+                    label: "Weather",
+                    source: {
+                        url: "",
+                        appId: "393d283150e7d7ced1c524ff318a8870",
+                        latitude: 0,
+                        longitude: 0,
+                        units: "metric", // unit system // metric,imperial
+                        exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
 
-                // Get Calendar Data as JSON file from the following service: trumba.com
-                apiCall: function () {
-                    "use strict";
+                        // Get wheater data using the following REST API service: api.openweathermap.org
+                        // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+                        apiCall: function () {
+                            "use strict";
 
-                    var url = "http://trumba.com/calendars/brisbane-city-council.json";
-                    console.log(url); //DEBUG
+                            var i = 0,
+                                unitsParameter = "", // unit system // metric,imperial
+                                excludeParameter = "",
+                                url = "";
 
-                    return url;
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/calendardata_brisbane.json",
-            },
-            apiData: fetchingManager,
-            error: {
-                code: "",
-                message: function () {
-                    return "Brisbane City Council data could not be loaded due to the following error:\n\n\"" + this.code + "\""
-                }
-            },
-            configurationSubset: function () {
-                return this
-            }
+                            if (this.units) { // Add parameter call only if needed
+                                unitsParameter = "&units=" + this.units;
+                            }
+                            if (this.exclude) { // Add parameter call only if needed
+                                excludeParameter = "&exclude=" + this.exclude;
+                            }
+
+                            url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
+                            console.log(url); //DEBUG
+
+                            return url;
+
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/openweathermap_brisbane.json",
+                    },
+                    apiData: fetchingManager,
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "\"api.openweathermap.org\" data could not be loaded due to the following error:\n\n\"" + this.code + "\""
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this
+                    }
+        },
+                {
+                    label: "Calendar",
+                    source: {
+                        url: "",
+                        appId: "",
+                        latitude: 0,
+                        longitude: 0,
+
+                        // Get Calendar Data as JSON file from the following service: trumba.com
+                        apiCall: function () {
+                            "use strict";
+
+                            var url = "http://trumba.com/calendars/brisbane-city-council.json";
+                            console.log(url); //DEBUG
+
+                            return url;
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/calendardata_brisbane.json",
+                    },
+                    apiData: fetchingManager,
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "Brisbane City Council data could not be loaded due to the following error:\n\n\"" + this.code + "\""
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this
+                    }
         }
     ];
 
-    /*DEBUG*/
-    console.log(configurationSet);
+            if (configurationSet) {
+                console.log("fulfilled!");
+                resolve(configurationSet);
+            } else {
+                reject(new Error("The configuration set could not be generated by initialConfiguration()"));
+            }
 
-
-    //TODO return object
-    return (configurationSet);
-
-}
-
-
-// Set Modes
-function setDataSource(devMode, ) {
-    if (devMode === true) {
-        //setConfiguration(activePosition);
-
-        // fetch data from sample files
-
-        var dev = "DEV mode";
-        console.log(dev + " * Enabled");
-        return dev;
-
-
-    }
+        }
+    );
 }
 
 //TODO Wrap navigator.geolocation.getCurrentPosition into promise
 function setGeolocation(geoMode) {
-    if (geoMode === true && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geolocSuccess, geolocError); // geolocation prompt
-    }
 
 }
 
-// Executed if the browser geolocation is successful
-function geolocSuccess(geolocReport) {
+// Set data source url (promise functionality)
+function setSourceUrl(toggleBool, configurationObject) {
+    return new Promise(
+        function (resolve, reject) {
 
-    "use strict";
+            if (toggleBool) {
+                configurationObject.source.url = configurationObject.source.sampleFile;
+            } else {
+                configurationObject.source.url = configurationObject.source.apiCall();
+            }
 
-    // Store latitude and longitude from the geolocated data
-    var geolocLatitude = geolocReport.coords.latitude,
-        geolocLongitude = geolocReport.coords.longitude;
+            if (configurationObject.source.url) {
+                console.log("fulfilled!");
+                resolve(configurationObject);
+            } else {
+                reject(new Error("The Url could not be assigned by the function setSourceUrl"));
+            }
 
-    // gather all the data based on geolocation
-    //    setCoordinates(geolocLatitude, geolocLongitude);
-
-    /* DEBUG */
-    console.log(navigator.geolocation);
-    console.log(geolocReport);
-
+        }
+    );
 }
 
-// Executed if the browser geolocation is unsuccessful
-function geolocError(errorReport) {
-
-    "use strict";
-
-    //    window.alert(errorReport.message + "the default location will be used.");
-
-    /* DEBUG */
-    console.log(errorReport.message);
-}
 
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
