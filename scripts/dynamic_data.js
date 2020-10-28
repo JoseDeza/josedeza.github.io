@@ -42,9 +42,10 @@ function setConfiguration() {
 
     "use strict";
 
-    var configurationSets = [{
+    var configurationSet = [{
             label: "Location",
             source: {
+                url: "",
                 appId: "41f101eecefa4f808fa8adfc924a3063",
                 latitude: 0, // Brisbane: {latitude: -27.470125, longitude: 153.021072}
                 longitude: 0,
@@ -71,13 +72,14 @@ function setConfiguration() {
                     return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + this.code + "\"";
                 }
             },
-            returnConfigurationSet: function () {
+            configurationSubset: function () {
                 return this
             }
         },
         {
             label: "Weather",
             source: {
+                url: "",
                 appId: "393d283150e7d7ced1c524ff318a8870",
                 latitude: 0,
                 longitude: 0,
@@ -118,13 +120,14 @@ function setConfiguration() {
                     return "\"api.openweathermap.org\" data could not be loaded due to the following error:\n\n\"" + this.code + "\""
                 }
             },
-            returnConfigurationSet: function () {
+            configurationSubset: function () {
                 return this
             }
         },
         {
             label: "Calendar",
             source: {
+                url: "",
                 appId: "",
                 latitude: 0,
                 longitude: 0,
@@ -149,18 +152,18 @@ function setConfiguration() {
                     return "Brisbane City Council data could not be loaded due to the following error:\n\n\"" + this.code + "\""
                 }
             },
-            returnConfigurationSet: function () {
+            configurationSubset: function () {
                 return this
             }
         }
     ];
 
     /*DEBUG*/
-    console.log(configurationSets);
-    //    for (i = 0; i < l; i++) console.log(configurationSets[i].configurationData());
+    console.log(configurationSet);
+
 
     //TODO return object
-    return (configurationSets);
+    return (configurationSet);
 
 }
 
@@ -219,17 +222,7 @@ function geolocError(errorReport) {
 
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
-function fetchingManager(devMode, configSet) {
-
-    "use strict";
-
-    var url = "";
-
-    if (devMode === true) {
-        url = configSet.source.sampleFile;
-    } else {
-        url = configSet.source.apiCall();
-    }
+function fetchingManager(configSet) {
 
     // fetch the Data sample file or API call response
     fetch(source)
