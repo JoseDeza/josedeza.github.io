@@ -41,7 +41,7 @@ $(function () {
                 sampleFile: "/sample_data/openweathermap_brisbane.json",
             }
         },
-        worldPositions = {
+        candidateLocations = {
             Paris: { // As an alternatve
                 lat: 48.85341,
                 lon: 2.3488
@@ -55,14 +55,14 @@ $(function () {
                 lon: 152.8560
             }
         }, // list of candidate locations
-        defaultPosition = worldPositions.Brisbane; // default location
+        defaultLocation = candidateLocations.Brisbane; // default location
 
 
     console.log(configurationParameters);
     console.log("The initial latitude is: " + configurationParameters.source.latitude);
     console.log("The initial longitude is: " + configurationParameters.source.longitude);
 
-    setGeolocation(geolocation, defaultPosition, configurationParameters).then(function (obj) {
+    setGeolocation(geolocation, defaultLocation, configurationParameters).then(function (obj) {
         console.log(obj);
     }).catch(function (error) {
         console.log(error.message);
