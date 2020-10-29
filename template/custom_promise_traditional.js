@@ -12,16 +12,15 @@ $(function () {
                 longitude: 0,
                 units: "metric", // unit system // metric,imperial
                 exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-
                 // Get wheater data using the following REST API service: api.openweathermap.org
                 // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                apiCall: function () {
+                setApiCall: function () {
                     "use strict";
 
                     var i = 0,
                         unitsParameter = "", // unit system // metric,imperial
                         excludeParameter = "",
-                        url = "";
+                        apiCall = "";
 
                     if (this.units) { // Add parameter call only if needed
                         unitsParameter = "&units=" + this.units;
@@ -30,15 +29,14 @@ $(function () {
                         excludeParameter = "&exclude=" + this.exclude;
                     }
 
-                    url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
-                    //console.log(url); //DEBUG
+                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
 
-                    return url;
+                    return apiCall;
 
                 }, // Url to call
                 clientFile: "", // User browser local storage
                 serverFile: "",
-                sampleFile: "/sample_data/openweathermap_brisbane.json",
+                sampleFile: "/sample_data/openweathermap_brisbane.json"
             }
         },
         candidateLocations = {
@@ -55,31 +53,21 @@ $(function () {
                 lon: 152.8560
             }
         }, // list of candidate locations
-        defaultLocation = candidateLocations.Brisbane; // default location
+        defaultLocation = candidateLocations.Paris; // default location
 
-
-    console.log(configurationParameters);
     console.log("The initial latitude is: " + configurationParameters.source.latitude);
     console.log("The initial longitude is: " + configurationParameters.source.longitude);
 
     setGeolocation(geolocation, defaultLocation, configurationParameters)
         .then(function (obj1) {
-            return setSourceUrl(sampleFile, configurationParameters);
+            return setSourceUrl(sampleFile, obj1);
         })
         .then(function (obj2) {
+            console.log("The url is: " + obj2.source.url);
             console.log(obj2);
         }).catch(function (error) {
             console.log(error.message);
         });
-
-    console.log(configurationParameters);
-    console.log("The url is: " + configurationParameters.source.url);
-
-
-
-
-
-
 
 
 });
@@ -105,7 +93,6 @@ function setGeolocation(toggleBool, defaultPositionObj, configObj) {
                 },
                 geolocDenied = function (errorReport) {
                     console.log("Geolocation disabled");
-                    console.log("Default location set");
                 };
 
             // Initialise position using default location coordinates
@@ -125,7 +112,7 @@ function setGeolocation(toggleBool, defaultPositionObj, configObj) {
             }
 
             if (configObj) {
-                console.log("fulfilled!");
+                console.log("Geolocation Set!");
                 resolve(configObj);
             } else {
                 reject(new Error("The position coordinates could not be assigned."));
@@ -145,11 +132,11 @@ function setSourceUrl(toggleBool, configObj) {
             if (toggleBool) {
                 configObj.source.url = configObj.source.sampleFile;
             } else {
-                configObj.source.url = configObj.source.apiCall();
+                configObj.source.url = configObj.source.setApiCall();
             }
 
             if (configObj) {
-                console.log("fulfilled!");
+                console.log("Url set!");
                 resolve(configObj);
             } else {
                 reject(new Error("The Url could not be assigned by the function setSourceUrl"));

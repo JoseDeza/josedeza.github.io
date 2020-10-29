@@ -26,11 +26,12 @@ $(function () {
 
     //Initalise Configuration Object
     initialConfiguration()
-        .then(function (Arr1) {
-            return setGeolocation(geolocation, defaultLocation, Arr1);
+        .then(function (array1) {
+            return setGeolocation(geolocation, defaultLocation, array1);
         })
-        .then(function (Arr2) {
-            return setSourceUrl(sampleFile, Arr2);
+        .then(function (array2) {
+            console.log(array2);
+            return setSourceUrl(sampleFile, array2);
         })
         .catch(function (error) {
             console.log(".catch():" + error.message);
@@ -55,17 +56,16 @@ function initialConfiguration() {
                     source: {
                         url: "",
                         appId: "41f101eecefa4f808fa8adfc924a3063",
-                        latitude: 0, // Brisbane: {latitude: -27.470125, longitude: 153.021072}
+                        latitude: 0,
                         longitude: 0,
                         // Get location name using the following REST API service: api.opencagedata.com
                         // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                        apiCall: function () {
+                        setApiCall: function () {
                             "use strict";
 
-                            var url = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
-                            console.log(url); //DEBUG
+                            var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
 
-                            return url;
+                            return apiCall;
                         }, // Url to call
                         clientFile: "", // User browser local storage
                         serverFile: "",
@@ -93,13 +93,13 @@ function initialConfiguration() {
                         exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
                         // Get wheater data using the following REST API service: api.openweathermap.org
                         // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                        apiCall: function () {
+                        setApiCall: function () {
                             "use strict";
 
                             var i = 0,
                                 unitsParameter = "", // unit system // metric,imperial
                                 excludeParameter = "",
-                                url = "";
+                                apiCall = "";
 
                             if (this.units) { // Add parameter call only if needed
                                 unitsParameter = "&units=" + this.units;
@@ -108,10 +108,9 @@ function initialConfiguration() {
                                 excludeParameter = "&exclude=" + this.exclude;
                             }
 
-                            url = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
-                            console.log(url); //DEBUG
+                            apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId;
 
-                            return url;
+                            return apiCall;
 
                         }, // Url to call
                         clientFile: "", // User browser local storage
@@ -137,13 +136,12 @@ function initialConfiguration() {
                         latitude: 0,
                         longitude: 0,
                         // Get Calendar Data as JSON file from the following service: trumba.com
-                        apiCall: function () {
+                        setApiCall: function () {
                             "use strict";
 
-                            var url = "http://trumba.com/calendars/brisbane-city-council.json";
-                            console.log(url); //DEBUG
+                            var apiCall = "http://trumba.com/calendars/brisbane-city-council.json";
 
-                            return url;
+                            return apiCall;
                         }, // Url to call
                         clientFile: "", // User browser local storage
                         serverFile: "",
@@ -184,31 +182,25 @@ function setGeolocation(enableBoolean, positionObject, configurationArray) {
                 geolocAllowed = function (geolocPosition) {
                     "use strict";
 
-                    //TODO Fix this not working
-
                     // Store latitude and longitude from the geolocated data
                     for (i = 0; i < l; i++) {
                         configurationArray[i].source.latitude = geolocPosition.coords.latitude;
                         configurationArray[i].source.longitude = geolocPosition.coords.longitude;
                     }
-
                     console.log("Geolocation enabled");
-                    console.log("the geolocated latitude is: " + geolocPosition.coords.latitude);
-                    console.log("the geolocated longitude is: " + geolocPosition.coords.longitude);
                 },
                 geolocDenied = function (errorReport) {
                     "use strict";
 
-                    // Initialise position using default location coordinates
-                    for (i = 0; i < l; i++) {
-                        configurationArray[i].source.latitude = positionObject.lat;
-                        configurationArray[i].source.longitude = positionObject.lon;
-                    }
-
                     console.log("Geolocation disabled");
-                    console.log("the default latitude is: " + positionObject.lat);
-                    console.log("the default longitude is: " + positionObject.lon);
+                    console.log("Error: " + errorReport.code);
                 };
+
+            // Initialise position using default location coordinates
+            for (i = 0; i < l; i++) {
+                configurationArray[i].source.latitude = positionObject.lat;
+                configurationArray[i].source.longitude = positionObject.lon;
+            }
 
             if (enableBoolean) {
 
@@ -216,13 +208,7 @@ function setGeolocation(enableBoolean, positionObject, configurationArray) {
                     navigator.geolocation.getCurrentPosition(geolocAllowed, geolocDenied); // geolocation prompt
                 } else {
 
-                    // Initialise position using default location coordinates
-                    for (i = 0; i < l; i++) {
-                        configurationArray[i].source.latitude = positionObject.lat;
-                        configurationArray[i].source.longitude = positionObject.lon;
-                    }
-
-                    console.log("Browser Geolocation functionality unavailable.\n\rUsing default coordinates for the location.");
+                    alert("Browser Geolocation functionality unavailable.\n\rUsing default coordinates for the location.");
 
                 }
 
@@ -250,9 +236,7 @@ function setSourceUrl(enableBoolean, configurationArray) {
         function (resolve, reject) {
 
             var i = 0,
-                l = configurationArray.length,
-                success = 0,
-                succesful = false;
+                l = configurationArray.length;
 
             for (i = 0; i < l; i++) {
 
@@ -260,15 +244,14 @@ function setSourceUrl(enableBoolean, configurationArray) {
                 if (enableBoolean) {
                     configurationArray[i].source.url = configurationArray[i].source.sampleFile;
                 } else {
-                    configurationArray[i].source.url = configurationArray[i].source.apiCall();
+                    //TODO fix this!!! / Async issue ////////////////
+                    configurationArray[i].source.url = configurationArray[i].source.setApiCall();
+                    console.log("ApiCall: " + configurationArray[i].source.setApiCall());
                 }
-
-                // Records each successful operation
-                if (configurationArray[i].source.url != "") success++;
             }
 
 
-            if (success === l) { // If all the URLs were successfully assigned
+            if (configurationArray) {
                 console.log("setSourceUrl() fulfilled!");
                 resolve(configurationArray);
             } else {
