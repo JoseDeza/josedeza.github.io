@@ -3,8 +3,8 @@ $(function () {
     "use strict";
 
     var sampleFile = true, // "Dev Mode" toggle to prevent making API calls using sample json files instead
-        Geolocation = true, // "Geo Mode" toggle to store browser geolocation coordinates
-        configObj = {
+        geolocation = true, // "Geo Mode" toggle to store browser geolocation coordinates
+        configurationParameters = {
             source: {
                 url: "",
                 appId: "393d283150e7d7ced1c524ff318a8870",
@@ -40,13 +40,29 @@ $(function () {
                 serverFile: "",
                 sampleFile: "/sample_data/openweathermap_brisbane.json",
             }
-        };
+        },
+        worldPositions = {
+            Paris: { // As an alternatve
+                lat: 48.85341,
+                lon: 2.3488
+            },
+            Brisbane: { // As a local city
+                lat: -27.470125,
+                lon: 153.021072
+            },
+            Pomona: { // As a local town
+                lat: -26.3630,
+                lon: 152.8560
+            }
+        }, // list of candidate locations
+        defaultPosition = worldPositions.Brisbane; // default location
 
 
-    console.log(configObj);
-    console.log("The url is: " + configObj.source.url);
+    console.log(configurationParameters);
+    console.log("The initial latitude is: " + configurationParameters.source.latitude);
+    console.log("The initial longitude is: " + configurationParameters.source.longitude);
 
-    setGeolocation(Geolocation, configObj).then(function (obj) {
+    setGeolocation(geolocation, defaultPosition, configurationParameters).then(function (obj) {
         console.log(obj);
     }).catch(function (error) {
         console.log(error.message);
@@ -70,71 +86,75 @@ $(function () {
 
 //Declare functions with promise functionality ///////
 
-function setSourceUrl(toggleBool, configurationObject) {
+function setGeolocation(toggleBool, defaultPositionObj, configObj) {
+    "use strict";
+
+    return new Promise(
+        function (resolve, reject) {
+
+            var geolocAllowed = function (geolocPosition) {
+
+                    "use strict";
+
+                    // Store latitude and longitude from the geolocated data
+                    configObj.source.latitude = geolocPosition.coords.latitude;
+                    configObj.source.longitude = geolocPosition.coords.longitude;
+
+                    console.log("Geolocation enabled");
+
+                },
+                geolocDenied = function (errorReport) {
+                    console.log("Geolocation disabled");
+                    console.log("Default location set");
+                };
+
+            // Initialise position using default location coordinates
+            configObj.source.latitude = defaultPositionObj.lat;
+            configObj.source.longitude = defaultPositionObj.lon;
+
+            if (toggleBool) {
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(geolocAllowed, geolocDenied); // geolocation prompt
+                } else {
+                    console.log("Browser Geolocation functionality unavailable.\n\rUsing default coordinates for the location.");
+                }
+
+            } else {
+                console.log("passing configuration parameters unchanged.");
+            }
+
+            if (configObj) {
+                console.log("fulfilled!");
+                resolve(configObj);
+            } else {
+                reject(new Error("The position coordinates could not be assigned."));
+            }
+
+        }
+    );
+
+}
+
+function setSourceUrl(toggleBool, configObj) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
             if (toggleBool) {
-                configurationObject.source.url = configurationObject.source.sampleFile;
+                configObj.source.url = configObj.source.sampleFile;
             } else {
-                configurationObject.source.url = configurationObject.source.apiCall();
+                configObj.source.url = configObj.source.apiCall();
             }
 
-            if (configurationObject.source.url) {
+            if (configObj) {
                 console.log("fulfilled!");
-                resolve(configurationObject);
+                resolve(configObj);
             } else {
                 reject(new Error("The Url could not be assigned by the function setSourceUrl"));
             }
 
         }
     );
-}
-
-function setGeolocation(toggleBool, configurationObject) {
-    "use strict";
-
-    return new Promise(
-        function (resolve, reject) {
-
-            if (toggleBool === true && navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(geolocSuccess, geolocError); // geolocation prompt
-            }
-
-
-
-        }
-    );
-
-}
-
-// Executed if the browser geolocation is successful
-function geolocSuccess(geolocReport) {
-
-    "use strict";
-
-    // Store latitude and longitude from the geolocated data
-    var geolocLatitude = geolocReport.coords.latitude,
-        geolocLongitude = geolocReport.coords.longitude;
-
-    // gather all the data based on geolocation
-    //    setCoordinates(geolocLatitude, geolocLongitude);
-
-    /* DEBUG */
-    console.log(navigator.geolocation);
-    console.log(geolocReport);
-
-}
-
-// Executed if the browser geolocation is unsuccessful
-function geolocError(errorReport) {
-
-    "use strict";
-
-    //    window.alert(errorReport.message + "the default location will be used.");
-
-    /* DEBUG */
-    console.log(errorReport.message);
 }

@@ -182,19 +182,19 @@ function setGeolocation(geoMode) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(toggleBool, configurationObject) {
+function setSourceUrl(toggleBool, configObj) {
     return new Promise(
         function (resolve, reject) {
 
             if (toggleBool) {
-                configurationObject.source.url = configurationObject.source.sampleFile;
+                configObj.source.url = configObj.source.sampleFile;
             } else {
-                configurationObject.source.url = configurationObject.source.apiCall();
+                configObj.source.url = configObj.source.apiCall();
             }
 
-            if (configurationObject.source.url) {
+            if (configObj.source.url) {
                 console.log("fulfilled!");
-                resolve(configurationObject);
+                resolve(configObj);
             } else {
                 reject(new Error("The Url could not be assigned by the function setSourceUrl"));
             }
