@@ -65,6 +65,12 @@ function initialConfiguration() {
 
                             var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
 
+                            //TODO check this / Displayed twice? // DEBUG
+                            console.log("this is the Object label : " + configurationSet[0].label);
+                            console.log("this is the latitude: " + this.latitude);
+                            console.log("longitude: " + this.longitude);
+                            console.log("this is the API Call: " + apiCall);
+
                             return apiCall;
                         }, // Url to call
                         clientFile: "", // User browser local storage
@@ -245,8 +251,9 @@ function setSourceUrl(enableBoolean, configurationArray) {
                     configurationArray[i].source.url = configurationArray[i].source.sampleFile;
                 } else {
                     //TODO fix this!!! / Async issue ////////////////
+                    // the API Call is set before the geolocation coordinates
                     configurationArray[i].source.url = configurationArray[i].source.setApiCall();
-                    console.log("ApiCall: " + configurationArray[i].source.setApiCall());
+                    console.log("ApiCall: " + configurationArray[i].source.setApiCall);
                 }
             }
 
