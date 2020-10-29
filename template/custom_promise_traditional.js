@@ -89,13 +89,17 @@ function setGeolocation(toggleBool, defaultPositionObj, configObj) {
                     configObj.source.longitude = geolocPosition.coords.longitude;
 
                     console.log("Geolocation enabled");
-
+//                    console.log(configObj.source.latitude);
+//                    console.log(configObj.source.longitude);
+//                    console.log(geolocPosition.coords.latitude);
+//                    console.log(geolocPosition.coords.longitude);
                 },
                 geolocDenied = function (errorReport) {
                     console.log("Geolocation disabled");
                 };
 
             // Initialise position using default location coordinates
+            //DEBUG these are the coordinates being set / 0 if commented out
             configObj.source.latitude = defaultPositionObj.lat;
             configObj.source.longitude = defaultPositionObj.lon;
 
