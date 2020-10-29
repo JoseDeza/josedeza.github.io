@@ -2,7 +2,7 @@ $(function () {
 
     "use strict";
 
-    var sampleFile = true, // "Dev Mode" toggle to prevent making API calls using sample json files instead
+    var sampleFile = false, // "Dev Mode" toggle to prevent making API calls using sample json files instead
         geolocation = true, // "Geo Mode" toggle to store browser geolocation coordinates
         configurationParameters = {
             source: {
@@ -62,21 +62,21 @@ $(function () {
     console.log("The initial latitude is: " + configurationParameters.source.latitude);
     console.log("The initial longitude is: " + configurationParameters.source.longitude);
 
-    setGeolocation(geolocation, defaultLocation, configurationParameters).then(function (obj) {
-        console.log(obj);
-    }).catch(function (error) {
-        console.log(error.message);
-    });
+    setGeolocation(geolocation, defaultLocation, configurationParameters)
+        .then(function (obj1) {
+            return setSourceUrl(sampleFile, configurationParameters);
+        })
+        .then(function (obj2) {
+            console.log(obj2);
+        }).catch(function (error) {
+            console.log(error.message);
+        });
 
-    //    console.log(configObj);
-    //    console.log("The url is: " + configObj.source.url);
-    //
-    //    setSourceUrl(sampleFile, configObj).then(function (obj) {
-    //        console.log(obj);
-    //        console.log("The url is now: " + obj.source.url);
-    //    }).catch(function (error) {
-    //        console.log(error.message);
-    //    });
+    console.log(configurationParameters);
+    console.log("The url is: " + configurationParameters.source.url);
+
+
+
 
 
 
