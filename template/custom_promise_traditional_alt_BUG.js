@@ -1,9 +1,13 @@
+// TODO check scope difference between traditional function and arrow function! (expression and declaration)
+// TODO investigate Executor(), Then() async processes to understand where to place the code
+// TODO investigate the usage of array of promises to control the execution order
+
 $(function () {
 
     "use strict";
 
-    var sampleFile = true, // "Dev Mode" toggle to prevent making API calls using sample json files instead
-        geolocation = true, // "Geo Mode" toggle to store browser geolocation coordinates
+    var sampleFile = true, // Toggle to prevent making API calls using sample json files instead
+        geolocation = true, // Toggle to store browser geolocation coordinates
         configurationParameters = {
             source: {
                 url: "",
@@ -59,17 +63,16 @@ $(function () {
         }, // list of candidate locations
         defaultLocation = candidateLocations.TestPosition; // default location
 
-    console.log("The initial latitude is: " + configurationParameters.source.latitude);
-    console.log("The initial longitude is: " + configurationParameters.source.longitude);
-
     setCoordinates(geolocation, defaultLocation, configurationParameters)
         .then(function (obj1) {
+            console.log(".then(obj1)");
             return setSourceUrl(sampleFile, obj1);
         })
         .then(function (obj2) {
+            console.log(".then(obj2)");
             console.log(obj2);
         }).catch(function (error) {
-            console.log("TODO Handle 'error.message'");
+            console.log(".catch()");
         });
 
 
@@ -80,6 +83,7 @@ $(function () {
 function setCoordinates(toggleBool, defaultPositionObj, configObj) {
     "use strict";
 
+    console.log("setCoordinates()");
     return new Promise(
         function (resolve, reject) {
 
@@ -102,36 +106,36 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
 
                 setGeolocation()
                     .then(function (position) {
+                        console.log("setCoordinates().setGeolocation(): resolved");
                         // Store latitude and longitude from the geolocated data
                         configObj.source.latitude = position.coords.latitude;
                         configObj.source.longitude = position.coords.longitude;
 
                         // Set the url using geolocation information
                         configObj.source.url = configObj.source.setApiCall();
-                        console.log("API call passed to url!")
-
+                        console.log("setCoordinates().setGeolocation(): Geolocated position -> url")
                     })
                     .catch(function (error) {
+                        console.log("setCoordinates().setGeolocation(): rejected");
                         // Initialise position using default location coordinates
                         configObj.source.latitude = defaultPositionObj.lat;
                         configObj.source.longitude = defaultPositionObj.lon;
 
                         // Set the url using geolocation information
                         configObj.source.url = configObj.source.setApiCall();
-                        console.log("API call passed to url!")
+                        console.log("setCoordinates().setGeolocation(): default position -> url")
 
-                        // TODO Handle navigator.geolocation.getCurrentPosition() error.code properly
-                        console.log(error.message);
-                        console.log("Using default coordinates for the location.");
+                        //console.log(error.message);
                     });
             } else {
-                console.log("passing configuration parameters unchanged.");
+                console.log("setCoordinates(): passing configuration parameters unchanged.");
             }
 
             if (configObj) {
+                console.log("setCoordinates(): resolved");
                 resolve(configObj);
-                console.log("setCoordinates() fulfilled!");
             } else {
+                console.log("setCoordinates(): rejected");
                 reject(new Error("The position coordinates could not be assigned."));
             }
         }
@@ -141,19 +145,21 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
 function setSourceUrl(toggleBool, configObj) {
     "use strict";
 
+    console.log("setSourceUrl()");
     return new Promise(
         function (resolve, reject) {
 
             // Overwrite API call with sample file when enabled
             if (toggleBool) {
                 configObj.source.url = configObj.source.sampleFile;
-                console.log("Using sample file!")
+                console.log("setSourceUrl(): sample file -> url")
             }
 
             if (configObj) {
+                console.log("setSourceUrl(): resolved");
                 resolve(configObj);
-                console.log("setSourceUrl() fulfilled!");
             } else {
+                console.log("setSourceUrl(): rejected");
                 reject(new Error("The sample file path could not be assigned to the Url"));
             }
 
