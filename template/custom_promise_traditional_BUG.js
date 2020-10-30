@@ -62,15 +62,21 @@ $(function () {
     console.log("The initial latitude is: " + configurationParameters.source.latitude);
     console.log("The initial longitude is: " + configurationParameters.source.longitude);
 
-    setCoordinates(geolocation, defaultLocation, configurationParameters)
-        .then(function(coordinates_1) {return setSourceUrl(sampleFile, coordinates_1);})
-        .then(function (url_2) {
-            console.log("after setting url, source.latitude: " + url_2.source.latitude);
-            console.log("after setting url, source.longitude: " + url_2.source.longitude);
-            console.log("after setting url, source.url: " + url_2.source.url);
-            console.log(url_2);
+    setGeolocation(geolocation, defaultLocation, configurationParameters)
+        .then(function (obj1) {
+            console.log("obj1 Congif latitude is: " + obj1.source.latitude);
+            console.log("obj1 Config longitude is: " + obj1.source.longitude);
+            console.log("obj1 Config url is: " + obj1.source.url);
+            console.log(obj1);
+            return setSourceUrl(sampleFile, obj1);
+        })
+        .then(function (obj2) {
+            console.log("obj2 Congif latitude is: " + obj2.source.latitude);
+            console.log("obj2 Config longitude is: " + obj2.source.longitude);
+            console.log("obj2 Config url is: " + obj2.source.url);
+            console.log(obj2);
         }).catch(function (error) {
-            console.log("TODO Handle 'error.message'");
+            console.log(error.message);
         });
 
 
@@ -78,44 +84,46 @@ $(function () {
 
 //Declare functions with promise functionality ///////
 
-function setCoordinates(toggleBool, defaultPositionObj, configObj) {
+function setGeolocation(toggleBool, defaultPositionObj, configObj) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
-            // Wrap geolocation into nested promise
-            // Not passing geolocation options parameter / using default options
-            var setGeolocation = function () {
-                return new Promise(
-                    function (geolocResolve, geolocReject) {
-                        // Adding condition HERE so that the code waits for the user permission
-//                        if (true === false)
-                        if (navigator.geolocation)
-                        { // geolocation prompt
-                            navigator.geolocation.getCurrentPosition(geolocResolve, geolocReject);
-                        } else {
-                            geolocReject(new Error("Browser Geolocation functionality unavailable."));
-                        }
-                    });
-            }
+
+            var geolocAllowed = function (geolocPosition) {
+
+                    "use strict";
+                    // Test calls
+                    console.log("Config latitude: " + configObj.source.latitude);
+                    console.log("Config longitude: " + configObj.source.longitude);
+                    console.log("Geolocation latitude: " + geolocPosition.coords.latitude);
+                    console.log("Geolocation longitude: " + geolocPosition.coords.longitude);
+
+                    // Store latitude and longitude from the geolocated data
+                    configObj.source.latitude = geolocPosition.coords.latitude;
+                    configObj.source.longitude = geolocPosition.coords.longitude;
+
+                    console.log("Geolocation enabled");
+                },
+                geolocDenied = function (errorReport) {
+                    console.log("Geolocation disabled");
+                };
+
+            // Initialise position using default location coordinates
+            //DEBUG these coordinates are being used to set the url ! whatsoever.
+            configObj.source.latitude = defaultPositionObj.lat;
+            configObj.source.longitude = defaultPositionObj.lon;
 
             if (toggleBool) {
 
-                setGeolocation()
-                    .then(function (position) {
-                        // Store latitude and longitude from the geolocated data
-                        configObj.source.latitude = position.coords.latitude;
-                        configObj.source.longitude = position.coords.longitude;
-                    })
-                    .catch(function (error) {
-                        // Initialise position using default location coordinates
-                        configObj.source.latitude = defaultPositionObj.lat;
-                        configObj.source.longitude = defaultPositionObj.lon;
-                        // TODO Handle navigator.geolocation.getCurrentPosition() error.code properly
-                        console.log(error.message);
-                        console.log("Using default coordinates for the location.");
-                    });
+                if (navigator.geolocation) {
+                    // TODO Fix Sync / this happens last!
+                    navigator.geolocation.getCurrentPosition(geolocAllowed, geolocDenied); // geolocation prompt
+                } else {
+                    console.log("Browser Geolocation functionality unavailable.\n\rUsing default coordinates for the location.");
+                }
+
             } else {
                 console.log("passing configuration parameters unchanged.");
             }
@@ -126,8 +134,10 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
             } else {
                 reject(new Error("The position coordinates could not be assigned."));
             }
+
         }
     );
+
 }
 
 function setSourceUrl(toggleBool, configObj) {
