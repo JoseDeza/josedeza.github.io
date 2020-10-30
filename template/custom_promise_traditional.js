@@ -63,16 +63,18 @@ $(function () {
         }, // list of candidate locations
         defaultLocation = candidateLocations.TestPosition; // default location
 
-    setCoordinates(geolocation, defaultLocation, configurationParameters)
+    getGeolocation()
         .then(function (obj1) {
             console.log(".then(obj1)");
-            return setSourceUrl(sampleFile, obj1);
+                    console.log(obj1);
+//            return setSourceUrl(sampleFile, obj1);
         })
-        .then(function (obj2) {
-            console.log(".then(obj2)");
-            console.log(obj2);
-        }).catch(function (error) {
-            console.log(".catch()");
+//        .then(function (obj2) {
+//                    console.log(".then(obj2)");
+//                    console.log(obj2);
+//        })
+    .catch(function (error) {
+            console.log(error.message);
         });
 
 
@@ -80,34 +82,23 @@ $(function () {
 
 //Declare functions with promise functionality ///////
 
-// Wrap geolocation into nested promise
-// Not passing geolocation options parameter / using default options
-function setGeolocation() {
+// Wrap in to Promise, based on: https://gist.github.com/varmais/74586ec1854fe288d393
+function getGeolocation() {
 
-    console.log("setGeolocation()");
+    console.log("getGeolocation()");
     return new Promise(
         function (resolve, reject) {
 
             // Adding condition HERE so that the code waits for the user permission
             if (navigator.geolocation) // user permission prompt
             {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
+                navigator.geolocation.getCurrentPosition(resolve, reject); // using default options
 
             } else {
 
                 reject(new Error("Browser Geolocation functionality unavailable."));
+
             }
-
-            if (reject()) {
-                console.log("setGeolocation(): rejected");
-                //Set default coordinates
-                return reject();
-            }
-
-            console.log("setGeolocation(): resolved");
-            //Set geolocation coordinates
-            resolve();
-
         });
 }
 
