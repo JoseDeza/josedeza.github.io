@@ -92,9 +92,10 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
             var setGeolocation = function () {
                 return new Promise(
                     function (geolocResolve, geolocReject) {
+
                         // Adding condition HERE so that the code waits for the user permission
-                        //                        if (true === false)
-                        if (navigator.geolocation) { // geolocation prompt
+                        if (navigator.geolocation /*true === false*/ ) // user permission prompt
+                        {
                             navigator.geolocation.getCurrentPosition(geolocResolve, geolocReject);
                         } else {
                             geolocReject(new Error("Browser Geolocation functionality unavailable."));
@@ -125,7 +126,7 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
                         configObj.source.url = configObj.source.setApiCall();
                         console.log("setCoordinates().setGeolocation(): default position -> url")
 
-                        //console.log(error.message);
+                        console.log(error.message + "\n\rthe default position will be used.");
                     });
             } else {
                 console.log("setCoordinates(): passing configuration parameters unchanged.");
