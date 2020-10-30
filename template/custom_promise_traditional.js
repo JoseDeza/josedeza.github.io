@@ -6,74 +6,79 @@ $(function () {
 
     "use strict";
 
-    var sampleFile = true, // Toggle to prevent making API calls using sample json files instead
-        geolocation = true, // Toggle to store browser geolocation coordinates
-        configurationParameters = {
-            source: {
-                url: "",
-                appId: "393d283150e7d7ced1c524ff318a8870",
-                latitude: 0,
-                longitude: 0,
-                units: "metric", // unit system // metric,imperial
-                exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-                // Get wheater data using the following REST API service: api.openweathermap.org
-                // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                setApiCall: function () {
-                    "use strict";
-
-                    var i = 0,
-                        unitsParameter = "", // unit system // metric,imperial
-                        excludeParameter = "",
-                        apiCall = "";
-
-                    if (this.units) { // Add parameter call only if needed
-                        unitsParameter = "&units=" + this.units;
-                    }
-                    if (this.exclude) { // Add parameter call only if needed
-                        excludeParameter = "&exclude=" + this.exclude;
-                    }
-
-                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
-
-                    return apiCall;
-
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/openweathermap_brisbane.json"
-            }
+    var configuration = {
+        settings: {
+            sampleFile: true, // Enables Use of sample json files instead of API call
+            geolocation: true, // Enables Geolocation coordinates for latitude and longitude
+            presetLocations: {
+                Brisbane: { // As a local city
+                    latitude: -27.470125,
+                    longitude: 153.021072
+                },
+                Pomona: { // As a local town
+                    latitude: -26.3630,
+                    longitude: 152.8560
+                },
+                Paris: { // As an alternatve
+                    latitude: 48.85341,
+                    longitude: 2.3488
+                },
+                debug: { // As a dummy position
+                    latitude: -99.999999,
+                    longitude: 99.999999
+                }
+            }// default locations
         },
-        candidateLocations = {
-            TestPosition: { // As a dummy position
-                lat: -99.999999,
-                lon: 99.999999
-            },
-            Paris: { // As an alternatve
-                lat: 48.85341,
-                lon: 2.3488
-            },
-            Brisbane: { // As a local city
-                lat: -27.470125,
-                lon: 153.021072
-            },
-            Pomona: { // As a local town
-                lat: -26.3630,
-                lon: 152.8560
-            }
-        }, // list of candidate locations
-        defaultLocation = candidateLocations.TestPosition; // default location
+        source: {
+            url: "",
+            appId: "393d283150e7d7ced1c524ff318a8870",
+            latitude: 0,
+            longitude: 0,
+            units: "metric", // unit system // metric,imperial
+            exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+            // Get wheater data using the following REST API service: api.openweathermap.org
+            // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+            setApiCall: function () {
+                "use strict";
+
+                var i = 0,
+                    unitsParameter = "", // unit system // metric,imperial
+                    excludeParameter = "",
+                    apiCall = "";
+
+                if (this.units) { // Add parameter call only if needed
+                    unitsParameter = "&units=" + this.units;
+                }
+                if (this.exclude) { // Add parameter call only if needed
+                    excludeParameter = "&exclude=" + this.exclude;
+                }
+
+                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
+
+                return apiCall;
+
+            }, // Url to call
+            clientFile: "", // User browser local storage
+            serverFile: "",
+            sampleFile: "/sample_data/openweathermap_brisbane.json"
+        }
+    };
 
     getGeolocation()
         .then(function (obj1) {
             console.log(".then(obj1)");
-                    console.log(obj1);
-//            return setSourceUrl(sampleFile, obj1);
+            console.log(obj1);
+            // return setSourceUrl(sampleFile, obj1);
         })
-//        .then(function (obj2) {
-//                    console.log(".then(obj2)");
-//                    console.log(obj2);
+//        .catch(function (error) {
+        // return setSourceUrl(sampleFile, configuration);
+//            console.log(error.message);
 //        })
-    .catch(function (error) {
+//        .then(function (obj2) {
+//            console.log(".then(obj2)");
+//            console.log(obj2);
+//        })
+        .catch(function (error) {
             console.log(error.message);
         });
 
@@ -102,7 +107,11 @@ function getGeolocation() {
         });
 }
 
-function setCoordinates(toggleBool, defaultPositionObj, configObj) {
+function setActiveLocation(locationObj) {
+
+}
+
+function setParameters(configObj, locationObj) {
     "use strict";
 
     console.log("setCoordinates()");
