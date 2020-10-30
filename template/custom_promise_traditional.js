@@ -80,28 +80,43 @@ $(function () {
 
 //Declare functions with promise functionality ///////
 
+// Wrap geolocation into nested promise
+// Not passing geolocation options parameter / using default options
+function setGeolocation() {
+
+    console.log("setGeolocation()");
+    return new Promise(
+        function (resolve, reject) {
+
+            // Adding condition HERE so that the code waits for the user permission
+            if (navigator.geolocation) // user permission prompt
+            {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+
+            } else {
+
+                reject(new Error("Browser Geolocation functionality unavailable."));
+            }
+
+            if (reject()) {
+                console.log("setGeolocation(): rejected");
+                //Set default coordinates
+                return reject();
+            }
+
+            console.log("setGeolocation(): resolved");
+            //Set geolocation coordinates
+            resolve();
+
+        });
+}
+
 function setCoordinates(toggleBool, defaultPositionObj, configObj) {
     "use strict";
 
     console.log("setCoordinates()");
     return new Promise(
         function (resolve, reject) {
-
-            // Wrap geolocation into nested promise
-            // Not passing geolocation options parameter / using default options
-            var setGeolocation = function () {
-                return new Promise(
-                    function (geolocResolve, geolocReject) {
-
-                        // Adding condition HERE so that the code waits for the user permission
-                        if (navigator.geolocation /*true === false*/ ) // user permission prompt
-                        {
-                            navigator.geolocation.getCurrentPosition(geolocResolve, geolocReject);
-                        } else {
-                            geolocReject(new Error("Browser Geolocation functionality unavailable."));
-                        }
-                    });
-            }
 
             if (toggleBool) {
 
