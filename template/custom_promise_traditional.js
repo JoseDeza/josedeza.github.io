@@ -52,16 +52,16 @@ $(function () {
         .then(function (obj1) {
             console.log(".then(obj1)");
             console.log(obj1);
-            // return setSourceUrl(sampleFile, obj1);
+            return setCoordinates(configuration, obj1);
         })
-        //        .catch(function (error) {
+        //        .catch(function (error) { //TODO set catch throw to go on with chain
         // return setSourceUrl(sampleFile, configuration);
         //            console.log(error.message);
         //        })
-        //        .then(function (obj2) {
-        //            console.log(".then(obj2)");
-        //            console.log(obj2);
-        //        })
+        .then(function (obj2) {
+            console.log(".then(obj2)");
+            console.log(obj2);
+        })
         .catch(function (error) {
             console.log(error.message);
         });
@@ -80,8 +80,7 @@ function getGeolocation() {
 
             // Adding condition HERE so that the code waits for the user permission
             /*if (true === false)*/ // mimicking geolocation unavailabilty
-            if (navigator.geolocation)
-            {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
 
             } else {
@@ -121,19 +120,22 @@ function setCoordinates(configObj, coordinatesObj) {
 
             if (coordinatesObj) {
                 console.log("setCoordinates(): assign geolocation coordinates");
-                configObj.source.coordinates = coordinatesObj;
+                configObj.source.coordinates = coordinatesObj.coords;
             } else {
                 console.log("setCoordinates(): assign default coordinates");
                 configObj.source.coordinates = defaultCoordinates;
             }
 
-            if (reject()) {
+
+            if (configObj) {
+                console.log("setCoordinates() resolved");
+//                console.log(configObj);
+                resolve(configObj);
+            } else {
                 console.log("setCoordinates() rejected");
-                reject(new Error("Could not set the coordinates."));
+                reject(new Error("Could not set the coordinates"));
             }
 
-            console.log("setCoordinates() resolved");
-            resolve(configObj);
         });
 }
 
