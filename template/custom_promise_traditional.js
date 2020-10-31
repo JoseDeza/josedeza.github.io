@@ -10,32 +10,16 @@ $(function () {
         settings: {
             sampleFile: true, // Enables Use of sample json files instead of API call
             geolocation: true, // Enables Geolocation coordinates for latitude and longitude
-            presetLocations: {
-                Brisbane: { // As a local city
-                    latitude: -27.470125,
-                    longitude: 153.021072
-                },
-                Pomona: { // As a local town
-                    latitude: -26.3630,
-                    longitude: 152.8560
-                },
-                Paris: { // As an alternatve
-                    latitude: 48.85341,
-                    longitude: 2.3488
-                },
-                debug: { // As a dummy position
-                    latitude: -99.999999,
-                    longitude: 99.999999
-                }
-            }// default locations
         },
         source: {
             url: "",
             appId: "393d283150e7d7ced1c524ff318a8870",
-            latitude: 0,
-            longitude: 0,
             units: "metric", // unit system // metric,imperial
             exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+            coordinates: {
+                latitude: 0,
+                longitude: 0
+            },
             // Get wheater data using the following REST API service: api.openweathermap.org
             // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
             setApiCall: function () {
@@ -53,7 +37,7 @@ $(function () {
                     excludeParameter = "&exclude=" + this.exclude;
                 }
 
-                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
+                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.position.latitude + "&lon=" + this.position.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
 
                 return apiCall;
 
@@ -70,14 +54,14 @@ $(function () {
             console.log(obj1);
             // return setSourceUrl(sampleFile, obj1);
         })
-//        .catch(function (error) {
+        //        .catch(function (error) {
         // return setSourceUrl(sampleFile, configuration);
-//            console.log(error.message);
-//        })
-//        .then(function (obj2) {
-//            console.log(".then(obj2)");
-//            console.log(obj2);
-//        })
+        //            console.log(error.message);
+        //        })
+        //        .then(function (obj2) {
+        //            console.log(".then(obj2)");
+        //            console.log(obj2);
+        //        })
         .catch(function (error) {
             console.log(error.message);
         });
@@ -95,9 +79,10 @@ function getGeolocation() {
         function (resolve, reject) {
 
             // Adding condition HERE so that the code waits for the user permission
-            if (navigator.geolocation) // user permission prompt
+            /*if (true === false)*/ // mimicking geolocation unavailabilty
+            if (navigator.geolocation)
             {
-                navigator.geolocation.getCurrentPosition(resolve, reject); // using default options
+                navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
 
             } else {
 
@@ -107,10 +92,52 @@ function getGeolocation() {
         });
 }
 
-function setActiveLocation(locationObj) {
+function setCoordinates(configObj, coordinatesObj) {
+    "use strict";
 
+    console.log("setCoordinates");
+    return new Promise(
+        function (resolve, reject) {
+
+            var presetCoordinates = { // default locations
+                    Brisbane: { // As a local city
+                        latitude: -27.470125,
+                        longitude: 153.021072
+                    },
+                    Pomona: { // As a local town
+                        latitude: -26.3630,
+                        longitude: 152.8560
+                    },
+                    Paris: { // As an alternatve
+                        latitude: 48.85341,
+                        longitude: 2.3488
+                    },
+                    debug: { // As a dummy position
+                        latitude: -99.999999,
+                        longitude: 99.999999
+                    }
+                },
+                defaultCoordinates = presetCoordinates.debug; // <-  Set default coordinates HERE
+
+            if (coordinatesObj) {
+                console.log("setCoordinates(): assign geolocation coordinates");
+                configObj.source.coordinates = coordinatesObj;
+            } else {
+                console.log("setCoordinates(): assign default coordinates");
+                configObj.source.coordinates = defaultCoordinates;
+            }
+
+            if (reject()) {
+                console.log("setCoordinates() rejected");
+                reject(new Error("Could not set the coordinates."));
+            }
+
+            console.log("setCoordinates() resolved");
+            resolve(configObj);
+        });
 }
 
+/////////////////TEMP ///////////////////////////
 function setParameters(configObj, locationObj) {
     "use strict";
 
