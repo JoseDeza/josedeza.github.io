@@ -8,7 +8,7 @@ $(function () {
 
     var configuration = {
         settings: {
-            sampleFile: true, // Enables Use of sample json files instead of API call
+            sampleFile: false, // Enables Use of sample json files instead of API call
             geolocation: true, // Enables Geolocation coordinates for latitude and longitude
         },
         source: {
@@ -49,15 +49,14 @@ $(function () {
     };
 
     getGeolocation()
+        .catch(function (error) {
+            console.log(error.message + "\n\rUsing the default coordinates.");
+        })
         .then(function (obj1) {
             console.log(".then(obj1)");
             console.log(obj1);
             return setCoordinates(configuration, obj1);
         })
-        //        .catch(function (error) { //TODO set catch throw to go on with chain
-        // return setSourceUrl(sampleFile, configuration);
-        //            console.log(error.message);
-        //        })
         .then(function (obj2) {
             console.log(".then(obj2)");
             console.log(obj2);
@@ -129,7 +128,7 @@ function setCoordinates(configObj, coordinatesObj) {
 
             if (configObj) {
                 console.log("setCoordinates() resolved");
-//                console.log(configObj);
+                //                console.log(configObj);
                 resolve(configObj);
             } else {
                 console.log("setCoordinates() rejected");
