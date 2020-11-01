@@ -6,92 +6,11 @@ $(function () {
 
     "use strict";
 
-    var configurationObjDebug = {
-        settings: { // [All false] sets API Calls for the default position
-            geolocation: true, // Try to get Geolocation coordinates
-            sampleFile: false // Use a sample json file instead of calling the API
-
-        },
-        source: {
-            url: "",
-            appId: "393d283150e7d7ced1c524ff318a8870",
-            units: "metric", // unit system // metric,imperial
-            exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-            coordinates: {
-                latitude: 0,
-                longitude: 0
-            },
-            // Get wheater data using the following REST API service: api.openweathermap.org
-            // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-            setApiCall: function () {
-                "use strict";
-
-                var i = 0,
-                    units = "", // unit system // metric,imperial
-                    exclude = "",
-                    apiCall = "";
-
-                if (this.units) { // Add parameter call only if needed
-                    units = "&units=" + this.units;
-                }
-                if (this.exclude) { // Add parameter call only if needed
-                    exclude = "&exclude=" + this.exclude;
-                }
-
-                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId; // API call
-
-                return apiCall;
-
-            }, // Url to call
-            clientFile: "", // User browser local storage
-            serverFile: "",
-            sampleFile: "/sample_data/openweathermap_brisbane.json"
-        }
-    };
-
-    getGeolocation(configurationObjDebug)
-        .catch(function (error) {
-            console.log(error.message + "\n\rUsing the default coordinates.");
-        })
-        .then(function (obj1) {
-            console.log(".then(obj1)"); //DEBUG
-            console.log(obj1); //DEBUG
-            return setCoordinates(configurationObjDebug, obj1);
-        })
-        .then(function (obj2) {
-            console.log(".then(obj2)"); //DEBUG
-            console.log(obj2); //DEBUG
-            return setSourceUrl(obj2);
-        })
-        .then(function (obj3) {
-            console.log(".then(obj3)"); //DEBUG
-            console.log(obj3); //DEBUG
-        })
-        .catch(function (error) {
-            console.error(error.message);
-        });
-
-
-});
-
-
-/***** Functions *****/
-
-//for (i = 0; i < l; i++)
-
-// Set Initial parameters (promise functionality)
-function initialConfiguration() {
-    "use strict";
-
-    console.log("initialConfiguration()"); //DEBUG
-    return new Promise(
-        function (resolve, reject) {
-
             var configuration = [{
                     settings: {
                         label: "Location",
                         geolocation: false, // Try to get Geolocation coordinates
-                        sampleFile: true // Use a sample json file instead of calling the API
+                        sampleFile: false // Use a sample json file instead of calling the API
                         // [All false] => calls the API with the default position
                     },
                     source: {
@@ -127,7 +46,7 @@ function initialConfiguration() {
                     settings: {
                         label: "Weather",
                         geolocation: false, // Try to get Geolocation coordinates
-                        sampleFile: true // Use a sample json file instead of calling the API
+                        sampleFile: false // Use a sample json file instead of calling the API
                         // [All false] => calls the API with the default position
                     },
                     source: {
@@ -177,7 +96,168 @@ function initialConfiguration() {
                     settings: {
                         label: "Calendar",
                         geolocation: false, // Try to get Geolocation coordinates
-                        sampleFile: true // Use a sample json file instead of calling the API
+                        sampleFile: false // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
+                    source: {
+                        url: "",
+                        appId: "",
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
+                        // Get Calendar Data as JSON file from the following service: trumba.com
+                        setApiCall: function () {
+                            "use strict";
+                            var apiCall = "http://trumba.com/calendars/brisbane-city-council.json";
+                            return apiCall;
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/calendardata_brisbane.json",
+                    },
+                    apiData: fetchingManager,
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "Brisbane City Council data could not be loaded due to the following error:\n\n\"" + this.code + "\""
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this
+                    }
+        }
+    ];
+
+    getGeolocation(configuration[1])
+        .catch(function (error) {
+            console.log(error.message + "\n\rUsing the default coordinates.");
+        })
+        .then(function (obj1) {
+            console.log(".then(obj1)"); //DEBUG
+            console.log(obj1); //DEBUG
+            return setCoordinates(configuration[1], obj1);
+        })
+        .then(function (obj2) {
+            console.log(".then(obj2)"); //DEBUG
+            console.log(obj2); //DEBUG
+            return setSourceUrl(obj2);
+        })
+        .then(function (obj3) {
+            console.log(".then(obj3)"); //DEBUG
+            console.log(obj3); //DEBUG
+        })
+        .catch(function (error) {
+            console.error(error.message);
+        });
+
+
+});
+
+
+/***** Functions *****/
+
+//for (i = 0; i < l; i++)
+
+// Set Initial parameters (promise functionality)
+function initialConfiguration() {
+    "use strict";
+
+    console.log("initialConfiguration()"); //DEBUG
+    return new Promise(
+        function (resolve, reject) {
+
+            var configuration = [{
+                    settings: {
+                        label: "Location",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: false // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
+                    source: {
+                        url: "",
+                        appId: "41f101eecefa4f808fa8adfc924a3063",
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
+                        // Get location name using the following REST API service: api.opencagedata.com
+                        // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                        setApiCall: function () {
+                            "use strict";
+                            var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
+                            return apiCall;
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/opencagedata_brisbane.json"
+                    },
+                    apiData: fetchingManager, //fetch data consistently
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "\"api.opencagedata.com\" data could not be loaded due to the following error:\n\n\"" + this.code + "\"";
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this;
+                    }
+        },
+                {
+                    settings: {
+                        label: "Weather",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: false // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
+                    source: {
+                        url: "",
+                        appId: "393d283150e7d7ced1c524ff318a8870",
+                        units: "metric", // unit system // metric,imperial
+                        exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
+                        // Get wheater data using the following REST API service: api.openweathermap.org
+                        // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+                        setApiCall: function () {
+                            "use strict";
+                            var i = 0,
+                                units = "", // unit system // metric,imperial
+                                exclude = "",
+                                apiCall = "";
+                            // Add parameter call only if needed
+                            if (this.units) {
+                                units = "&units=" + this.units;
+                            }
+                            // Add parameter call only if needed
+                            if (this.exclude) {
+                                exclude = "&exclude=" + this.exclude;
+                            }
+                            apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
+                            return apiCall;
+                        }, // Url to call
+                        clientFile: "", // User browser local storage
+                        serverFile: "",
+                        sampleFile: "/sample_data/openweathermap_brisbane.json"
+                    },
+                    apiData: fetchingManager,
+                    error: {
+                        code: "",
+                        message: function () {
+                            return "\"api.openweathermap.org\" data could not be loaded due to the following error:\n\n\"" + this.code + "\""
+                        }
+                    },
+                    configurationSubset: function () {
+                        return this
+                    }
+        },
+                {
+                    settings: {
+                        label: "Calendar",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: false // Use a sample json file instead of calling the API
                         // [All false] => calls the API with the default position
                     },
                     source: {
