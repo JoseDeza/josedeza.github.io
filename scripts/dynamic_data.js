@@ -6,20 +6,57 @@ $(function () {
 
     "use strict";
 
-    //Initalise Configuration Object
-    initialConfiguration()
-        .then(function (obj1) {
-            console.log(".then(obj1)"); //DEBUG
-            console.log(obj1); //DEBUG
-            return getGeolocation(obj1);
-        })
+    var configurationObjDebug = {
+        settings: { // [All false] sets API Calls for the default position
+            geolocation: true, // Try to get Geolocation coordinates
+            sampleFile: false // Use a sample json file instead of calling the API
+
+        },
+        source: {
+            url: "",
+            appId: "393d283150e7d7ced1c524ff318a8870",
+            units: "metric", // unit system // metric,imperial
+            exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+            coordinates: {
+                latitude: 0,
+                longitude: 0
+            },
+            // Get wheater data using the following REST API service: api.openweathermap.org
+            // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+            setApiCall: function () {
+                "use strict";
+
+                var i = 0,
+                    units = "", // unit system // metric,imperial
+                    exclude = "",
+                    apiCall = "";
+
+                if (this.units) { // Add parameter call only if needed
+                    units = "&units=" + this.units;
+                }
+                if (this.exclude) { // Add parameter call only if needed
+                    exclude = "&exclude=" + this.exclude;
+                }
+
+                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId; // API call
+
+                return apiCall;
+
+            }, // Url to call
+            clientFile: "", // User browser local storage
+            serverFile: "",
+            sampleFile: "/sample_data/openweathermap_brisbane.json"
+        }
+    };
+
+    getGeolocation(configurationObjDebug)
         .catch(function (error) {
             console.log(error.message + "\n\rUsing the default coordinates.");
         })
-        .then(function (coord1) {
-            console.log(".then(coord1)"); //DEBUG
-            console.log(coord1); //DEBUG
-            return setCoordinates(obj1, coord1);
+        .then(function (obj1) {
+            console.log(".then(obj1)"); //DEBUG
+            console.log(obj1); //DEBUG
+            return setCoordinates(configurationObjDebug, obj1);
         })
         .then(function (obj2) {
             console.log(".then(obj2)"); //DEBUG
@@ -33,7 +70,7 @@ $(function () {
         .catch(function (error) {
             console.error(error.message);
         });
-    //then fetchingManager
+
 
 });
 
@@ -283,6 +320,7 @@ function setSourceUrl(configObj) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
+
 function fetchingManager(configSet) {
 
     // fetch the Data sample file or API call response
@@ -298,13 +336,7 @@ function fetchingManager(configSet) {
         .catch(function (Error) {
             alert(configSet.error.message);
         });
-
-    /* DEBUG */
-
-
 }
-
-/*****/
 
 function processResponses(gatheredData) {
 
@@ -322,7 +354,7 @@ function processLocationName(locationData) {
     // Call location name display
     displayLocationName(locationData);
 
-    /* DEBUG */
+
     console.log("processed location name!"); //DEBUG
 }
 
@@ -334,7 +366,7 @@ function processWeather(weatherData) {
 
     displayWeather(weatherData);
 
-    /* DEBUG */
+
     console.log("processed weather data!"); //DEBUG
 }
 
@@ -347,11 +379,9 @@ function processCalendar(calendarData) {
     // call calendar data display
     displayCalendar(calendarData);
 
-    /* DEBUG */
+
     console.log("processed calendar data!"); //DEBUG
 }
-
-/*****/
 
 // Display the calendar data
 function displayCalendar(calendarData) {
@@ -400,15 +430,13 @@ function displayWeather(weatherData) {
 
     "use strict";
 
-    /* Insert all the data to display inside the markup */
+    // Insert all the data to display inside the markup
     currentMarkup(weatherData);
     dailyTable(weatherData);
     hourlyTable(weatherData);
     minutelyTable(weatherData);
 
 }
-
-/*****/
 
 // Generate the Current weather report
 function currentMarkup(weatherData) {
@@ -747,7 +775,7 @@ function dailyTable(weatherData) {
         // create a gradient function to include all the browaser variances
         // set the colour based on the temperature From LowestTemperature to HighsetTemperature
 
-        //background: #8ccbff; /* Old browsers */
+        //background: #8ccbff; /* Old browsers
         //background: -moz-linear-gradient(left,  #8ccbff 0%, #ffe575 100%); /* FF3.6-15 */
         //background: -webkit-linear-gradient(left,  #8ccbff 0%,#ffe575 100%); /* Chrome10-25,Safari5.1-6 */
         //background: linear-gradient(to right,  #8ccbff 0%,#ffe575 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -765,5 +793,3 @@ function dailyTable(weatherData) {
     console.log(currentWeek); //DEBUG
 
 }
-
-/*****/

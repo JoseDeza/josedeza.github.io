@@ -32,7 +32,7 @@ function displayLocationName(locationData) {
         locationTags[i].textContent = locationName;
     }
 
-    /* DEBUG */
+
     console.log(locationData);
     //    console.log(locationData.results[0].components.city);
     //    console.log(locationData.results[0].components.town);
@@ -49,7 +49,7 @@ function getLocationName(key, lat, lon) {
 
     $.get(geoCodeUrl, displayLocationName);
 
-    /* DEBUG */
+
     console.log(geoCodeUrl);
 }
 
@@ -192,7 +192,7 @@ function dailyTable(weatherData) {
     $("#daily div").append(graph);
 
 
-    /* DEBUG */
+
     console.log(currentWeek);
 
 }
@@ -268,7 +268,7 @@ function hourlyTable(weatherData) {
     $("#hourly div").append(table1);
     $("#hourly div").append(table2);
 
-    /* DEBUG */
+
     console.log(next48Hours);
 
 }
@@ -344,7 +344,7 @@ function minutelyTable(weatherData) {
     $("#minutely div").append(table1);
     $("#minutely div").append(table2);
 
-    /* DEBUG */
+
     console.log(next60minutes);
 
 }
@@ -403,7 +403,7 @@ function currentMarkup(weatherData) {
     }
 
 
-    /* DEBUG */
+
     //    console.log(weatherData);
     //        console.log(dateTag);
     //        console.log(timeTag);
@@ -453,7 +453,7 @@ function getWeatherData(appid, lat, lon) {
 
     $.get(url, displayWeatherData);
 
-    /* DEBUG */
+
     console.log(url);
 
 }
@@ -480,7 +480,7 @@ function geolocSuccess(geolocReport) {
     getWeatherData("393d283150e7d7ced1c524ff318a8870", geolocLatitude, geolocLongitude);
 
 
-    /* DEBUG */
+
     //console.log(navigator.geolocation);
     //console.log(geolocReport);
 
@@ -519,7 +519,7 @@ function geolocError(errorReport) {
     // Call API to get weather data and format display
     getWeatherData("393d283150e7d7ced1c524ff318a8870", defaultLatitude, defaultLongitude);
 
-    /* DEBUG */
+
     //console.log(errorReport.message);
 }
 

@@ -76,7 +76,7 @@ $(function () {
 
 //Declare functions with promise functionality ///////
 
-// Wrap in to Promise, based on: https://gist.github.com/varmais/74586ec1854fe288d393
+// Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
 function getGeolocation(configObj) {
 
     console.log("getGeolocation()"); //DEBUG
@@ -94,6 +94,7 @@ function getGeolocation(configObj) {
         });
 }
 
+// Set the coordinates to use based on environement and settings (promise functionality)
 function setCoordinates(configObj, coordinatesObj) {
     "use strict";
 
@@ -141,6 +142,7 @@ function setCoordinates(configObj, coordinatesObj) {
         });
 }
 
+// Set data source url (promise functionality)
 function setSourceUrl(configObj) {
     "use strict";
 
