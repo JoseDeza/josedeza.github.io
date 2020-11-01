@@ -9,7 +9,7 @@ $(function () {
     var configuration = {
         settings: { // [All false] sets API Calls for the default position
             geolocation: false, // Try to get Geolocation coordinates
-            sampleFile: true, // Use a sample json file instead of calling the API
+            sampleFile: true // Use a sample json file instead of calling the API
 
         },
         source: {
@@ -27,18 +27,18 @@ $(function () {
                 "use strict";
 
                 var i = 0,
-                    unitsParameter = "", // unit system // metric,imperial
-                    excludeParameter = "",
+                    units = "", // unit system // metric,imperial
+                    exclude = "",
                     apiCall = "";
 
                 if (this.units) { // Add parameter call only if needed
-                    unitsParameter = "&units=" + this.units;
+                    units = "&units=" + this.units;
                 }
                 if (this.exclude) { // Add parameter call only if needed
-                    excludeParameter = "&exclude=" + this.exclude;
+                    exclude = "&exclude=" + this.exclude;
                 }
 
-                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
+                apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId; // API call
 
                 return apiCall;
 

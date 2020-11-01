@@ -6,37 +6,33 @@ $(function () {
 
     "use strict";
 
-    var sampleFile = false, // Toggle to prevent making API calls using sample json files instead
-        geolocation = true, // Toggle to store browser geolocation coordinates
-        candidateLocations = {
-            Paris: { // As an alternatve
-                lat: 48.85341,
-                lon: 2.3488
-            },
-            Brisbane: { // As a local city
-                lat: -27.470125,
-                lon: 153.021072
-            },
-            Pomona: { // As a local town
-                lat: -26.3630,
-                lon: 152.8560
-            }
-        }, // list of candidate locations
-        defaultLocation = candidateLocations.Paris; // Currently used location
-
     //Initalise Configuration Object
     initialConfiguration()
-        .then(function (array1) {
-            return setGeolocation(geolocation, defaultLocation, array1);
-        })
-        .then(function (array2) {
-            console.log(array2);
-            return setSourceUrl(sampleFile, array2);
+        .then(function (obj1) {
+            console.log(".then(obj1)"); //DEBUG
+            console.log(obj1); //DEBUG
+            return getGeolocation(obj1);
         })
         .catch(function (error) {
-            console.log(".catch():" + error.message);
+            console.log(error.message + "\n\rUsing the default coordinates.");
+        })
+        .then(function (coord1) {
+            console.log(".then(coord1)"); //DEBUG
+            console.log(coord1); //DEBUG
+            return setCoordinates(obj1, coord1);
+        })
+        .then(function (obj2) {
+            console.log(".then(obj2)"); //DEBUG
+            console.log(obj2); //DEBUG
+            return setSourceUrl(obj2);
+        })
+        .then(function (obj3) {
+            console.log(".then(obj3)"); //DEBUG
+            console.log(obj3); //DEBUG
+        })
+        .catch(function (error) {
+            console.error(error.message);
         });
-
     //then fetchingManager
 
 });
@@ -44,33 +40,35 @@ $(function () {
 
 /***** Functions *****/
 
+//for (i = 0; i < l; i++)
+
 // Set Initial parameters (promise functionality)
 function initialConfiguration() {
     "use strict";
 
+    console.log("initialConfiguration()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var configurationSet = [{
-                    label: "Location",
+            var configuration = [{
+                    settings: {
+                        label: "Location",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: true // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
                     source: {
                         url: "",
                         appId: "41f101eecefa4f808fa8adfc924a3063",
-                        latitude: 0,
-                        longitude: 0,
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
                         // Get location name using the following REST API service: api.opencagedata.com
                         // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
                         setApiCall: function () {
                             "use strict";
-
-                            var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.latitude + "+" + this.longitude + "&pretty=1&no_annotations=1";
-
-                            //TODO check this / Displayed twice? // DEBUG
-                            console.log("this is the Object label : " + configurationSet[0].label);
-                            console.log("this is the latitude: " + this.latitude);
-                            console.log("longitude: " + this.longitude);
-                            console.log("this is the API Call: " + apiCall);
-
+                            var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
                             return apiCall;
                         }, // Url to call
                         clientFile: "", // User browser local storage
@@ -89,35 +87,39 @@ function initialConfiguration() {
                     }
         },
                 {
-                    label: "Weather",
+                    settings: {
+                        label: "Weather",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: true // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
                     source: {
                         url: "",
                         appId: "393d283150e7d7ced1c524ff318a8870",
-                        latitude: 0,
-                        longitude: 0,
                         units: "metric", // unit system // metric,imperial
                         exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
                         // Get wheater data using the following REST API service: api.openweathermap.org
                         // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
                         setApiCall: function () {
                             "use strict";
-
                             var i = 0,
-                                unitsParameter = "", // unit system // metric,imperial
-                                excludeParameter = "",
+                                units = "", // unit system // metric,imperial
+                                exclude = "",
                                 apiCall = "";
-
-                            if (this.units) { // Add parameter call only if needed
-                                unitsParameter = "&units=" + this.units;
+                            // Add parameter call only if needed
+                            if (this.units) {
+                                units = "&units=" + this.units;
                             }
-                            if (this.exclude) { // Add parameter call only if needed
-                                excludeParameter = "&exclude=" + this.exclude;
+                            // Add parameter call only if needed
+                            if (this.exclude) {
+                                exclude = "&exclude=" + this.exclude;
                             }
-
-                            apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId;
-
+                            apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
                             return apiCall;
-
                         }, // Url to call
                         clientFile: "", // User browser local storage
                         serverFile: "",
@@ -135,18 +137,23 @@ function initialConfiguration() {
                     }
         },
                 {
-                    label: "Calendar",
+                    settings: {
+                        label: "Calendar",
+                        geolocation: false, // Try to get Geolocation coordinates
+                        sampleFile: true // Use a sample json file instead of calling the API
+                        // [All false] => calls the API with the default position
+                    },
                     source: {
                         url: "",
                         appId: "",
-                        latitude: 0,
-                        longitude: 0,
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
                         // Get Calendar Data as JSON file from the following service: trumba.com
                         setApiCall: function () {
                             "use strict";
-
                             var apiCall = "http://trumba.com/calendars/brisbane-city-council.json";
-
                             return apiCall;
                         }, // Url to call
                         clientFile: "", // User browser local storage
@@ -166,110 +173,114 @@ function initialConfiguration() {
         }
     ];
 
-            if (configurationSet) {
-                console.log("initialConfiguration() fulfilled!");
-                resolve(configurationSet);
+            if (configuration) {
+                console.log("initialConfiguration() resolved"); //DEBUG
+                resolve(configuration);
             } else {
-                reject(new Error("The configuration set could not be generated by initialConfiguration()"));
+                console.log("initialConfiguration() rejected"); //DEBUG
+                reject(new Error("The configuration could not be set."));
             }
 
         }
     );
 }
 
-// Set the location coordinates (promise functionality)
-function setGeolocation(enableBoolean, positionObject, configurationArray) {
-    "use strict";
+// Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
+function getGeolocation(configObj) {
 
+    console.log("getGeolocation()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
-            var i = 0,
-                l = configurationArray.length,
-                geolocAllowed = function (geolocPosition) {
-                    "use strict";
 
-                    // Store latitude and longitude from the geolocated data
-                    for (i = 0; i < l; i++) {
-                        configurationArray[i].source.latitude = geolocPosition.coords.latitude;
-                        configurationArray[i].source.longitude = geolocPosition.coords.longitude;
+            if (navigator.geolocation && configObj.settings.geolocation) {
+                navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
+
+            } else if (navigator.geolocation) {
+                reject(new Error("Geolocation functionality disabled."));
+            } else {
+                reject(new Error("Browser Geolocation functionality unavailable."));
+            }
+        });
+}
+
+// Set the coordinates to use based on environement and settings (promise functionality)
+function setCoordinates(configObj, coordinatesObj) {
+    "use strict";
+
+    console.log("setCoordinates()"); //DEBUG
+    return new Promise(
+        function (resolve, reject) {
+
+            var presetCoordinates = { // default locations
+                    Brisbane: { // As a local city
+                        latitude: -27.470125,
+                        longitude: 153.021072
+                    },
+                    Pomona: { // As a local town
+                        latitude: -26.3630,
+                        longitude: 152.8560
+                    },
+                    Paris: { // As an alternatve
+                        latitude: 48.85341,
+                        longitude: 2.3488
+                    },
+                    debug: { // As a dummy position
+                        latitude: -99.999999,
+                        longitude: 99.999999
                     }
-                    console.log("Geolocation enabled");
                 },
-                geolocDenied = function (errorReport) {
-                    "use strict";
+                defaultCoordinates = presetCoordinates.debug; // <-  Set default coordinates HERE
 
-                    console.log("Geolocation disabled");
-                    console.log("Error: " + errorReport.code);
-                };
-
-            // Initialise position using default location coordinates
-            for (i = 0; i < l; i++) {
-                configurationArray[i].source.latitude = positionObject.lat;
-                configurationArray[i].source.longitude = positionObject.lon;
-            }
-
-            if (enableBoolean) {
-
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(geolocAllowed, geolocDenied); // geolocation prompt
-                } else {
-
-                    alert("Browser Geolocation functionality unavailable.\n\rUsing default coordinates for the location.");
-
-                }
-
+            if (coordinatesObj) {
+                console.log("setCoordinates(): assign geolocation coordinates"); //DEBUG
+                configObj.source.coordinates = coordinatesObj.coords;
             } else {
-                console.log("passing configuration parameters unchanged.");
+                console.log("setCoordinates(): assign default coordinates"); //DEBUG
+                configObj.source.coordinates = defaultCoordinates;
             }
 
-            if (configurationArray) {
-                console.log("setGeolocation() fulfilled!");
-                resolve(configurationArray);
+
+            if (configObj) {
+                console.log("setCoordinates() resolved"); //DEBUG
+                resolve(configObj);
             } else {
-                reject(new Error("The position coordinates could not be assigned."));
+                console.log("setCoordinates() rejected"); //DEBUG
+                reject(new Error("Could not set the coordinates"));
             }
 
-        }
-    );
-
+        });
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(enableBoolean, configurationArray) {
+function setSourceUrl(configObj) {
     "use strict";
 
+    console.log("setSourceUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var i = 0,
-                l = configurationArray.length;
-
-            for (i = 0; i < l; i++) {
-
-                // Assigns the consistent url to retrieve the data from
-                if (enableBoolean) {
-                    configurationArray[i].source.url = configurationArray[i].source.sampleFile;
-                } else {
-                    //TODO fix this!!! / Async issue ////////////////
-                    // the API Call is set before the geolocation coordinates
-                    configurationArray[i].source.url = configurationArray[i].source.setApiCall();
-                    console.log("ApiCall: " + configurationArray[i].source.setApiCall);
-                }
+            // Overwrite API call with sample file when enabled
+            if (configObj.settings.sampleFile) {
+                console.log("setSourceUrl(): sample file -> url"); //DEBUG
+                configObj.source.url = configObj.source.sampleFile;
+            } else {
+                console.log("setSourceUrl(): API Call -> url"); //DEBUG
+                configObj.source.url = configObj.source.setApiCall();
             }
 
-
-            if (configurationArray) {
-                console.log("setSourceUrl() fulfilled!");
-                resolve(configurationArray);
+            if (configObj) {
+                console.log("setSourceUrl(): resolved"); //DEBUG
+                resolve(configObj);
             } else {
-                reject(new Error("The Urls could not all be assigned by the function setSourceUrl"));
+                console.log("setSourceUrl(): rejected"); //DEBUG
+                reject(new Error("The Url could not be set"));
             }
 
         }
     );
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 //TODO use one function to fetch all data
 //TODO fetch data based on object containing API calls
 function fetchingManager(configSet) {
@@ -278,7 +289,7 @@ function fetchingManager(configSet) {
     fetch(source)
         //.then(function(response) {/*TODO store processed data into a file? in client local storage?*/})
         .then(function (response) {
-            console.log(configSet.type + " Data * Loaded");
+            console.log(configSet.type + " Data * Loaded"); //DEBUG
             return response.json(); // return as structured Json data and return it to following function
         })
         .then(function (response) {
@@ -312,7 +323,7 @@ function processLocationName(locationData) {
     displayLocationName(locationData);
 
     /* DEBUG */
-    console.log("processed location name!");
+    console.log("processed location name!"); //DEBUG
 }
 
 function processWeather(weatherData) {
@@ -324,7 +335,7 @@ function processWeather(weatherData) {
     displayWeather(weatherData);
 
     /* DEBUG */
-    console.log("processed weather data!");
+    console.log("processed weather data!"); //DEBUG
 }
 
 function processCalendar(calendarData) {
@@ -337,7 +348,7 @@ function processCalendar(calendarData) {
     displayCalendar(calendarData);
 
     /* DEBUG */
-    console.log("processed calendar data!");
+    console.log("processed calendar data!"); //DEBUG
 }
 
 /*****/
@@ -347,8 +358,7 @@ function displayCalendar(calendarData) {
 
     "use strict";
 
-    /* DEBUG */
-    console.log(calendarData);
+    console.log(calendarData); //DEBUG
 }
 
 // Display the location Name
@@ -380,10 +390,9 @@ function displayLocationName(locationData) {
         locationTags[i].textContent = locationName;
     }
 
-    /* DEBUG */
-    console.log(locationData);
-    //    console.log(locationData.results[0].components.city);
-    //    console.log(locationData.results[0].components.town);
+    console.log(locationData); //DEBUG
+    //    console.log(locationData.results[0].components.city);//DEBUG
+    //    console.log(locationData.results[0].components.town);//DEBUG
 }
 
 // Display the wheater data
@@ -455,14 +464,14 @@ function currentMarkup(weatherData) {
     }
 
 
-    /* DEBUG */
-    //    console.log(weatherData);
-    //        console.log(dateTag);
-    //        console.log(timeTag);
-    //        console.log(weatherData.current.dt);
-    //        console.log(weatherData.current.temp);
-    //        console.log(weatherData.current.weather[0].description);
-    //        console.log();
+
+    //    console.log(weatherData);//DEBUG
+    //        console.log(dateTag);//DEBUG
+    //        console.log(timeTag);//DEBUG
+    //        console.log(weatherData.current.dt);//DEBUG
+    //        console.log(weatherData.current.temp);//DEBUG
+    //        console.log(weatherData.current.weather[0].description);//DEBUG
+    //        console.log();//DEBUG
 
 
 }
@@ -538,8 +547,7 @@ function minutelyTable(weatherData) {
     $("#minutely div").append(table1);
     $("#minutely div").append(table2);
 
-    /* DEBUG */
-    console.log(next60minutes);
+    console.log(next60minutes); //DEBUG
 
 }
 
@@ -614,8 +622,7 @@ function hourlyTable(weatherData) {
     $("#hourly div").append(table1);
     $("#hourly div").append(table2);
 
-    /* DEBUG */
-    console.log(next48Hours);
+    console.log(next48Hours); //DEBUG
 
 }
 
@@ -755,8 +762,7 @@ function dailyTable(weatherData) {
     $("#daily div").append(graph);
 
 
-    /* DEBUG */
-    console.log(currentWeek);
+    console.log(currentWeek); //DEBUG
 
 }
 

@@ -18,18 +18,18 @@ $(function () {
                     "use strict";
 
                     var i = 0,
-                        unitsParameter = "", // unit system // metric,imperial
-                        excludeParameter = "",
+                        units = "", // unit system // metric,imperial
+                        exclude = "",
                         apiCall = "";
 
                     if (this.units) { // Add parameter call only if needed
-                        unitsParameter = "&units=" + this.units;
+                        units = "&units=" + this.units;
                     }
                     if (this.exclude) { // Add parameter call only if needed
-                        excludeParameter = "&exclude=" + this.exclude;
+                        exclude = "&exclude=" + this.exclude;
                     }
 
-                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + unitsParameter + excludeParameter + "&appid=" + this.appId; // API call
+                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.latitude + "&lon=" + this.longitude + units + exclude + "&appid=" + this.appId; // API call
 
                     return apiCall;
 
