@@ -130,24 +130,24 @@ $(function () {
         }
     ];
 
-    getGeolocation(configuration[1])
+    getGeolocation()
         .catch(function (error) {
             console.log(error.message + "\n\rUsing the default coordinates.");
         })
         .then(function (obj1) {
             console.log(".then(obj1)"); //DEBUG
             console.log(obj1); //DEBUG
-            return setCoordinates(configuration[1], obj1);
+            return setCoordinates(configuration, obj1);
         })
         .then(function (obj2) {
             console.log(".then(obj2)"); //DEBUG
             console.log(obj2); //DEBUG
-            return setSourceUrl(obj2);
+//            return setSourceUrl(obj2);
         })
-        .then(function (obj3) {
-            console.log(".then(obj3)"); //DEBUG
-            console.log(obj3); //DEBUG
-        })
+//        .then(function (obj3) {
+//            console.log(".then(obj3)"); //DEBUG
+//            console.log(obj3); //DEBUG
+//        })
         .catch(function (error) {
             console.error(error.message);
         });
@@ -322,14 +322,16 @@ function getGeolocation(configObj) {
 }
 
 // Set the coordinates to use based on environement and settings (promise functionality)
-function setCoordinates(configObj, coordinatesObj) {
+function setCoordinates(configArray, coordinatesObj) {
     "use strict";
 
     console.log("setCoordinates()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var presetCoordinates = { // default locations
+            var i = 0,
+                l = configArray.length,
+                presetCoordinates = { // default locations
                     Brisbane: { // As a local city
                         latitude: -27.470125,
                         longitude: 153.021072
@@ -351,16 +353,22 @@ function setCoordinates(configObj, coordinatesObj) {
 
             if (coordinatesObj) {
                 console.log("setCoordinates(): assign geolocation coordinates"); //DEBUG
-                configObj.source.coordinates = coordinatesObj.coords;
+                for (i = 0; i < l; i++) {
+                    configArray[i].source.coordinates = coordinatesObj.coords;
+                    console.log("setCoordinates(): assigned geolocation coordinates " + i); //DEBUG
+                }
             } else {
                 console.log("setCoordinates(): assign default coordinates"); //DEBUG
-                configObj.source.coordinates = defaultCoordinates;
+                for (i = 0; i < l; i++) {
+                    configArray[i].source.coordinates = defaultCoordinates;
+                    console.log("setCoordinates(): assigned default coordinates " + i); //DEBUG
+                }
             }
 
 
-            if (configObj) {
+            if (configArray) {
                 console.log("setCoordinates() resolved"); //DEBUG
-                resolve(configObj);
+                resolve(configArray);
             } else {
                 console.log("setCoordinates() rejected"); //DEBUG
                 reject(new Error("Could not set the coordinates"));
@@ -370,7 +378,7 @@ function setCoordinates(configObj, coordinatesObj) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(configObj) {
+function setSourceUrl(configArray) {
     "use strict";
 
     console.log("setSourceUrl()"); //DEBUG
