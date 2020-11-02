@@ -142,12 +142,12 @@ $(function () {
         .then(function (obj2) {
             console.log(".then(obj2)"); //DEBUG
             console.log(obj2); //DEBUG
-//            return setSourceUrl(obj2);
+            return setSourceUrl(obj2);
         })
-//        .then(function (obj3) {
-//            console.log(".then(obj3)"); //DEBUG
-//            console.log(obj3); //DEBUG
-//        })
+        .then(function (obj3) {
+            console.log(".then(obj3)"); //DEBUG
+            console.log(obj3); //DEBUG
+        })
         .catch(function (error) {
             console.error(error.message);
         });
@@ -304,13 +304,14 @@ function initialConfiguration() {
 }
 
 // Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
-function getGeolocation(configObj) {
+function getGeolocation(configArray) {
 
     console.log("getGeolocation()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            if (navigator.geolocation && configObj.settings.geolocation) {
+            //TODO specify the condition so that the navigator prompt is triggered only once if at least one object "geolocation" settings is set o "true"
+            if (navigator.geolocation && configArray[0].settings.geolocation) { // configArray[0] //DEBUG
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
 
             } else if (navigator.geolocation) {
@@ -352,13 +353,13 @@ function setCoordinates(configArray, coordinatesObj) {
                 defaultCoordinates = presetCoordinates.debug; // <-  Set default coordinates HERE
 
             if (coordinatesObj) {
-                console.log("setCoordinates(): assign geolocation coordinates"); //DEBUG
+                //                console.log("setCoordinates(): assign geolocation coordinates"); //DEBUG
                 for (i = 0; i < l; i++) {
                     configArray[i].source.coordinates = coordinatesObj.coords;
                     console.log("setCoordinates(): assigned geolocation coordinates " + i); //DEBUG
                 }
             } else {
-                console.log("setCoordinates(): assign default coordinates"); //DEBUG
+                //                console.log("setCoordinates(): assign default coordinates"); //DEBUG
                 for (i = 0; i < l; i++) {
                     configArray[i].source.coordinates = defaultCoordinates;
                     console.log("setCoordinates(): assigned default coordinates " + i); //DEBUG
@@ -385,18 +386,24 @@ function setSourceUrl(configArray) {
     return new Promise(
         function (resolve, reject) {
 
-            // Overwrite API call with sample file when enabled
-            if (configObj.settings.sampleFile) {
-                console.log("setSourceUrl(): sample file -> url"); //DEBUG
-                configObj.source.url = configObj.source.sampleFile;
-            } else {
-                console.log("setSourceUrl(): API Call -> url"); //DEBUG
-                configObj.source.url = configObj.source.setApiCall();
+            var i = 0,
+                l = configArray.length;
+
+            for (i = 0; i < l; i++) {
+
+                if (configArray[i].settings.sampleFile) {
+                    console.log("setSourceUrl(): sample file " + i + " -> url " + i); //DEBUG
+                    configArray[i].source.url = configArray[i].source.sampleFile;
+                } else {
+                    console.log("setSourceUrl(): API Call " + i + " -> url " + i); //DEBUG
+                    configArray[i].source.url = configArray[i].source.setApiCall();
+                }
             }
 
-            if (configObj) {
+
+            if (configArray) {
                 console.log("setSourceUrl(): resolved"); //DEBUG
-                resolve(configObj);
+                resolve(configArray);
             } else {
                 console.log("setSourceUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
