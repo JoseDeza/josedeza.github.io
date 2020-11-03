@@ -285,35 +285,36 @@ function fetchManager(configArray) {
 
             for (i = 0; i < l; i++) {
 
+                configArray[i].apiData = {
+                    yoyo: "yaya"
+                };
                 console.log("fetchManager(): looping through Array " + i);
-                console.log(configArray[i].source.url);
-                console.log(configArray[i].apiData);
+                console.log(configArray[i]);
 
-                //                fetch('http://example.com/movies.json')
+
+                //                fetch(configArray[i].source.url)
                 //                    .then(response => response.json())
-                //                    .then(data => console.log(data));
+                //                    .then(data => console.log(data))
 
                 // TODO fetch the Data using the url
                 fetch(configArray[i].source.url)
                     .then(function (apiResponse) {
                         console.log("fetchManager(): fetched url " + i); //DEBUG
-                        apiResponse.json(); // parse the Json data and return it to following function
-                        return apiResponse;
+                        return apiResponse.json(); // parse the Json data and return it to following function
                     })
                     .then(function (apiData) {
-                        //                        configArray[i].apiData = apiData;
-                        console.log("fetchManager(): recorded data " + i);
+                        console.log("fetchManager(): recorded data " + i); //DEBUG
                         console.log(apiData);
-                        console.log(configArray[i].apiData);
+                        console.log(configArray[i]);
                     })
                     .catch(function (error) {
-                        console.error("fetchManager() error" + i + ": " + error.message);
-                    })
+                        console.error("fetchManager(): error");
+                    });
 
             }
 
             //TODO fix this by passing the fetch resolve() and reject() to it OR Status?
-            if (configArray[i].apiData) {
+            if (configArray) {
                 console.log("fetchManager(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
