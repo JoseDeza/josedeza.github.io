@@ -125,6 +125,7 @@ $(function () {
             console.error(error.message);
         });
 
+
 });
 
 
@@ -283,37 +284,29 @@ function fetchManager(configArray) {
             var i = 0,
                 l = configArray.length;
 
-            for (i = 0; i < l; i++) {
-
-                console.log("fetchManager(): looping through Array " + i);
-                console.log(configArray[i].source.url);
-                console.log(configArray[i].apiData);
-
-                //                fetch('http://example.com/movies.json')
-                //                    .then(response => response.json())
-                //                    .then(data => console.log(data));
-
+//            for (i = 0; i < l; i++) {
+//
+//            }
                 // TODO fetch the Data using the url
-                fetch(configArray[i].source.url)
+                fetch(configArray[0].url)
                     .then(function (apiResponse) {
-                        console.log("fetchManager(): fetched url " + i); //DEBUG
+                        console.log("fetchManager(): fetched url " + 0); //DEBUG
                         apiResponse.json(); // parse the Json data and return it to following function
+                    console.log(configArray[0].url);
+                        console.log(configArray[0].apiData);
                         return apiResponse;
                     })
                     .then(function (apiData) {
-                        //                        configArray[i].apiData = apiData;
-                        console.log("fetchManager(): recorded data " + i);
-                        console.log(apiData);
-                        console.log(configArray[i].apiData);
+                        configArray[0].apiData = apiData;
+                        console.log("fetchManager(): recorded data " + 0);
+                        console.log(configArray[0].apiData);
                     })
-                    .catch(function (error) {
-                        console.error("fetchManager() error" + i + ": " + error.message);
+                    .catch(function () {
+                        reject(new Error("The data could not be retrieved"));
                     })
-
-            }
 
             //TODO fix this by passing the fetch resolve() and reject() to it OR Status?
-            if (configArray[i].apiData) {
+            if (configArray[0].apiData) {
                 console.log("fetchManager(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
@@ -390,7 +383,7 @@ function displayLocationName(locationData) {
         locationName = "",
         locationTags = [];
 
-    locationComponents = locationData.results[i].components;
+    locationComponents = locationData.results[0].components;
 
     // Retrieved the city or town name depending on the data output
     if (locationComponents.city) {
@@ -410,8 +403,8 @@ function displayLocationName(locationData) {
     }
 
     console.log(locationData); //DEBUG
-    //    console.log(locationData.results[i].components.city);//DEBUG
-    //    console.log(locationData.results[i].components.town);//DEBUG
+    //    console.log(locationData.results[0].components.city);//DEBUG
+    //    console.log(locationData.results[0].components.town);//DEBUG
 }
 
 // Display the wheater data
@@ -457,7 +450,7 @@ function currentMarkup(weatherData) {
     currentDate = currentDateTime.toDateString();
     currentTime = currentDateTime.toTimeString().substr(0, 5);
     currentTemperature = Math.round(weatherData.current.temp) + "ºC";
-    currentDescription = weatherData.current.weather[i].description;
+    currentDescription = weatherData.current.weather[0].description;
 
 
     // REPLACE content with textContent
@@ -487,7 +480,7 @@ function currentMarkup(weatherData) {
     //        console.log(timeTag);//DEBUG
     //        console.log(weatherData.current.dt);//DEBUG
     //        console.log(weatherData.current.temp);//DEBUG
-    //        console.log(weatherData.current.weather[i].description);//DEBUG
+    //        console.log(weatherData.current.weather[0].description);//DEBUG
     //        console.log();//DEBUG
 
 
@@ -514,7 +507,7 @@ function minutelyTable(weatherData) {
 
         next60minutes[i].date = new Date(d.dt * 1000); // Get the date of that minute
         next60minutes[i].minute = next60minutes[i].date.getMinutes();
-        next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[i].minute) % 60;
+        next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
         next60minutes[i].precipitation = Math.round(d.precipitation);
 
     }
@@ -590,7 +583,7 @@ function hourlyTable(weatherData) {
         next48Hours[i].date = new Date(d.dt * 1000); // Get the date of that day
         next48Hours[i].hour = next48Hours[i].date.toTimeString().substr(0, 5);
         next48Hours[i].temperature = Math.round(d.temp);
-        next48Hours[i].description = d.weather[i].description;
+        next48Hours[i].description = d.weather[0].description;
 
     }
 
@@ -675,7 +668,7 @@ function dailyTable(weatherData) {
         currentWeek[i].day = days[currentWeek[i].date.getDay()];
         currentWeek[i].minTemperature = Math.round(d.temp.min);
         currentWeek[i].maxTemperature = Math.round(d.temp.max);
-        currentWeek[i].description = d.weather[i].description;
+        currentWeek[i].description = d.weather[0].description;
 
         if (i === 0) {
             lowestTemperature = currentWeek[i].minTemperature;
