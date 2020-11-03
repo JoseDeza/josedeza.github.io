@@ -109,17 +109,17 @@ $(function () {
             console.log(error.message + "\n\rUsing the default coordinates.");
         })
         .then(function (coord1) {
-            console.log(".then(coord1)"); //DEBUG
+//            console.log(".then(coord1)"); //DEBUG
             console.log(coord1); //DEBUG
             return setCoordinates(configuration, coord1);
         })
         .then(function (array2) {
-            console.log(".then(array2)"); //DEBUG
+//            console.log(".then(array2)"); //DEBUG
             return setSourceUrl(array2);
         })
         .then(function (array3) {
-            console.log(".then(array3)"); //DEBUG
-            console.log(array3); //DEBUG
+//            console.log(".then(array3)"); //DEBUG
+//            console.log(array3); //DEBUG
             return fetchManager(array3);
         })
         .catch(function (error) {
@@ -142,10 +142,10 @@ function initialConfiguration() {
             // CODE HERE
 
             if (configuration) {
-                console.log("initialConfiguration() resolved"); //DEBUG
+//                console.log("initialConfiguration() resolved"); //DEBUG
                 resolve(configuration);
             } else {
-                console.log("initialConfiguration() rejected"); //DEBUG
+//                console.log("initialConfiguration() rejected"); //DEBUG
                 reject(new Error("The configuration could not be set."));
             }
 
@@ -219,19 +219,19 @@ function setCoordinates(configArray, coordinatesObj) {
 
                 if (coordinatesObj && configArray[i].settings.geolocation) {
                     configArray[i].source.coordinates = coordinatesObj.coords;
-                    console.log("setCoordinates(): Geolocation -> coordinates " + i); //DEBUG
+//                    console.log("setCoordinates(): Geolocation -> coordinates " + i); //DEBUG
                 } else {
                     configArray[i].source.coordinates = defaultCoordinates;
-                    console.log("setCoordinates(): default -> coordinates " + i); //DEBUG
+//                    console.log("setCoordinates(): default -> coordinates " + i); //DEBUG
                 }
 
             }
 
             if (configArray) {
-                console.log("setCoordinates() resolved"); //DEBUG
+//                console.log("setCoordinates() resolved"); //DEBUG
                 resolve(configArray);
             } else {
-                console.log("setCoordinates() rejected"); //DEBUG
+//                console.log("setCoordinates() rejected"); //DEBUG
                 reject(new Error("Could not set the coordinates"));
             }
 
@@ -252,20 +252,20 @@ function setSourceUrl(configArray) {
             for (i = 0; i < l; i++) {
 
                 if (configArray[i].settings.sampleFile) {
-                    console.log("setSourceUrl(): sample file " + i + " -> url " + i); //DEBUG
+//                    console.log("setSourceUrl(): sample file " + i + " -> url " + i); //DEBUG
                     configArray[i].source.url = configArray[i].source.sampleFile;
                 } else {
-                    console.log("setSourceUrl(): API Call " + i + " -> url " + i); //DEBUG
+//                    console.log("setSourceUrl(): API Call " + i + " -> url " + i); //DEBUG
                     configArray[i].source.url = configArray[i].source.setApiCall();
                 }
             }
 
 
             if (configArray) {
-                console.log("setSourceUrl(): resolved"); //DEBUG
+//                console.log("setSourceUrl(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
-                console.log("setSourceUrl(): rejected"); //DEBUG
+//                console.log("setSourceUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
             }
 
@@ -289,8 +289,8 @@ function fetchManager(configArray) {
                 //                configArray[i].apiData = {
                 //                    yoyo: "yaya"
                 //                };
-                console.log("i = " + i);
-                console.log(configArray[i]); // DEBUG
+//                console.log("i = " + i); // DEBUG
+//                console.log(configArray[i]); // DEBUG
 
 
                 //                fetch(configArray[i].source.url)
@@ -300,15 +300,15 @@ function fetchManager(configArray) {
                 // fetch the Data using the url
                 fetch(configArray[i].source.url)
                     .then(function (apiResponse) {
-                        //                        console.log("i = " + i);
-                        console.log("fetchManager(): .then(apiResponse)"); //DEBUG
-                        console.log("fetchManager(): fetched url"); //DEBUG
+//                        console.log("i = " + i); //DEBUG
+//                        console.log("fetchManager(): .then(apiResponse)"); //DEBUG
+//                        console.log("fetchManager(): fetched url"); //DEBUG
                         return apiResponse.json(); // parse the Json data and return it to following function
                     })
                     .then(function (apiData) {
-                        //                        console.log("i = " + i);
-                        console.log("fetchManager(): .then(apiData)"); //DEBUG
-                        console.log("fetchManager(): parsed data"); //DEBUG
+//                        console.log("i = " + i); //DEBUG
+//                        console.log("fetchManager(): .then(apiData)"); //DEBUG
+//                        console.log("fetchManager(): parsed data"); //DEBUG
                         console.log(apiData);
                     })
                     .catch(function (error) {
@@ -319,10 +319,10 @@ function fetchManager(configArray) {
 
             //TODO fix this by passing the fetch resolve() and reject() to it OR Status?
             if (configArray) {
-                console.log("fetchManager(): resolved"); //DEBUG
+//                console.log("fetchManager(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
-                console.log("fetchManager(): rejected"); //DEBUG
+//                console.log("fetchManager(): rejected"); //DEBUG
                 reject(new Error("The data could not be retrieved"));
             }
 
