@@ -10,7 +10,7 @@ $(function () {
         {
             settings: {
                 label: "Location",
-                geolocation: true, // Try to get Geolocation coordinates
+                geolocation: false, // Try to get Geolocation coordinates
                 sampleFile: true // Use a sample json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
@@ -37,7 +37,7 @@ $(function () {
         {
             settings: {
                 label: "Weather",
-                geolocation: true, // Try to get Geolocation coordinates
+                geolocation: false, // Try to get Geolocation coordinates
                 sampleFile: true // Use a sample json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
@@ -212,7 +212,7 @@ function setCoordinates(configArray, coordinatesObj) {
                         longitude: 99.999999
                     }
                 },
-                defaultCoordinates = presetCoordinates.debug; // <-  Set default coordinates HERE
+                defaultCoordinates = presetCoordinates.Brisbane; // <-  Set default coordinates HERE
 
             for (i = 0; i < l; i++) {
 
@@ -285,27 +285,30 @@ function fetchManager(configArray) {
 
             for (i = 0; i < l; i++) {
 
-                configArray[i].apiData = {
-                    yoyo: "yaya"
-                };
-                console.log("fetchManager(): looping through Array " + i);
-                console.log(configArray[i]);
+                //                configArray[i].apiData = {
+                //                    yoyo: "yaya"
+                //                };
+                console.log("i = " + i);
+                console.log(configArray[i]); // DEBUG
 
 
                 //                fetch(configArray[i].source.url)
                 //                    .then(response => response.json())
                 //                    .then(data => console.log(data))
 
-                // TODO fetch the Data using the url
+                // fetch the Data using the url
                 fetch(configArray[i].source.url)
                     .then(function (apiResponse) {
-                        console.log("fetchManager(): fetched url " + i); //DEBUG
+                        //                        console.log("i = " + i);
+                        console.log("fetchManager(): .then(apiResponse)"); //DEBUG
+                        console.log("fetchManager(): fetched url"); //DEBUG
                         return apiResponse.json(); // parse the Json data and return it to following function
                     })
                     .then(function (apiData) {
-                        console.log("fetchManager(): recorded data " + i); //DEBUG
+                        //                        console.log("i = " + i);
+                        console.log("fetchManager(): .then(apiData)"); //DEBUG
+                        console.log("fetchManager(): parsed data"); //DEBUG
                         console.log(apiData);
-                        console.log(configArray[i]);
                     })
                     .catch(function (error) {
                         console.error("fetchManager(): error");
