@@ -79,7 +79,7 @@ $(function () {
             settings: {
                 label: "Calendar",
                 geolocation: false, // Try to get Geolocation coordinates
-                sampleFile: false // Use a sample json file instead of calling the API
+                sampleFile: true // Use a sample json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
             source: {
@@ -92,7 +92,8 @@ $(function () {
                 // Get Calendar Data as JSON file from the following service: trumba.com
                 setApiCall: function () {
                     "use strict";
-                    var apiCall = "http://trumba.com/calendars/brisbane-city-council.json";
+                    var corsProxy = "https://cors-anywhere.herokuapp.com/",
+                        apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
                     return apiCall;
                 }, // Url to call
                 clientFile: "", // User browser local storage
