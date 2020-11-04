@@ -10,8 +10,8 @@ $(function () {
             {
                 settings: {
                     label: "Location",
-                    geolocation: true, // Try to get Geolocation coordinates
-                    sampleFile: false // Use a sample json file instead of calling the API
+                    geolocation: false, // Try to get Geolocation coordinates
+                    sampleFile: true // Use a sample json file instead of calling the API
                     // [All false] => calls the API with the default position
                 },
                 source: {
@@ -125,14 +125,13 @@ function apiManager(configurationArray, index) {
             console.log(error.message + "\n\rUsing the default coordinates.");
         })
         .then(function (geolocationResponse) {
-            console.log(geolocationResponse); //DEBUG
             return setCoordinates(configurationArray[index], geolocationResponse);
         })
         .then(function (coordinatedObj) {
             return setUrl(coordinatedObj);
         })
         .then(function (urledObj) {
-            console.log(urledObj); //DEBUG
+            //                        console.log(urledObj); //DEBUG
             return fetchUrl(urledObj);
         })
         .catch(function (error) {
@@ -142,41 +141,19 @@ function apiManager(configurationArray, index) {
 
 }
 
-// Set Initial parameters (promise functionality)
-function initialConfiguration() {
-    "use strict";
-
-    console.log("initialConfiguration()"); //DEBUG
-    return new Promise(
-        function (resolve, reject) {
-
-            // CODE HERE
-
-            if (configuration) {
-                //                console.log("initialConfiguration() resolved"); //DEBUG
-                resolve(configuration);
-            } else {
-                //                console.log("initialConfiguration() rejected"); //DEBUG
-                reject(new Error("The configuration could not be set."));
-            }
-
-        }
-    );
-}
-
 // Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
 function getGeolocation(configObj) {
     "use strict";
 
-    console.log("getGeolocation()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
             if (navigator.geolocation && configObj.settings.geolocation) {
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
+                console.log("Geolocation coordinates retrieved");
 
             } else if (navigator.geolocation) {
-                reject(new Error("Geolocation functionality disabled."));
+                reject(new Error("Geolocation setting disabled."));
             } else {
                 reject(new Error("Browser Geolocation functionality unavailable."));
             }
@@ -187,7 +164,6 @@ function getGeolocation(configObj) {
 function setCoordinates(configObj, coordinatesObj) {
     "use strict";
 
-    console.log("setCoordinates()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
@@ -213,17 +189,13 @@ function setCoordinates(configObj, coordinatesObj) {
 
             if (coordinatesObj && configObj.settings.geolocation) {
                 configObj.source.coordinates = coordinatesObj.coords;
-                                                    console.log("setCoordinates(): Geolocation -> coordinates "); //DEBUG
             } else {
                 configObj.source.coordinates = defaultCoordinates;
-                                                    console.log("setCoordinates(): default -> coordinates "); //DEBUG
             }
 
             if (configObj) {
-                //                console.log("setCoordinates() resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                //                console.log("setCoordinates() rejected"); //DEBUG
                 reject(new Error("Could not set the coordinates"));
             }
 
@@ -234,23 +206,18 @@ function setCoordinates(configObj, coordinatesObj) {
 function setUrl(configObj) {
     "use strict";
 
-    console.log("setUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
             if (configObj.settings.sampleFile) {
-                console.log("setUrl(): sample file -> url"); //DEBUG
                 configObj.source.url = configObj.source.sampleFile;
             } else {
-                console.log("setUrl(): API Call -> url"); //DEBUG
                 configObj.source.url = configObj.source.setApiCall();
             }
 
             if (configObj) {
-                //                console.log("setUrl(): resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                //                console.log("setUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
             }
 
@@ -258,11 +225,10 @@ function setUrl(configObj) {
     );
 }
 
-// TODO fecth data
+// Fetch the url to retrieve the data (promise functionality)
 function fetchUrl(configObj) {
     "use strict";
 
-    console.log("fetchUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
@@ -280,10 +246,8 @@ function fetchUrl(configObj) {
 
 
             if (configObj) {
-                //                console.log("fetchUrl(): resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                //                console.log("fetchUrl(): rejected"); //DEBUG
                 reject(new Error("The data could not be retrieved"));
             }
 

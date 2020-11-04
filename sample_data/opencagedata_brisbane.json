@@ -1,4 +1,5 @@
 {
+
     "documentation": "https://opencagedata.com/api",
     "licenses": [
         {
@@ -8,8 +9,8 @@
     ],
     "rate": {
         "limit": 2500,
-        "remaining": 2495,
-        "reset": 1603584000
+        "remaining": 2443,
+        "reset": 1604534400
     },
     "results": [
         {
@@ -58,8 +59,9 @@
     },
     "thanks": "For using an OpenCage API",
     "timestamp": {
-        "created_http": "Sat, 24 Oct 2020 01:54:49 GMT",
-        "created_unix": 1603504489
+        "created_http": "Wed, 04 Nov 2020 13:43:32 GMT",
+        "created_unix": 1604497412
     },
     "total_results": 1
+
 }
