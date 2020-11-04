@@ -114,12 +114,12 @@ $(function () {
         })
         .then(function (array2) {
             console.log(".then(array2)"); //DEBUG
-            return setSourceUrl(array2);
+            return setUrl(array2);
         })
         .then(function (array3) {
             console.log(".then(array3)"); //DEBUG
             console.log(array3); //DEBUG
-            return fetchManager(array3);
+            return fetchUrl(array3);
         })
         .catch(function (error) {
             console.error(error.message);
@@ -239,10 +239,10 @@ function setCoordinates(configArray, coordinatesObj) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(configArray) {
+function setUrl(configArray) {
     "use strict";
 
-    console.log("setSourceUrl()"); //DEBUG
+    console.log("setUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
@@ -252,20 +252,20 @@ function setSourceUrl(configArray) {
             for (i = 0; i < l; i++) {
 
                 if (configArray[i].settings.sampleFile) {
-                    console.log("setSourceUrl(): sample file " + i + " -> url " + i); //DEBUG
+                    console.log("setUrl(): sample file " + i + " -> url " + i); //DEBUG
                     configArray[i].source.url = configArray[i].source.sampleFile;
                 } else {
-                    console.log("setSourceUrl(): API Call " + i + " -> url " + i); //DEBUG
+                    console.log("setUrl(): API Call " + i + " -> url " + i); //DEBUG
                     configArray[i].source.url = configArray[i].source.setApiCall();
                 }
             }
 
 
             if (configArray) {
-                console.log("setSourceUrl(): resolved"); //DEBUG
+                console.log("setUrl(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
-                console.log("setSourceUrl(): rejected"); //DEBUG
+                console.log("setUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
             }
 
@@ -274,10 +274,10 @@ function setSourceUrl(configArray) {
 }
 
 // TODO fecth data
-function fetchManager(configArray) {
+function fetchUrl(configArray) {
     "use strict";
 
-    console.log("fetchManager()"); //DEBUG
+    console.log("fetchUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
@@ -290,7 +290,7 @@ function fetchManager(configArray) {
                 // TODO fetch the Data using the url
                 fetch(configArray[0].url)
                     .then(function (apiResponse) {
-                        console.log("fetchManager(): fetched url " + 0); //DEBUG
+                        console.log("fetchUrl(): fetched url " + 0); //DEBUG
                         apiResponse.json(); // parse the Json data and return it to following function
                     console.log(configArray[0].url);
                         console.log(configArray[0].apiData);
@@ -298,7 +298,7 @@ function fetchManager(configArray) {
                     })
                     .then(function (apiData) {
                         configArray[0].apiData = apiData;
-                        console.log("fetchManager(): recorded data " + 0);
+                        console.log("fetchUrl(): recorded data " + 0);
                         console.log(configArray[0].apiData);
                     })
                     .catch(function () {
@@ -307,10 +307,10 @@ function fetchManager(configArray) {
 
             //TODO fix this by passing the fetch resolve() and reject() to it OR Status?
             if (configArray[0].apiData) {
-                console.log("fetchManager(): resolved"); //DEBUG
+                console.log("fetchUrl(): resolved"); //DEBUG
                 resolve(configArray);
             } else {
-                console.log("fetchManager(): rejected"); //DEBUG
+                console.log("fetchUrl(): rejected"); //DEBUG
                 reject(new Error("The data could not be retrieved"));
             }
 

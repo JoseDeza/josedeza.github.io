@@ -129,11 +129,11 @@ function apiManager(configurationArray, index) {
             return setCoordinates(configurationArray[index], geolocationResponse);
         })
         .then(function (coordinatedObj) {
-            return setSourceUrl(coordinatedObj);
+            return setUrl(coordinatedObj);
         })
         .then(function (urledObj) {
             console.log(urledObj); //DEBUG
-            return fetchManager(urledObj);
+            return fetchUrl(urledObj);
         })
         .catch(function (error) {
             console.error(error.message);
@@ -231,26 +231,26 @@ function setCoordinates(configObj, coordinatesObj) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(configObj) {
+function setUrl(configObj) {
     "use strict";
 
-    console.log("setSourceUrl()"); //DEBUG
+    console.log("setUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
             if (configObj.settings.sampleFile) {
-                console.log("setSourceUrl(): sample file -> url"); //DEBUG
+                console.log("setUrl(): sample file -> url"); //DEBUG
                 configObj.source.url = configObj.source.sampleFile;
             } else {
-                console.log("setSourceUrl(): API Call -> url"); //DEBUG
+                console.log("setUrl(): API Call -> url"); //DEBUG
                 configObj.source.url = configObj.source.setApiCall();
             }
 
             if (configObj) {
-                //                console.log("setSourceUrl(): resolved"); //DEBUG
+                //                console.log("setUrl(): resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                //                console.log("setSourceUrl(): rejected"); //DEBUG
+                //                console.log("setUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
             }
 
@@ -259,10 +259,10 @@ function setSourceUrl(configObj) {
 }
 
 // TODO fecth data
-function fetchManager(configObj) {
+function fetchUrl(configObj) {
     "use strict";
 
-    console.log("fetchManager()"); //DEBUG
+    console.log("fetchUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
@@ -275,15 +275,15 @@ function fetchManager(configObj) {
                     console.log(apiData); // DEBUG
                 })
                 .catch(function (error) {
-                    console.error("fetchManager(): error");
+                    console.error("fetchUrl(): error");
                 });
 
 
             if (configObj) {
-                //                console.log("fetchManager(): resolved"); //DEBUG
+                //                console.log("fetchUrl(): resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                //                console.log("fetchManager(): rejected"); //DEBUG
+                //                console.log("fetchUrl(): rejected"); //DEBUG
                 reject(new Error("The data could not be retrieved"));
             }
 

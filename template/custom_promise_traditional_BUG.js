@@ -68,7 +68,7 @@ $(function () {
             console.log("obj1 Config longitude is: " + obj1.source.longitude);
             console.log("obj1 Config url is: " + obj1.source.url);
             console.log(obj1);
-            return setSourceUrl(sampleFile, obj1);
+            return setUrl(sampleFile, obj1);
         })
         .then(function (obj2) {
             console.log("obj2 Congif latitude is: " + obj2.source.latitude);
@@ -140,7 +140,7 @@ function setGeolocation(toggleBool, defaultPositionObj, configObj) {
 
 }
 
-function setSourceUrl(toggleBool, configObj) {
+function setUrl(toggleBool, configObj) {
     "use strict";
 
     return new Promise(
@@ -156,7 +156,7 @@ function setSourceUrl(toggleBool, configObj) {
                 console.log("Url set!");
                 resolve(configObj);
             } else {
-                reject(new Error("The Url could not be assigned by the function setSourceUrl"));
+                reject(new Error("The Url could not be assigned by the function setUrl"));
             }
 
         }

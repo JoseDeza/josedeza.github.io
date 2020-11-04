@@ -66,7 +66,7 @@ $(function () {
     setCoordinates(geolocation, defaultLocation, configurationParameters)
         .then(function (obj1) {
             console.log(".then(obj1)");
-            return setSourceUrl(sampleFile, obj1);
+            return setUrl(sampleFile, obj1);
         })
         .then(function (obj2) {
             console.log(".then(obj2)");
@@ -142,24 +142,24 @@ function setCoordinates(toggleBool, defaultPositionObj, configObj) {
     );
 }
 
-function setSourceUrl(toggleBool, configObj) {
+function setUrl(toggleBool, configObj) {
     "use strict";
 
-    console.log("setSourceUrl()");
+    console.log("setUrl()");
     return new Promise(
         function (resolve, reject) {
 
             // Overwrite API call with sample file when enabled
             if (toggleBool) {
                 configObj.source.url = configObj.source.sampleFile;
-                console.log("setSourceUrl(): sample file -> url")
+                console.log("setUrl(): sample file -> url")
             }
 
             if (configObj) {
-                console.log("setSourceUrl(): resolved");
+                console.log("setUrl(): resolved");
                 resolve(configObj);
             } else {
-                console.log("setSourceUrl(): rejected");
+                console.log("setUrl(): rejected");
                 reject(new Error("The sample file path could not be assigned to the Url"));
             }
 

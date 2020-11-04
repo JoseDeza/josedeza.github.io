@@ -61,7 +61,7 @@ $(function () {
         .then(function (obj2) {
             console.log(".then(obj2)"); //DEBUG
             console.log(obj2); //DEBUG
-            return setSourceUrl(obj2);
+            return setUrl(obj2);
         })
         .then(function (obj3) {
             console.log(".then(obj3)"); //DEBUG
@@ -143,27 +143,27 @@ function setCoordinates(configObj, coordinatesObj) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(configObj) {
+function setUrl(configObj) {
     "use strict";
 
-    console.log("setSourceUrl()"); //DEBUG
+    console.log("setUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
             // Overwrite API call with sample file when enabled
             if (configObj.settings.sampleFile) {
-                console.log("setSourceUrl(): sample file -> url"); //DEBUG
+                console.log("setUrl(): sample file -> url"); //DEBUG
                 configObj.source.url = configObj.source.sampleFile;
             } else {
-                console.log("setSourceUrl(): API Call -> url"); //DEBUG
+                console.log("setUrl(): API Call -> url"); //DEBUG
                 configObj.source.url = configObj.source.setApiCall();
             }
 
             if (configObj) {
-                console.log("setSourceUrl(): resolved"); //DEBUG
+                console.log("setUrl(): resolved"); //DEBUG
                 resolve(configObj);
             } else {
-                console.log("setSourceUrl(): rejected"); //DEBUG
+                console.log("setUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
             }
 
