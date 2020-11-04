@@ -124,20 +124,17 @@ function apiManager(configurationArray, index) {
         .catch(function (error) {
             console.log(error.message + "\n\rUsing the default coordinates.");
         })
-        //        .then(function (coord1) {
-        //            //            console.log(".then(coord1)"); //DEBUG
-        //            console.log(coord1); //DEBUG
-        //            return setCoordinates(configuration, coord1);
-        //        })
-        //        .then(function (array2) {
-        //            //            console.log(".then(array2)"); //DEBUG
-        //            return setSourceUrl(array2);
-        //        })
-        //        .then(function (array3) {
-        //            //            console.log(".then(array3)"); //DEBUG
-        //            //            console.log(array3); //DEBUG
-        //            return fetchManager(array3);
-        //        })
+        .then(function (geolocationResponse) {
+            console.log(geolocationResponse); //DEBUG
+            return setCoordinates(configurationArray[index], geolocationResponse);
+        })
+        .then(function (coordinatedObj) {
+            return setSourceUrl(coordinatedObj);
+        })
+        .then(function (urledObj) {
+            console.log(urledObj); //DEBUG
+            return fetchManager(urledObj);
+        })
         .catch(function (error) {
             console.error(error.message);
         });
@@ -187,16 +184,14 @@ function getGeolocation(configObj) {
 }
 
 // Set the coordinates to use based on environement and settings (promise functionality)
-function setCoordinates(configArray, coordinatesObj) {
+function setCoordinates(configObj, coordinatesObj) {
     "use strict";
 
     console.log("setCoordinates()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var i = 0,
-                l = configArray.length,
-                presetCoordinates = { // default locations
+            var presetCoordinates = { // default locations
                     Brisbane: { // As a local city
                         latitude: -27.470125,
                         longitude: 153.021072
@@ -216,21 +211,17 @@ function setCoordinates(configArray, coordinatesObj) {
                 },
                 defaultCoordinates = presetCoordinates.Brisbane; // <-  Set default coordinates HERE
 
-            for (i = 0; i < l; i++) {
-
-                if (coordinatesObj && configArray[i].settings.geolocation) {
-                    configArray[i].source.coordinates = coordinatesObj.coords;
-                    //                    console.log("setCoordinates(): Geolocation -> coordinates " + i); //DEBUG
-                } else {
-                    configArray[i].source.coordinates = defaultCoordinates;
-                    //                    console.log("setCoordinates(): default -> coordinates " + i); //DEBUG
-                }
-
+            if (coordinatesObj && configObj.settings.geolocation) {
+                configObj.source.coordinates = coordinatesObj.coords;
+                                                    console.log("setCoordinates(): Geolocation -> coordinates "); //DEBUG
+            } else {
+                configObj.source.coordinates = defaultCoordinates;
+                                                    console.log("setCoordinates(): default -> coordinates "); //DEBUG
             }
 
-            if (configArray) {
+            if (configObj) {
                 //                console.log("setCoordinates() resolved"); //DEBUG
-                resolve(configArray);
+                resolve(configObj);
             } else {
                 //                console.log("setCoordinates() rejected"); //DEBUG
                 reject(new Error("Could not set the coordinates"));
@@ -240,31 +231,24 @@ function setCoordinates(configArray, coordinatesObj) {
 }
 
 // Set data source url (promise functionality)
-function setSourceUrl(configArray) {
+function setSourceUrl(configObj) {
     "use strict";
 
     console.log("setSourceUrl()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var i = 0,
-                l = configArray.length;
-
-            for (i = 0; i < l; i++) {
-
-                if (configArray[i].settings.sampleFile) {
-                    //                    console.log("setSourceUrl(): sample file " + i + " -> url " + i); //DEBUG
-                    configArray[i].source.url = configArray[i].source.sampleFile;
-                } else {
-                    //                    console.log("setSourceUrl(): API Call " + i + " -> url " + i); //DEBUG
-                    configArray[i].source.url = configArray[i].source.setApiCall();
-                }
+            if (configObj.settings.sampleFile) {
+                console.log("setSourceUrl(): sample file -> url"); //DEBUG
+                configObj.source.url = configObj.source.sampleFile;
+            } else {
+                console.log("setSourceUrl(): API Call -> url"); //DEBUG
+                configObj.source.url = configObj.source.setApiCall();
             }
 
-
-            if (configArray) {
+            if (configObj) {
                 //                console.log("setSourceUrl(): resolved"); //DEBUG
-                resolve(configArray);
+                resolve(configObj);
             } else {
                 //                console.log("setSourceUrl(): rejected"); //DEBUG
                 reject(new Error("The Url could not be set"));
@@ -275,50 +259,35 @@ function setSourceUrl(configArray) {
 }
 
 // TODO fecth data
-function fetchManager(configArray) {
+function fetchManager(configObj) {
     "use strict";
 
     console.log("fetchManager()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var i = 0,
-                l = configArray.length;
+            // fetch the Data using the url
+            fetch(configObj.source.url)
+                .then(function (apiResponse) {
+                    return apiResponse.json(); // parse the Json data and return it to following function
+                })
+                .then(function (apiData) {
+                    console.log(apiData); // DEBUG
+                })
+                .catch(function (error) {
+                    console.error("fetchManager(): error");
+                });
 
-            for (i = 0; i < l; i++) {
 
-                //                fetch(configArray[i].source.url)
-                //                    .then(response => response.json())
-                //                    .then(data => console.log(data))
-
-                //                console.log("i = " + i); // DEBUG
-                // fetch the Data using the url
-                fetch(configArray[i].source.url)
-                    .then(function (apiResponse) {
-                        //                        console.log("i = " + i); //DEBUG
-                        return apiResponse.json(); // parse the Json data and return it to following function
-                    })
-                    .then(function (apiData) {
-                        //                        console.log("i = " + i); //DEBUG
-                        console.log(apiData);
-                    })
-                    .catch(function (error) {
-                        console.error("fetchManager(): error");
-                    });
-
-            }
-
-            //TODO fix this by passing the fetch resolve() and reject() to it OR Status?
-            if (configArray) {
+            if (configObj) {
                 //                console.log("fetchManager(): resolved"); //DEBUG
-                resolve(configArray);
+                resolve(configObj);
             } else {
                 //                console.log("fetchManager(): rejected"); //DEBUG
                 reject(new Error("The data could not be retrieved"));
             }
 
-        }
-    );
+        });
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
