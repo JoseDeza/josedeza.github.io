@@ -7,129 +7,143 @@ $(function () {
     "use strict";
 
     var configuration = [
-        {
-            settings: {
-                label: "Location",
-                geolocation: false, // Try to get Geolocation coordinates
-                sampleFile: true // Use a sample json file instead of calling the API
-                // [All false] => calls the API with the default position
-            },
-            source: {
-                url: "",
-                appId: "41f101eecefa4f808fa8adfc924a3063",
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Location",
+                    geolocation: true, // Try to get Geolocation coordinates
+                    sampleFile: false // Use a sample json file instead of calling the API
+                    // [All false] => calls the API with the default position
                 },
-                // Get location name using the following REST API service: api.opencagedata.com
-                // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                setApiCall: function () {
-                    "use strict";
-                    var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
-                    return apiCall;
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/opencagedata_brisbane.json"
-            },
-            apiData: {}
+                source: {
+                    url: "",
+                    appId: "41f101eecefa4f808fa8adfc924a3063",
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    // Get location name using the following REST API service: api.opencagedata.com
+                    // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                    setApiCall: function () {
+                        "use strict";
+                        var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
+                        return apiCall;
+                    }, // Url to call
+                    clientFile: "", // User browser local storage
+                    serverFile: "",
+                    sampleFile: "/sample_data/opencagedata_brisbane.json"
+                },
+                apiData: {}
         },
-        {
-            settings: {
-                label: "Weather",
-                geolocation: false, // Try to get Geolocation coordinates
-                sampleFile: true // Use a sample json file instead of calling the API
-                // [All false] => calls the API with the default position
-            },
-            source: {
-                url: "",
-                appId: "393d283150e7d7ced1c524ff318a8870",
-                units: "metric", // unit system // metric,imperial
-                exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Weather",
+                    geolocation: false, // Try to get Geolocation coordinates
+                    sampleFile: true // Use a sample json file instead of calling the API
+                    // [All false] => calls the API with the default position
                 },
-                // Get wheater data using the following REST API service: api.openweathermap.org
-                // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                setApiCall: function () {
-                    "use strict";
-                    var i = 0,
-                        units = "", // unit system // metric,imperial
-                        exclude = "",
-                        apiCall = "";
-                    // Add parameter call only if needed
-                    if (this.units) {
-                        units = "&units=" + this.units;
-                    }
-                    // Add parameter call only if needed
-                    if (this.exclude) {
-                        exclude = "&exclude=" + this.exclude;
-                    }
-                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
-                    return apiCall;
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/openweathermap_brisbane.json"
-            },
-            apiData: {}
+                source: {
+                    url: "",
+                    appId: "393d283150e7d7ced1c524ff318a8870",
+                    units: "metric", // unit system // metric,imperial
+                    exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    // Get wheater data using the following REST API service: api.openweathermap.org
+                    // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+                    setApiCall: function () {
+                        "use strict";
+                        var i = 0,
+                            units = "", // unit system // metric,imperial
+                            exclude = "",
+                            apiCall = "";
+                        // Add parameter call only if needed
+                        if (this.units) {
+                            units = "&units=" + this.units;
+                        }
+                        // Add parameter call only if needed
+                        if (this.exclude) {
+                            exclude = "&exclude=" + this.exclude;
+                        }
+                        apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
+                        return apiCall;
+                    }, // Url to call
+                    clientFile: "", // User browser local storage
+                    serverFile: "",
+                    sampleFile: "/sample_data/openweathermap_brisbane.json"
+                },
+                apiData: {}
         },
-        {
-            settings: {
-                label: "Calendar",
-                geolocation: false, // Try to get Geolocation coordinates
-                sampleFile: true // Use a sample json file instead of calling the API
-                // [All false] => calls the API with the default position
-            },
-            source: {
-                url: "",
-                appId: "",
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Calendar",
+                    geolocation: false, // Try to get Geolocation coordinates
+                    sampleFile: true // Use a sample json file instead of calling the API
+                    // [All false] => calls the API with the default position
                 },
-                // Get Calendar Data as JSON file from the following service: trumba.com
-                setApiCall: function () {
-                    "use strict";
-                    var corsProxy = "https://cors-anywhere.herokuapp.com/",
-                        apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
-                    return apiCall;
-                }, // Url to call
-                clientFile: "", // User browser local storage
-                serverFile: "",
-                sampleFile: "/sample_data/calendardata_brisbane.json",
-            },
-            apiData: {}
+                source: {
+                    url: "",
+                    appId: "",
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    // Get Calendar Data as JSON file from the following service: trumba.com
+                    setApiCall: function () {
+                        "use strict";
+                        var corsProxy = "https://cors-anywhere.herokuapp.com/",
+                            apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
+                        return apiCall;
+                    }, // Url to call
+                    clientFile: "", // User browser local storage
+                    serverFile: "",
+                    sampleFile: "/sample_data/calendardata_brisbane.json",
+                },
+                apiData: {}
         }
-    ];
+    ],
+        i = 0,
+        l = configuration.length;
 
-    getGeolocation(configuration)
-        .catch(function (error) {
-            console.log(error.message + "\n\rUsing the default coordinates.");
-        })
-        .then(function (coord1) {
-            //            console.log(".then(coord1)"); //DEBUG
-            console.log(coord1); //DEBUG
-            return setCoordinates(configuration, coord1);
-        })
-        .then(function (array2) {
-            //            console.log(".then(array2)"); //DEBUG
-            return setSourceUrl(array2);
-        })
-        .then(function (array3) {
-            //            console.log(".then(array3)"); //DEBUG
-            //            console.log(array3); //DEBUG
-            return fetchManager(array3);
-        })
-        .catch(function (error) {
-            console.error(error.message);
-        });
+    for (i = 0; i < l; i++) {
+        apiManager(configuration, i);
+    }
+
+
 
 });
 
 
 /***** Functions *****/
+
+
+function apiManager(configurationArray, index) {
+
+    getGeolocation(configurationArray[index])
+        .catch(function (error) {
+            console.log(error.message + "\n\rUsing the default coordinates.");
+        })
+        //        .then(function (coord1) {
+        //            //            console.log(".then(coord1)"); //DEBUG
+        //            console.log(coord1); //DEBUG
+        //            return setCoordinates(configuration, coord1);
+        //        })
+        //        .then(function (array2) {
+        //            //            console.log(".then(array2)"); //DEBUG
+        //            return setSourceUrl(array2);
+        //        })
+        //        .then(function (array3) {
+        //            //            console.log(".then(array3)"); //DEBUG
+        //            //            console.log(array3); //DEBUG
+        //            return fetchManager(array3);
+        //        })
+        .catch(function (error) {
+            console.error(error.message);
+        });
+
+
+}
 
 // Set Initial parameters (promise functionality)
 function initialConfiguration() {
@@ -154,27 +168,14 @@ function initialConfiguration() {
 }
 
 // Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
-function getGeolocation(configArray) {
+function getGeolocation(configObj) {
     "use strict";
 
     console.log("getGeolocation()"); //DEBUG
     return new Promise(
         function (resolve, reject) {
 
-            var i = 0,
-                l = configArray.length,
-                geolocation = false; // is at least one geolocation setting is true
-
-            // for all objects, if at least one "geolocation" settings is set to "true"
-            for (i = 0; i < l; i++) {
-                if (configArray[i].settings.geolocation) {
-                    // enable geolocation
-                    geolocation = true;
-                    break;
-                }
-            }
-
-            if (navigator.geolocation && geolocation) {
+            if (navigator.geolocation && configObj.settings.geolocation) {
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
 
             } else if (navigator.geolocation) {
