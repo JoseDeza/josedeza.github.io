@@ -54,8 +54,7 @@ $(function () {
                     // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
                     setApiCall: function () {
                         "use strict";
-                        var i = 0,
-                            units = "", // unit system // metric,imperial
+                        var units = "", // unit system // metric,imperial
                             exclude = "",
                             apiCall = "";
                         // Add parameter call only if needed
@@ -98,7 +97,7 @@ $(function () {
                     }, // Url to call
                     clientFile: "", // User browser local storage
                     serverFile: "",
-                    sampleFile: "/sample_data/calendardata_brisbane.json",
+                    sampleFile: "/sample_data/calendardata_brisbane.json"
                 },
                 apiData: {}
         }
@@ -119,6 +118,7 @@ $(function () {
 
 
 function apiManager(configurationArray, index) {
+    "use strict";
 
     getGeolocation(configurationArray[index])
         .catch(function (error) {

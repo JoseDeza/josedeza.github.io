@@ -1,0 +1,40 @@
+EXPLORE:
+--------
+
+fetch data once per day? week? Month?
+store fetched data in a file?
+save fetched data as an object.
+do/not fetch data based on changes? (object comparison)
+recollect the opening and closing time of the events? (intelligent searching of the information fields)
+
+DEVELOP:
+--------
+
+PROCESS/STORE THE DATA
+(only when the calendar data is changed and retrieved)
+
+> Detect the "outdoor" events
+
+for each event in the array
+    search the following strings for "outdoor","park" words and synonyms:
+    - response[i].title
+    - response[i].location
+    loop
+    - response[i].customFields[j].value["..."]
+    ~response[i].customFields[j].label["Venue"] (value: "..." sibling of label: "venue")
+    ~response[i].customFields[j].label["Event Type"] (value: "..." sibling of label: "venue")
+
+> Add a property "outdoor" to each event (bool)
+
+DISPLAY THE DATA
+(each time a visitor opens the app)
+
+> Narrow the list of events to the next 7 days:
+
+for each event in the array
+    for each of the seven next days dates
+        if the considered date is within the event period:  date >= response[i].startDateTime && date < response[i].endDateTime (on a per day basis)
+            record the event array index
+            
+> Filter the events to display based on set conditions
+            
