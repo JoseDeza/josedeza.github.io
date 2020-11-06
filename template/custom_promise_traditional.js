@@ -8,8 +8,8 @@ $(function () {
 
     var configuration = {
         settings: { // [All false] sets API Calls for the default position
-            geolocation: false, // Try to get Geolocation coordinates
-            sampleFile: true // Use a sample json file instead of calling the API
+            useGeolocation: false, // Get Geolocation coordinates / use default coordinates
+            useFile: true // Use a sample json file instead of calling the API
 
         },
         source: {
@@ -21,6 +21,8 @@ $(function () {
                 latitude: 0,
                 longitude: 0
             },
+            file: "/sample_data/openweathermap_brisbane.json",
+
             // Get wheater data using the following REST API service: api.openweathermap.org
             // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
             setApiCall: function () {
@@ -43,9 +45,7 @@ $(function () {
                 return apiCall;
 
             }, // Url to call
-            clientFile: "", // User browser local storage
-            serverFile: "",
-            sampleFile: "/sample_data/openweathermap_brisbane.json"
+
         }
     };
 
@@ -83,7 +83,7 @@ function getGeolocation(configObj) {
     return new Promise(
         function (resolve, reject) {
 
-            if (navigator.geolocation && configObj.settings.geolocation) {
+            if (navigator.geolocation && configObj.settings.useGeolocation) {
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
 
             } else if (navigator.geolocation) {
@@ -151,9 +151,9 @@ function setUrl(configObj) {
         function (resolve, reject) {
 
             // Overwrite API call with sample file when enabled
-            if (configObj.settings.sampleFile) {
+            if (configObj.settings.useFile) {
                 console.log("setUrl(): sample file -> url"); //DEBUG
-                configObj.source.url = configObj.source.sampleFile;
+                configObj.source.url = configObj.source.file;
             } else {
                 console.log("setUrl(): API Call -> url"); //DEBUG
                 configObj.source.url = configObj.source.setApiCall();

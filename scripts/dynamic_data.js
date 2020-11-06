@@ -2,6 +2,7 @@
 
 /***** $(document).ready(function(){}); *****/
 
+// OPEN
 $(function () {
 
     "use strict";
@@ -10,9 +11,8 @@ $(function () {
             {
                 settings: {
                     label: "Location",
-                    geolocation: false, // Try to get Geolocation coordinates
-                    sampleFile: true // Use a sample json file instead of calling the API
-                    // [All false] => calls the API with the default position
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -21,25 +21,27 @@ $(function () {
                         latitude: 0,
                         longitude: 0
                     },
+                    file: "/sample_data/opencagedata_brisbane.json",
+
                     // Get location name using the following REST API service: api.opencagedata.com
                     // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
                     setApiCall: function () {
                         "use strict";
                         var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
                         return apiCall;
-                    }, // Url to call
-                    clientFile: "", // User browser local storage
-                    serverFile: "",
-                    sampleFile: "/sample_data/opencagedata_brisbane.json"
+                    } // Url to call
                 },
-                apiData: {}
+                response: {
+                    data: {},
+                    process: function () {},
+                    display: function () {}
+                }
         },
             {
                 settings: {
                     label: "Weather",
-                    geolocation: false, // Try to get Geolocation coordinates
-                    sampleFile: true // Use a sample json file instead of calling the API
-                    // [All false] => calls the API with the default position
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -50,6 +52,8 @@ $(function () {
                         latitude: 0,
                         longitude: 0
                     },
+                    file: "/sample_data/openweathermap_brisbane.json",
+
                     // Get wheater data using the following REST API service: api.openweathermap.org
                     // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
                     setApiCall: function () {
@@ -67,19 +71,19 @@ $(function () {
                         }
                         apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
                         return apiCall;
-                    }, // Url to call
-                    clientFile: "", // User browser local storage
-                    serverFile: "",
-                    sampleFile: "/sample_data/openweathermap_brisbane.json"
+                    } // Url to call
                 },
-                apiData: {}
+                response: {
+                    data: {},
+                    process: function () {},
+                    display: function () {}
+                }
         },
             {
                 settings: {
                     label: "Calendar",
-                    geolocation: false, // Try to get Geolocation coordinates
-                    sampleFile: true // Use a sample json file instead of calling the API
-                    // [All false] => calls the API with the default position
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -88,18 +92,21 @@ $(function () {
                         latitude: 0,
                         longitude: 0
                     },
+                    file: "/sample_data/calendardata_brisbane.json",
+
                     // Get Calendar Data as JSON file from the following service: trumba.com
                     setApiCall: function () {
                         "use strict";
                         var corsProxy = "https://cors-anywhere.herokuapp.com/",
                             apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
                         return apiCall;
-                    }, // Url to call
-                    clientFile: "", // User browser local storage
-                    serverFile: "",
-                    sampleFile: "/sample_data/calendardata_brisbane.json"
+                    } // Url to call
                 },
-                apiData: {}
+                response: {
+                    data: {},
+                    process: function () {},
+                    display: function () {}
+                }
         }
     ],
         i = 0,
@@ -110,19 +117,19 @@ $(function () {
     }
 
 
-
 });
+// CLOSE
 
 
-/***** Functions *****/
+/* PROMISE CHAIN */
 
-
+// wrapping function to set the variable scope
 function apiManager(configurationArray, index) {
     "use strict";
 
     getGeolocation(configurationArray[index])
         .catch(function (error) {
-            console.log(error.message + "\n\rUsing the default coordinates.");
+            console.log(error.message);
         })
         .then(function (geolocationResponse) {
             return setCoordinates(configurationArray[index], geolocationResponse);
@@ -138,8 +145,9 @@ function apiManager(configurationArray, index) {
             console.error(error.message);
         });
 
-
 }
+
+/* RETRIEVING */
 
 // Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
 function getGeolocation(configObj) {
@@ -148,12 +156,12 @@ function getGeolocation(configObj) {
     return new Promise(
         function (resolve, reject) {
 
-            if (navigator.geolocation && configObj.settings.geolocation) {
+            if (navigator.geolocation && configObj.settings.useGeolocation) {
                 navigator.geolocation.getCurrentPosition(resolve, reject); // user permission prompt / using default options
-                console.log("Geolocation coordinates retrieved");
+                console.log("Geolocation option enabled");
 
             } else if (navigator.geolocation) {
-                reject(new Error("Geolocation setting disabled."));
+                reject(new Error("Geolocation option disabled."));
             } else {
                 reject(new Error("Browser Geolocation functionality unavailable."));
             }
@@ -187,10 +195,12 @@ function setCoordinates(configObj, coordinatesObj) {
                 },
                 defaultCoordinates = presetCoordinates.Brisbane; // <-  Set default coordinates HERE
 
-            if (coordinatesObj && configObj.settings.geolocation) {
+            if (coordinatesObj && configObj.settings.useGeolocation) {
                 configObj.source.coordinates = coordinatesObj.coords;
+                console.log("Using Geolocation coordinates.");
             } else {
                 configObj.source.coordinates = defaultCoordinates;
+                console.log("Using default coordinates.");
             }
 
             if (configObj) {
@@ -209,8 +219,8 @@ function setUrl(configObj) {
     return new Promise(
         function (resolve, reject) {
 
-            if (configObj.settings.sampleFile) {
-                configObj.source.url = configObj.source.sampleFile;
+            if (configObj.settings.useFile) {
+                configObj.source.url = configObj.source.file;
             } else {
                 configObj.source.url = configObj.source.setApiCall();
             }
@@ -254,55 +264,61 @@ function fetchUrl(configObj) {
         });
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
 
-function processResponses(gatheredData) {
+/* PROCESSING */
 
-    "use strict";
-
-    //TODO process Object containing all data
-}
-
-function processLocationName(locationData) {
+function processLocationName(locationDataObj) {
 
     "use strict";
 
     //TODO process location name
 
     // Call location name display
-    displayLocationName(locationData);
+    locationNameMarkup(locationData);
 
 
     console.log("processed location name!"); //DEBUG
 }
 
-function processWeather(weatherData) {
+function processWeather(weatherDataObj) {
 
     "use strict";
 
     //TODO process weather data
 
-    displayWeather(weatherData);
+    weatherMarkup(weatherData);
 
 
     console.log("processed weather data!"); //DEBUG
 }
 
-function processCalendar(calendarData) {
+function processCalendar(calendarDataObj) {
 
     "use strict";
 
-    //TODO process calendar data
+
+
+    // TODO Narrow the list of events to the next 7 days
+    // for each event in the array
+    //    for each of the seven next days dates
+    //        if the considered date is within the event period:  date >= response[i].startDateTime && date < response[i].endDateTime (on a per day basis)
+    //            record the event array index
+
+    // TODO Filter the events to display based on set conditions
+
 
     // call calendar data display
-    displayCalendar(calendarData);
+    calendarMarkup(calendarData);
 
 
     console.log("processed calendar data!"); //DEBUG
 }
 
+
+/* MARKING */
+
 // Display the calendar data
-function displayCalendar(calendarData) {
+function calendarMarkup(calendarData) {
 
     "use strict";
 
@@ -310,7 +326,7 @@ function displayCalendar(calendarData) {
 }
 
 // Display the location Name
-function displayLocationName(locationData) {
+function locationNameMarkup(locationData) {
 
     "use strict";
 
@@ -344,7 +360,7 @@ function displayLocationName(locationData) {
 }
 
 // Display the wheater data
-function displayWeather(weatherData) {
+function weatherMarkup(weatherData) {
 
     "use strict";
 
