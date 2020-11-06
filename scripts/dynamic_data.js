@@ -127,32 +127,32 @@ $(function () {
 function apiManager(configurationArray, index) {
     "use strict";
 
-    var obj = configurationArray[index];
+    var subConfiguration = configurationArray[index];
 
-    getGeolocation(obj)
+    getGeolocation(subConfiguration)
         .catch(function (error) {
             console.log(error.message);
         })
         .then(function (geolocationResponse) {
-            return setCoordinates(obj, geolocationResponse);
+            return setCoordinates(subConfiguration, geolocationResponse);
         })
-        .then(function (coordinated) {
-            return setUrl(coordinated);
+        .then(function (coordinatesIncluded) {
+            return setUrl(coordinatesIncluded); // set the coordinates (Geolocation/default)
         })
-        .then(function (urled) {
-            return fetch(urled.source.url); // fetch the Data using the configuration url
+        .then(function (urlIncluded) {
+            return fetch(urlIncluded.source.url); // fetch the url
         })
-        .then(function (apiResponse) {
-            return apiResponse.json(); // parse the data into an object
+        .then(function (fetchResponse) {
+            return fetchResponse.json(); // parse the data as an object
         })
-        .then(function (apiData) {
-            obj.response.data = apiData; // store data
+        .then(function (fetchData) {
+            return storeData(subConfiguration, fetchData); // store the data
         })
 
 
         // Debug
-        .then(function (apiData) {
-            console.log(obj);
+        .then(function (subConfiguration) {
+            console.log(subConfiguration);
         })
         // Error
         .catch(function (error) {
@@ -249,15 +249,14 @@ function setUrl(configObj) {
     );
 }
 
-function storeData(configObj, apiData) {
+function storeData(configObj, apiDataObj) {
     "use strict";
-    console.log("storeData()"); //DEBUG
 
     return new Promise(
         function (resolve, reject) {
 
             // store the fetched Data
-            configObj.response.data = apiData;
+            configObj.response.data = apiDataObj;
 
             if (configObj) {
                 resolve(configObj);
