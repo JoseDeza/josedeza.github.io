@@ -10,35 +10,6 @@ $(function () {
     var configuration = [
             {
                 settings: {
-                    label: "Location",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: true // Use a local json file instead of calling the API
-                },
-                source: {
-                    url: "",
-                    appId: "41f101eecefa4f808fa8adfc924a3063",
-                    coordinates: {
-                        latitude: 0,
-                        longitude: 0
-                    },
-                    file: "/sample_data/opencagedata_brisbane.json",
-
-                    // Get location name using the following REST API service: api.opencagedata.com
-                    // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                    setApiCall: function () {
-                        "use strict";
-                        var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
-                        return apiCall;
-                    } // Url to call
-                },
-                response: {
-                    data: {},
-                    process: function () {},
-                    display: function () {}
-                }
-        },
-            {
-                settings: {
                     label: "Weather",
                     useGeolocation: false, // Get Geolocation coordinates
                     useFile: true // Use a local json file instead of calling the API
@@ -70,6 +41,35 @@ $(function () {
                             exclude = "&exclude=" + this.exclude;
                         }
                         apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
+                        return apiCall;
+                    } // Url to call
+                },
+                response: {
+                    data: {},
+                    process: function () {},
+                    display: function () {}
+                }
+        },
+            {
+                settings: {
+                    label: "Location",
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
+                },
+                source: {
+                    url: "",
+                    appId: "41f101eecefa4f808fa8adfc924a3063",
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    file: "/sample_data/opencagedata_brisbane.json",
+
+                    // Get location name using the following REST API service: api.opencagedata.com
+                    // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                    setApiCall: function () {
+                        "use strict";
+                        var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
                         return apiCall;
                     } // Url to call
                 },
@@ -127,20 +127,34 @@ $(function () {
 function apiManager(configurationArray, index) {
     "use strict";
 
-    getGeolocation(configurationArray[index])
+    var obj = configurationArray[index];
+
+    getGeolocation(obj)
         .catch(function (error) {
             console.log(error.message);
         })
         .then(function (geolocationResponse) {
-            return setCoordinates(configurationArray[index], geolocationResponse);
+            return setCoordinates(obj, geolocationResponse);
         })
-        .then(function (coordinatedObj) {
-            return setUrl(coordinatedObj);
+        .then(function (coordinated) {
+            return setUrl(coordinated);
         })
-        .then(function (urledObj) {
-            //                        console.log(urledObj); //DEBUG
-            return fetchUrl(urledObj);
+        .then(function (urled) {
+            return fetch(urled.source.url); // fetch the Data using the configuration url
         })
+        .then(function (apiResponse) {
+            return apiResponse.json(); // parse the data into an object
+        })
+        .then(function (apiData) {
+            obj.response.data = apiData; // store data
+        })
+
+
+        // Debug
+        .then(function (apiData) {
+            console.log(obj);
+        })
+        // Error
         .catch(function (error) {
             console.error(error.message);
         });
@@ -235,70 +249,54 @@ function setUrl(configObj) {
     );
 }
 
-// Fetch the url to retrieve the data (promise functionality)
-function fetchUrl(configObj) {
+function storeData(configObj, apiData) {
     "use strict";
+    console.log("storeData()"); //DEBUG
 
     return new Promise(
         function (resolve, reject) {
 
-            // fetch the Data using the url
-            fetch(configObj.source.url)
-                .then(function (apiResponse) {
-                    return apiResponse.json(); // parse the Json data and return it to following function
-                })
-                .then(function (apiData) {
-                    console.log(apiData); // DEBUG
-                })
-                .catch(function (error) {
-                    console.error("fetchUrl(): error");
-                });
-
+            // store the fetched Data
+            configObj.response.data = apiData;
 
             if (configObj) {
                 resolve(configObj);
             } else {
-                reject(new Error("The data could not be retrieved"));
+                reject(new Error("The data could not be stored"));
             }
 
         });
 }
-
 
 /* PROCESSING */
 
 function processLocationName(locationDataObj) {
 
     "use strict";
-
-    //TODO process location name
-
-    // Call location name display
-    locationNameMarkup(locationData);
+    console.log("processLocationName()"); //DEBUG
 
 
-    console.log("processed location name!"); //DEBUG
+
 }
 
 function processWeather(weatherDataObj) {
 
     "use strict";
-
-    //TODO process weather data
-
-    weatherMarkup(weatherData);
+    console.log("processWeather()"); //DEBUG
 
 
-    console.log("processed weather data!"); //DEBUG
+
 }
 
 function processCalendar(calendarDataObj) {
 
     "use strict";
+    console.log("processCalendar()"); //DEBUG
 
 
+    // Narrow the list of events to the next 7 days
 
-    // TODO Narrow the list of events to the next 7 days
+
     // for each event in the array
     //    for each of the seven next days dates
     //        if the considered date is within the event period:  date >= response[i].startDateTime && date < response[i].endDateTime (on a per day basis)
@@ -306,12 +304,6 @@ function processCalendar(calendarDataObj) {
 
     // TODO Filter the events to display based on set conditions
 
-
-    // call calendar data display
-    calendarMarkup(calendarData);
-
-
-    console.log("processed calendar data!"); //DEBUG
 }
 
 

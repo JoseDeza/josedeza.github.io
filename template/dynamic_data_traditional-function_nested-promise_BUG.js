@@ -11,7 +11,7 @@ $(function () {
             settings: {
                 label: "Location",
                 geolocation: true, // Try to get Geolocation coordinates
-                sampleFile: true // Use a sample json file instead of calling the API
+                sampleFile: true // Use a local json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
             source: {
@@ -38,7 +38,7 @@ $(function () {
             settings: {
                 label: "Weather",
                 geolocation: true, // Try to get Geolocation coordinates
-                sampleFile: true // Use a sample json file instead of calling the API
+                sampleFile: true // Use a local json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
             source: {
@@ -79,7 +79,7 @@ $(function () {
             settings: {
                 label: "Calendar",
                 geolocation: false, // Try to get Geolocation coordinates
-                sampleFile: false // Use a sample json file instead of calling the API
+                sampleFile: false // Use a local json file instead of calling the API
                 // [All false] => calls the API with the default position
             },
             source: {
