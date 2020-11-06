@@ -112,8 +112,9 @@ $(function () {
         i = 0,
         l = configuration.length;
 
+    // TODO pull all this in a promise.all? before processing data using the configured array?
     for (i = 0; i < l; i++) {
-        apiManager(configuration, i);
+        dataManager(configuration, i);
     }
 
 
@@ -123,8 +124,8 @@ $(function () {
 
 /* PROMISE CHAIN */
 
-// wrapping function to set the variable scope
-function apiManager(configurationArray, index) {
+// wrapping promise chain into a function to set the variable scope
+function dataManager(configurationArray, index) {
     "use strict";
 
     var subConfiguration = configurationArray[index];
@@ -142,17 +143,19 @@ function apiManager(configurationArray, index) {
         .then(function (urlIncluded) {
             return fetch(urlIncluded.source.url); // fetch the url
         })
-        .then(function (fetchResponse) {
-            return fetchResponse.json(); // parse the data as an object
+        .then(function (apiResponse) {
+            return apiResponse.json(); // parse the data as an object
         })
-        .then(function (fetchData) {
-            return storeData(subConfiguration, fetchData); // store the data
+        .then(function (apiData) {
+            return storeData(subConfiguration, apiData); // store the data
         })
-
+        //        .then(function (dataIncluded) {
+        //            ; // add subconfiguration
+        //        })
 
         // Debug
-        .then(function (subConfiguration) {
-            console.log(subConfiguration);
+        .then(function (configured) {
+            console.log(configured);
         })
         // Error
         .catch(function (error) {
@@ -210,10 +213,10 @@ function setCoordinates(configObj, coordinatesObj) {
                 defaultCoordinates = presetCoordinates.Brisbane; // <-  Set default coordinates HERE
 
             if (coordinatesObj && configObj.settings.useGeolocation) {
-                configObj.source.coordinates = coordinatesObj.coords;
+                configObj.source.coordinates = coordinatesObj.coords; // Set the geolocation data as coordinates object
                 console.log("Using Geolocation coordinates.");
             } else {
-                configObj.source.coordinates = defaultCoordinates;
+                configObj.source.coordinates = defaultCoordinates; // Set the default location as coordinates object
                 console.log("Using default coordinates.");
             }
 
@@ -234,9 +237,9 @@ function setUrl(configObj) {
         function (resolve, reject) {
 
             if (configObj.settings.useFile) {
-                configObj.source.url = configObj.source.file;
+                configObj.source.url = configObj.source.file; // Set the relevant file as url
             } else {
-                configObj.source.url = configObj.source.setApiCall();
+                configObj.source.url = configObj.source.setApiCall(); // Set the relevant API call as url
             }
 
             if (configObj) {
@@ -249,14 +252,14 @@ function setUrl(configObj) {
     );
 }
 
+// Store the data into configuration object
 function storeData(configObj, apiDataObj) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
-            // store the fetched Data
-            configObj.response.data = apiDataObj;
+            configObj.response.data = apiDataObj; // store the fetched Data in the relevant configuration field
 
             if (configObj) {
                 resolve(configObj);
@@ -294,14 +297,22 @@ function processCalendar(calendarDataObj) {
 
 
     // Narrow the list of events to the next 7 days
+    var i = 0,
+        l = weatherData.daily.length,
+        d = {},
+        newDate = "",
+        days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], // to display only the day
+        currentWeek = [];
 
+    for (i = 0; i < l; i++) {
 
-    // for each event in the array
-    //    for each of the seven next days dates
-    //        if the considered date is within the event period:  date >= response[i].startDateTime && date < response[i].endDateTime (on a per day basis)
-    //            record the event array index
+        d = weatherData.daily[i]; // data for that day
+        currentWeek[i] = {}; // initialise object
 
-    // TODO Filter the events to display based on set conditions
+        currentWeek[i].date = new Date(d.dt * 1000); // Get the date of that day
+        currentWeek[i].day = days[currentWeek[i].date.getDay()];
+
+    }
 
 }
 
