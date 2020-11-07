@@ -110,12 +110,27 @@ $(function () {
         }
     ],
         i = 0,
-        l = configuration.length;
+        l = configuration.length,
+        promisesToSync = [];
 
-    // TODO pull all this in a promise.all? before processing data using the configured array?
+
+    // TODO Check if it is better practice to initialise the array length before adding elements
+    //    promisesToSync.length = l;
+
     for (i = 0; i < l; i++) {
-        dataManager(configuration, i);
+        promisesToSync[i] = retrieveApiData(configuration, i); // Works fine to add the element to the array (intuition: JavaScripts Arrays are Objects!)
     }
+
+    Promise.all(promisesToSync)
+        .then(function (configured) {
+            console.log(configured); // DEBUG
+
+            // Work with updated configuration
+
+            return configured;
+        })
+    // no .catch() / the errors are handled separately by each promise
+
 
 
 });
@@ -125,12 +140,12 @@ $(function () {
 /* PROMISE CHAIN */
 
 // wrapping promise chain into a function to set the variable scope
-function dataManager(configurationArray, index) {
+function retrieveApiData(configurationArray, index) {
     "use strict";
 
     var subConfiguration = configurationArray[index];
 
-    getGeolocation(subConfiguration)
+    return getGeolocation(subConfiguration) // "return" the chain to make it a promise!
         .catch(function (error) {
             console.log(error.message);
         })
@@ -147,17 +162,9 @@ function dataManager(configurationArray, index) {
             return apiResponse.json(); // parse the data as an object
         })
         .then(function (apiData) {
-            return storeData(subConfiguration, apiData); // store the data
+            return storeData(subConfiguration, apiData); // return a promise that stores the data
         })
-        //        .then(function (dataIncluded) {
-        //            ; // add subconfiguration
-        //        })
-
-        // Debug
-        .then(function (configured) {
-            console.log(configured);
-        })
-        // Error
+        //  Separate error Handling
         .catch(function (error) {
             console.error(error.message);
         });
