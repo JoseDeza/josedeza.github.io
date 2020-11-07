@@ -122,7 +122,7 @@ $(function () {
     Promise.all(promisesToSync)
         .then(function (configured) {
 
-        // Work with updated configuration
+            // Work with updated configuration
             console.log(configured); // DEBUG
             targetNextDays(configured);
 
@@ -140,7 +140,7 @@ $(function () {
 function retrieveApiData(configurationArray, index) {
     "use strict";
 
-    var subConfiguration = configurationArray[index];
+    const subConfiguration = configurationArray[index];
 
     return getGeolocation(subConfiguration) // "return" the chain to make it a promise!
         .catch(function (error) {
@@ -297,32 +297,35 @@ function targetNextDays(configArray) {
     "use strict";
     //console.log("targetNextDays()"); //DEBUG
 
+    return new Promise(
+        function (resolve, reject) {
 
-    // Narrow the list of events to the next 7 days
-    var d = {},
-        currentWeek = [],
-        weatheData = configArray[0].response.data,
-        calendarData = configArray[2].response.data;
+            // Narrow the list of events to the next 7 days
+            let currentWeek = [],
+                weatherData = configArray[0].response.data,
+                calendarData = configArray[2].response.data;
 
-    for (let i = 0; i < weatheData.daily.length; i++) {
+            for (let i = 0; i < weatherData.daily.length; i++) {
 
-        d = weatheData.daily[i]; // data for that day
-        currentWeek[i] = {}; // initialise object
+                currentWeek[i] = {}; // initialise object
+                currentWeek[i].date = new Date(weatherData.daily[i].dt * 1000); // Get the date of that day
+//                currentWeek[i].date = new Date("2020-12-30T00:00:00"); // DEBUG
+//                console.log(currentWeek[i]); // DEBUG
 
-        //        currentWeek[i].date = d.dt; // Get the date of that day
-        currentWeek[i].date = new Date(d.dt * 1000); // Get the date of that day
-        console.log(currentWeek[i]); // DEBUG
+                for (let j = 0; j < calendarData.length; j++) {
 
-        for (let j = 0; j < calendarData.length; j++) {
+                    const eventStart = new Date(calendarData[j].startDateTime);
+                    const eventEnd = new Date(calendarData[j].endDateTime);
 
-            if (currentWeek[i].date >= new Date(calendarData[j].startDateTime) && currentWeek[i].date < new Date(calendarData[j].endDateTime)) {
-                console.log(calendarData[i]); // DEBUG
+                    if (currentWeek[i].date >= eventStart && currentWeek[i].date < eventEnd) {
+//                        console.log(calendarData[j]); // DEBUG
+//                        console.log(eventStart); // DEBUG
+//                        console.log(eventEnd); // DEBUG
+
+                    }
+                }
             }
-
-        }
-
-    }
-
+        });
 }
 
 
