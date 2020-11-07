@@ -7,130 +7,127 @@ $(function () {
 
     "use strict";
 
-    var configuration = [
-            {
-                settings: {
-                    label: "Weather",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: true // Use a local json file instead of calling the API
+    const configuration = [
+        {
+            settings: {
+                label: "Weather",
+                useGeolocation: false, // Get Geolocation coordinates
+                useFile: true // Use a local json file instead of calling the API
+            },
+            source: {
+                url: "",
+                appId: "393d283150e7d7ced1c524ff318a8870",
+                units: "metric", // unit system // metric,imperial
+                exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                coordinates: {
+                    latitude: 0,
+                    longitude: 0
                 },
-                source: {
-                    url: "",
-                    appId: "393d283150e7d7ced1c524ff318a8870",
-                    units: "metric", // unit system // metric,imperial
-                    exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-                    coordinates: {
-                        latitude: 0,
-                        longitude: 0
-                    },
-                    file: "/sample_data/openweathermap_brisbane.json",
+                file: "/sample_data/openweathermap_brisbane.json",
 
-                    // Get wheater data using the following REST API service: api.openweathermap.org
-                    // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                    setApiCall: function () {
-                        "use strict";
-                        var units = "", // unit system // metric,imperial
-                            exclude = "",
-                            apiCall = "";
-                        // Add parameter call only if needed
-                        if (this.units) {
-                            units = "&units=" + this.units;
-                        }
-                        // Add parameter call only if needed
-                        if (this.exclude) {
-                            exclude = "&exclude=" + this.exclude;
-                        }
-                        apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
-                        return apiCall;
-                    } // Url to call
-                },
-                response: {
-                    data: {},
-                    process: function () {},
-                    display: function () {}
-                }
+                // Get wheater data using the following REST API service: api.openweathermap.org
+                // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+                setApiCall: function () {
+                    "use strict";
+                    var units = "", // unit system // metric,imperial
+                        exclude = "",
+                        apiCall = "";
+                    // Add parameter call only if needed
+                    if (this.units) {
+                        units = "&units=" + this.units;
+                    }
+                    // Add parameter call only if needed
+                    if (this.exclude) {
+                        exclude = "&exclude=" + this.exclude;
+                    }
+                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
+                    return apiCall;
+                } // Url to call
+            },
+            response: {
+                data: {},
+                process: function () {},
+                display: function () {}
+            }
         },
-            {
-                settings: {
-                    label: "Location",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: true // Use a local json file instead of calling the API
+        {
+            settings: {
+                label: "Location",
+                useGeolocation: false, // Get Geolocation coordinates
+                useFile: true // Use a local json file instead of calling the API
+            },
+            source: {
+                url: "",
+                appId: "41f101eecefa4f808fa8adfc924a3063",
+                coordinates: {
+                    latitude: 0,
+                    longitude: 0
                 },
-                source: {
-                    url: "",
-                    appId: "41f101eecefa4f808fa8adfc924a3063",
-                    coordinates: {
-                        latitude: 0,
-                        longitude: 0
-                    },
-                    file: "/sample_data/opencagedata_brisbane.json",
+                file: "/sample_data/opencagedata_brisbane.json",
 
-                    // Get location name using the following REST API service: api.opencagedata.com
-                    // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                    setApiCall: function () {
-                        "use strict";
-                        var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
-                        return apiCall;
-                    } // Url to call
-                },
-                response: {
-                    data: {},
-                    process: function () {},
-                    display: function () {}
-                }
+                // Get location name using the following REST API service: api.opencagedata.com
+                // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                setApiCall: function () {
+                    "use strict";
+                    var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
+                    return apiCall;
+                } // Url to call
+            },
+            response: {
+                data: {},
+                process: function () {},
+                display: function () {}
+            }
         },
-            {
-                settings: {
-                    label: "Calendar",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: true // Use a local json file instead of calling the API
+        {
+            settings: {
+                label: "Calendar",
+                useGeolocation: false, // Get Geolocation coordinates
+                useFile: true // Use a local json file instead of calling the API
+            },
+            source: {
+                url: "",
+                appId: "",
+                coordinates: {
+                    latitude: 0,
+                    longitude: 0
                 },
-                source: {
-                    url: "",
-                    appId: "",
-                    coordinates: {
-                        latitude: 0,
-                        longitude: 0
-                    },
-                    file: "/sample_data/calendardata_brisbane.json",
+                file: "/sample_data/calendardata_brisbane.json",
 
-                    // Get Calendar Data as JSON file from the following service: trumba.com
-                    setApiCall: function () {
-                        "use strict";
-                        var corsProxy = "https://cors-anywhere.herokuapp.com/",
-                            apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
-                        return apiCall;
-                    } // Url to call
-                },
-                response: {
-                    data: {},
-                    process: function () {},
-                    display: function () {}
-                }
+                // Get Calendar Data as JSON file from the following service: trumba.com
+                setApiCall: function () {
+                    "use strict";
+                    var corsProxy = "https://cors-anywhere.herokuapp.com/",
+                        apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
+                    return apiCall;
+                } // Url to call
+            },
+            response: {
+                data: {},
+                process: function () {},
+                display: function () {}
+            }
         }
-    ],
-        i = 0,
-        l = configuration.length,
-        promisesToSync = [];
+    ];
+    const promisesToSync = [];
 
 
     // TODO Check if it is better practice to initialise the array length before adding elements
     //    promisesToSync.length = l;
 
-    for (i = 0; i < l; i++) {
+    for (let i = 0; i < configuration.length; i++) {
         promisesToSync[i] = retrieveApiData(configuration, i); // Works fine to add the element to the array (intuition: JavaScripts Arrays are Objects!)
     }
 
     Promise.all(promisesToSync)
         .then(function (configured) {
-            console.log(configured); // DEBUG
 
-            // Work with updated configuration
+        // Work with updated configuration
+            console.log(configured); // DEBUG
+            targetNextDays(configured);
 
             return configured;
         })
-    // no .catch() / the errors are handled separately by each promise
-
 
 
 });
@@ -291,37 +288,44 @@ function processLocationName(locationDataObj) {
 function processWeather(weatherDataObj) {
 
     "use strict";
-    console.log("processWeather()"); //DEBUG
-
-
+    //    console.log("processWeather()"); //DEBUG
 
 }
 
-function processCalendar(calendarDataObj) {
+function targetNextDays(configArray) {
 
     "use strict";
-    console.log("processCalendar()"); //DEBUG
+    //console.log("targetNextDays()"); //DEBUG
 
 
     // Narrow the list of events to the next 7 days
-    var i = 0,
-        l = weatherData.daily.length,
-        d = {},
-        newDate = "",
-        days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], // to display only the day
-        currentWeek = [];
+    var d = {},
+        currentWeek = [],
+        weatheData = configArray[0].response.data,
+        calendarData = configArray[2].response.data;
 
-    for (i = 0; i < l; i++) {
+    for (let i = 0; i < weatheData.daily.length; i++) {
 
-        d = weatherData.daily[i]; // data for that day
+        d = weatheData.daily[i]; // data for that day
         currentWeek[i] = {}; // initialise object
 
+        //        currentWeek[i].date = d.dt; // Get the date of that day
         currentWeek[i].date = new Date(d.dt * 1000); // Get the date of that day
-        currentWeek[i].day = days[currentWeek[i].date.getDay()];
+        console.log(currentWeek[i]); // DEBUG
+
+        for (let j = 0; j < calendarData.length; j++) {
+
+            if (currentWeek[i].date >= new Date(calendarData[j].startDateTime) && currentWeek[i].date < new Date(calendarData[j].endDateTime)) {
+                console.log(calendarData[i]); // DEBUG
+            }
+
+        }
 
     }
 
 }
+
+
 
 
 /* MARKING */
