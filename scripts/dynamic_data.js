@@ -8,112 +8,105 @@ $(function () {
     "use strict";
 
     const configuration = [
-        {
-            settings: {
-                label: "Weather",
-                useGeolocation: false, // Get Geolocation coordinates
-                useFile: true // Use a local json file instead of calling the API
-            },
-            source: {
-                url: "",
-                appId: "393d283150e7d7ced1c524ff318a8870",
-                units: "metric", // unit system // metric,imperial
-                exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Weather",
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
-                file: "/sample_data/openweathermap_brisbane.json",
+                source: {
+                    url: "",
+                    appId: "393d283150e7d7ced1c524ff318a8870",
+                    units: "metric", // unit system // metric,imperial
+                    exclude: "", // forecast data to exclude // current,minutely,hourly,daily,alert
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    file: "/sample_data/openweathermap_brisbane.json",
 
-                // Get wheater data using the following REST API service: api.openweathermap.org
-                // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
-                setApiCall: function () {
-                    "use strict";
-                    var units = "", // unit system // metric,imperial
-                        exclude = "",
-                        apiCall = "";
-                    // Add parameter call only if needed
-                    if (this.units) {
-                        units = "&units=" + this.units;
-                    }
-                    // Add parameter call only if needed
-                    if (this.exclude) {
-                        exclude = "&exclude=" + this.exclude;
-                    }
-                    apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
-                    return apiCall;
-                } // Url to call
-            },
-            data: {
-                retrieved: {},
-                filtered: {},
-                display: function () {}
-            }
+                    // Get wheater data using the following REST API service: api.openweathermap.org
+                    // Open Weather Map API Documentation @ https://openweathermap.org/api/one-call-api
+                    setApiCall: function () {
+                        "use strict";
+                        var units = "", // unit system // metric,imperial
+                            exclude = "",
+                            apiCall = "";
+                        // Add parameter call only if needed
+                        if (this.units) {
+                            units = "&units=" + this.units;
+                        }
+                        // Add parameter call only if needed
+                        if (this.exclude) {
+                            exclude = "&exclude=" + this.exclude;
+                        }
+                        apiCall = "https://api.openweathermap.org/data/2.5/onecall?lat=" + this.coordinates.latitude + "&lon=" + this.coordinates.longitude + units + exclude + "&appid=" + this.appId;
+                        return apiCall;
+                    } // Url to call
+                },
+                data: {
+                    raw: {},
+                    filtered: {}
+                }
         },
-        {
-            settings: {
-                label: "Location",
-                useGeolocation: false, // Get Geolocation coordinates
-                useFile: true // Use a local json file instead of calling the API
-            },
-            source: {
-                url: "",
-                appId: "41f101eecefa4f808fa8adfc924a3063",
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Location",
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
-                file: "/sample_data/opencagedata_brisbane.json",
+                source: {
+                    url: "",
+                    appId: "41f101eecefa4f808fa8adfc924a3063",
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    file: "/sample_data/opencagedata_brisbane.json",
 
-                // Get location name using the following REST API service: api.opencagedata.com
-                // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
-                setApiCall: function () {
-                    "use strict";
-                    var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
-                    return apiCall;
-                } // Url to call
-            },
-            data: {
-                retrieved: {},
-                filtered: {},
-                display: function () {}
-            }
+                    // Get location name using the following REST API service: api.opencagedata.com
+                    // Open Cage Data Map API Documentation @ hhttps://opencagedata.com/api
+                    setApiCall: function () {
+                        "use strict";
+                        var apiCall = "https://api.opencagedata.com/geocode/v1/json?key=" + this.appId + "&q=" + this.coordinates.latitude + "+" + this.coordinates.longitude + "&pretty=1&no_annotations=1";
+                        return apiCall;
+                    } // Url to call
+                },
+                data: {
+                    raw: {},
+                    filtered: {}
+                }
         },
-        {
-            settings: {
-                label: "Calendar",
-                useGeolocation: false, // Get Geolocation coordinates
-                useFile: true // Use a local json file instead of calling the API
-            },
-            source: {
-                url: "",
-                appId: "",
-                coordinates: {
-                    latitude: 0,
-                    longitude: 0
+            {
+                settings: {
+                    label: "Calendar",
+                    useGeolocation: false, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
-                file: "/sample_data/calendardata_brisbane.json",
+                source: {
+                    url: "",
+                    appId: "",
+                    coordinates: {
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    file: "/sample_data/calendardata_brisbane.json",
 
-                // Get Calendar Data as JSON file from the following service: trumba.com
-                setApiCall: function () {
-                    "use strict";
-                    var corsProxy = "https://cors-anywhere.herokuapp.com/",
-                        apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
-                    return apiCall;
-                } // Url to call
-            },
-            data: {
-                retrieved: {},
-                filtered: {},
-                display: function () {}
-            }
+                    // Get Calendar Data as JSON file from the following service: trumba.com
+                    setApiCall: function () {
+                        "use strict";
+                        var corsProxy = "https://cors-anywhere.herokuapp.com/",
+                            apiCall = corsProxy + "http://trumba.com/calendars/brisbane-city-council.json";
+                        return apiCall;
+                    } // Url to call
+                },
+                data: {
+                    raw: {},
+                    filtered: {}
+                }
         }
-    ];
-    const promisesToSync = [];
-
-
-    // TODO Check if it is better practice to initialise the array length before adding elements
-    //    promisesToSync.length = l;
+    ],
+        promisesToSync = [];
 
     // Initialise the data retrieving for each API
     for (let i = 0; i < configuration.length; i++) {
@@ -124,11 +117,11 @@ $(function () {
     // Then process the data as a whole
     Promise.all(promisesToSync)
         .then(function (configured) {
-            // Work with updated configuration
-            console.log(configured); // DEBUG
-            return filterWeekEvents(configured);
+            return filterCalendar(configured);
         })
-
+        .then(function (filtered) {
+            return displayCalendar(filtered);
+        });
 
 });
 // CLOSE
@@ -166,7 +159,7 @@ function retrieveApiData(configArray, i) {
 
 }
 
-/* RETRIEVING */
+/* RETRIEVE */
 
 // Get the Geolocation coordinates (promise functionality, based on: https://gist.github.com/varmais/74586ec1854fe288d393)
 function getGeolocation(configObj) {
@@ -261,7 +254,7 @@ function storeData(configObj, apiDataObj) {
     return new Promise(
         function (resolve, reject) {
 
-            configObj.data.retrieved = apiDataObj; // store the fetched Data in the relevant configuration field
+            configObj.data.raw = apiDataObj; // store the fetched Data in the relevant configuration field
 
             if (configObj) {
                 resolve(configObj);
@@ -272,46 +265,39 @@ function storeData(configObj, apiDataObj) {
         });
 }
 
-/* PROCESSING */
+
+/* FILTER */
 
 // Narrow the list of events to the next 8 days
-function filterWeekEvents(configArray) {
+function filterCalendar(configArray) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
             let calendarData = configArray[2].data,
-                nextDays = configArray[0].data.retrieved.daily,
-                comingEvents = [];
+                nextDays = configArray[0].data.raw.daily; // TODO Understand how modifications on "nextdays" appply to "configArray[0].data.raw.daily" as well
 
             // For 8 days from today
             for (let d = 0; d < nextDays.length; d++) {
                 let count = 0;
 
-                comingEvents[d] = {}; // initialise object
-                comingEvents[d].date = new Date(nextDays[d].dt * 1000); // Get the date for that day
-                comingEvents[d].events = [];
+                calendarData.filtered[d] = {}; // initialise object
+                calendarData.filtered[d].date = new Date(nextDays[d].dt * 1000); // Get the date for that day
+                calendarData.filtered[d].events = [];
 
                 // for each event of the council calendar
-                for (let e = 0; e < calendarData.retrieved.length; e++) {
-                    const startDate = new Date(calendarData.retrieved[e].startDateTime);
-                    const endDate = new Date(calendarData.retrieved[e].endDateTime);
+                for (let e = 0; e < calendarData.raw.length; e++) {
+                    const startDate = new Date(calendarData.raw[e].startDateTime);
+                    const endDate = new Date(calendarData.raw[e].endDateTime);
 
                     // if the event is ongoing
-                    if (comingEvents[d].date >= startDate && comingEvents[d].date < endDate) {
-                        comingEvents[d].events[count] = calendarData.retrieved[e]; // Add the event to the list of events that day
+                    if (calendarData.filtered[d].date >= startDate && calendarData.filtered[d].date < endDate) {
+                        calendarData.filtered[d].events[count] = calendarData.raw[e]; // Add the event to the list of events that day
                         count++;
                     }
                 }
             }
-
-//            console.log(comingEvents); // DEBUG
-            calendarData.filtered = comingEvents;
-
-            // TODO Understand the variable true value and scope
-            //            console.log(nextDays);
-            //            console.log(configArray[0].data.retrieved.daily);
 
             if (configArray) {
                 resolve(configArray);
@@ -323,18 +309,20 @@ function filterWeekEvents(configArray) {
 }
 
 
-/* MARKING UP */
+/* DISPLAY */
 
 // Display the calendar data
-function calendarMarkup(calendarData) {
+function displayCalendar(configArray) {
 
     "use strict";
 
-    console.log(calendarData); //DEBUG
+    console.log(configArray); //DEBUG
 }
 
+/*****/
+
 // Display the location Name
-function locationNameMarkup(locationData) {
+function displayLocation(locationData) {
 
     "use strict";
 
@@ -368,20 +356,22 @@ function locationNameMarkup(locationData) {
 }
 
 // Display the wheater data
-function weatherMarkup(weatherData) {
+function displayWeather(weatherData) {
 
     "use strict";
 
     // Insert all the data to display inside the markup
-    currentMarkup(weatherData);
-    dailyTable(weatherData);
-    hourlyTable(weatherData);
-    minutelyTable(weatherData);
+    displayCurrent(weatherData);
+    displayDaily(weatherData);
+    displayHourly(weatherData);
+    displayMinutely(weatherData);
 
 }
 
+/*****/
+
 // Generate the Current weather report
-function currentMarkup(weatherData) {
+function displayCurrent(weatherData) {
 
     "use strict";
 
@@ -447,7 +437,7 @@ function currentMarkup(weatherData) {
 }
 
 // Generate the Minutely Forecast table
-function minutelyTable(weatherData) {
+function displayMinutely(weatherData) {
 
     "use strict";
 
@@ -522,7 +512,7 @@ function minutelyTable(weatherData) {
 }
 
 // Generate the hourly Forecast table
-function hourlyTable(weatherData) {
+function displayHourly(weatherData) {
 
     "use strict";
 
@@ -597,7 +587,7 @@ function hourlyTable(weatherData) {
 }
 
 // Generate the Daily Forecast table
-function dailyTable(weatherData) {
+function displayDaily(weatherData) {
 
     "use strict";
 
