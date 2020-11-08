@@ -315,23 +315,11 @@ function filterCalendar(configArray) {
 function displayCalendar(configArray) {
     "use strict";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Insert all the data to display inside the markup
+    displayCurrent(configArray);
+    displayDaily(configArray);
+    displayHourly(configArray);
+    displayMinutely(configArray);
 
     console.log(configArray); //DEBUG
 
@@ -340,7 +328,7 @@ function displayCalendar(configArray) {
 /*****/
 
 // Display the location Name
-function displayLocation(locationData) {
+function displayLocation(configArray) {
 
     "use strict";
 
@@ -349,7 +337,8 @@ function displayLocation(locationData) {
         locationName = "",
         locationTags = [];
 
-    locationComponents = locationData.results[i].components;
+
+    locationComponents = configArray.results[i].components;
 
     // Retrieved the city or town name depending on the data output
     if (locationComponents.city) {
@@ -368,31 +357,19 @@ function displayLocation(locationData) {
         locationTags[i].textContent = locationName;
     }
 
-    console.log(locationData); //DEBUG
-
-}
-
-// Display the wheater data
-function displayWeather(weatherData) {
-
-    "use strict";
-
-    // Insert all the data to display inside the markup
-    displayCurrent(weatherData);
-    displayDaily(weatherData);
-    displayHourly(weatherData);
-    displayMinutely(weatherData);
+//    console.log(configArray); //DEBUG
 
 }
 
 /*****/
 
 // Generate the Current weather report
-function displayCurrent(weatherData) {
+function displayCurrent(configArray) {
 
     "use strict";
 
-    var i = "0",
+    var weatherData = configArray[0].data.raw,
+        i = "0",
         timeTags = [],
         dateTags = [],
         temperatureTags = [],
@@ -417,7 +394,7 @@ function displayCurrent(weatherData) {
     currentDate = currentDateTime.toDateString();
     currentTime = currentDateTime.toTimeString().substr(0, 5);
     currentTemperature = Math.round(weatherData.current.temp) + "ºC";
-    currentDescription = weatherData.current.weather[i].description;
+    currentDescription = weatherData.current.weather[0].description;
 
 
     // REPLACE content with textContent
@@ -447,18 +424,19 @@ function displayCurrent(weatherData) {
     //        console.log(timeTag);//DEBUG
     //        console.log(weatherData.current.dt);//DEBUG
     //        console.log(weatherData.current.temp);//DEBUG
-    //        console.log(weatherData.current.weather[i].description);//DEBUG
+    //        console.log(weatherData.current.weather[0].description);//DEBUG
     //        console.log();//DEBUG
 
 
 }
 
 // Generate the Minutely Forecast table
-function displayMinutely(weatherData) {
+function displayMinutely(configArray) {
 
     "use strict";
 
-    var i = 0,
+    var weatherData = configArray[0].data.raw,
+        i = 0,
         l = weatherData.minutely.length,
         d = {},
         next60minutes = [],
@@ -524,16 +502,17 @@ function displayMinutely(weatherData) {
     $("#minutely div").append(table1);
     $("#minutely div").append(table2);
 
-    console.log(next60minutes); //DEBUG
+//    console.log(next60minutes); //DEBUG
 
 }
 
 // Generate the hourly Forecast table
-function displayHourly(weatherData) {
+function displayHourly(configArray) {
 
     "use strict";
 
-    var i = 0,
+    var weatherData = configArray[0].data.raw,
+        i = 0,
         l = weatherData.hourly.length,
         d = {},
         next48Hours = [],
@@ -550,7 +529,7 @@ function displayHourly(weatherData) {
         next48Hours[i].date = new Date(d.dt * 1000); // Get the date of that day
         next48Hours[i].hour = next48Hours[i].date.toTimeString().substr(0, 5);
         next48Hours[i].temperature = Math.round(d.temp);
-        next48Hours[i].description = d.weather[i].description;
+        next48Hours[i].description = d.weather[0].description;
 
     }
 
@@ -599,16 +578,17 @@ function displayHourly(weatherData) {
     $("#hourly div").append(table1);
     $("#hourly div").append(table2);
 
-    console.log(next48Hours); //DEBUG
+//    console.log(next48Hours); //DEBUG
 
 }
 
 // Generate the Daily Forecast table
-function displayDaily(weatherData) {
+function displayDaily(configArray) {
 
     "use strict";
 
-    var i = 0,
+    var weatherData = configArray[0].data.raw,
+        i = 0,
         l = weatherData.daily.length,
         d = {},
         newDate = "",
@@ -635,7 +615,7 @@ function displayDaily(weatherData) {
         currentWeek[i].day = days[currentWeek[i].date.getDay()];
         currentWeek[i].minTemperature = Math.round(d.temp.min);
         currentWeek[i].maxTemperature = Math.round(d.temp.max);
-        currentWeek[i].description = d.weather[i].description;
+        currentWeek[i].description = d.weather[0].description;
 
         if (i === 0) {
             lowestTemperature = currentWeek[i].minTemperature;
@@ -739,6 +719,6 @@ function displayDaily(weatherData) {
     $("#daily div").append(graph);
 
 
-    console.log(currentWeek); //DEBUG
+//    console.log(currentWeek); //DEBUG
 
 }
