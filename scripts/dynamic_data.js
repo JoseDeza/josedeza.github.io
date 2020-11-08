@@ -452,7 +452,7 @@ function displayMinutely(configArray) {
 
         next60minutes[i].date = new Date(d.dt * 1000); // Get the date of that minute
         next60minutes[i].minute = next60minutes[i].date.getMinutes();
-        next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[i].minute) % 60;
+        next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
         next60minutes[i].precipitation = Math.round(d.precipitation);
 
     }
