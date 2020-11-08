@@ -328,69 +328,83 @@ function displayCalendar(configArray) {
 /*****/
 
 // TODO Create a function to populate the relevant tags based on the class
-function populateTags(className, configArray, index) {
+function populateTags(classNameString, contentSourceObj, isHtmlBool) {
     "use strict";
 
+    let tags = [];
 
+    // Register the tags to change
+    tags = $("."+ classNameString);
+//    console.log(tags);
 
+    // overwrite tag nodes with updated ones
+    for (let i = 0; i < tags.length; i++) {
+        if (isHtmlBool === true)
+            tags[i].innerHTML = contentSourceObj;
+        else {
+            tags[i].textContent = contentSourceObj;
+        }
+    }
 }
 
 // Generate the Current weather report
 function displayCurrent(configArray) {
     "use strict";
 
-    var weatherData = configArray[0].data.raw,
-        calendarWeekData = configArray[2].data.filtered,
-        date = new Date(weatherData.current.dt * 1000), // instead of just Date() to keep consistency with weather data
+        populateTags("description",configArray[2].data.filtered[0].events[0].description,true);
 
-        currentTimeTags = [],
-        currentDateTags = [],
-        eventImageTags = [],
-        titleTags = [],
-        locationTags = [],
-        dateTimeFormattedTags = [],
-        descriptionTags = [],
-        venueTags = [],
-        temperatureTags = [],
-
-        currentTemperature = "",
-        currentTime = "",
-        currentDate = "",
-        description = "";
-
-
-    // Register the tags to change
-    currentDateTags = $(".currentDate");
-    currentTimeTags = $(".currentTime");
-    titleTags = $(".title");
-    locationTags = $(".location");
-    dateTimeFormattedTags = $(".dateTimeFormatted");
-    descriptionTags = $(".description");
-    venueTags = $(".venue");
-    temperatureTags = $(".currentTemperature");
-
-    // Create separate strings
-    currentDate = date.toDateString();
-    currentTime = date.toTimeString().substr(0, 5);
-    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
-    description = calendarWeekData[0].events[0].description;
-
-    // overwrite tag nodes with updated ones
-    for (let i = 0; i < currentDateTags.length; i++) {
-        currentDateTags[i].textContent = currentDate;
-    }
-
-    for (let i = 0; i < currentTimeTags.length; i++) {
-        currentTimeTags[i].textContent = currentTime;
-    }
-
-    for (let i = 0; i < temperatureTags.length; i++) {
-        temperatureTags[i].textContent = currentTemperature;
-    }
-
-    for (let i = 0; i < descriptionTags.length; i++) {
-        descriptionTags[i].innerHTML = description;
-    }
+//    var calendarWeekData = configArray[2].data.filtered,
+//        //        weatherData = configArray[0].data.raw,
+//        //        date = new Date(weatherData.current.dt * 1000), // instead of just Date() to keep consistency with weather data
+//
+//        //        currentTimeTags = [],
+//        //        currentDateTags = [],
+//        //        eventImageTags = [],
+//        //        titleTags = [],
+//        //        locationTags = [],
+//        //        dateTimeFormattedTags = [],
+//        descriptionTags = [],
+//        //        venueTags = [],
+//        //        temperatureTags = [],
+//
+//        //        currentTemperature = "",
+//        //        currentTime = "",
+//        //        currentDate = "",
+//        description = "";
+//
+//
+//    // Register the tags to change
+//    //    currentDateTags = $(".currentDate");
+//    //    currentTimeTags = $(".currentTime");
+//    //    titleTags = $(".title");
+//    //    locationTags = $(".location");
+//    //    dateTimeFormattedTags = $(".dateTimeFormatted");
+//    descriptionTags = $(".description");
+//    //    venueTags = $(".venue");
+//    //    temperatureTags = $(".currentTemperature");
+//
+//    // Create separate strings
+//    //    currentDate = date.toDateString();
+//    //    currentTime = date.toTimeString().substr(0, 5);
+//    //    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
+//    description = calendarWeekData[0].events[0].description;
+//
+//    // overwrite tag nodes with updated ones
+//    //    for (let i = 0; i < currentDateTags.length; i++) {
+//    //        currentDateTags[i].textContent = currentDate;
+//    //    }
+//    //
+//    //    for (let i = 0; i < currentTimeTags.length; i++) {
+//    //        currentTimeTags[i].textContent = currentTime;
+//    //    }
+//    //
+//    //    for (let i = 0; i < temperatureTags.length; i++) {
+//    //        temperatureTags[i].textContent = currentTemperature;
+//    //    }
+//
+//    for (let i = 0; i < descriptionTags.length; i++) {
+//        descriptionTags[i].innerHTML = description;
+//    }
 
 
 
