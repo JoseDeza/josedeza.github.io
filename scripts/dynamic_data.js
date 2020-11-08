@@ -313,10 +313,28 @@ function filterCalendar(configArray) {
 
 // Display the calendar data
 function displayCalendar(configArray) {
-
     "use strict";
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     console.log(configArray); //DEBUG
+
 }
 
 /*****/
@@ -351,8 +369,7 @@ function displayLocation(locationData) {
     }
 
     console.log(locationData); //DEBUG
-    //    console.log(locationData.results[i].components.city);//DEBUG
-    //    console.log(locationData.results[i].components.town);//DEBUG
+
 }
 
 // Display the wheater data

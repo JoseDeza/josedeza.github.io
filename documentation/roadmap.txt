@@ -4,9 +4,6 @@ Using weather date system instead of current Date() to base all data on common v
 
 Thought about using an event system to decouple dependencies between API channels.
 
-Meanwhile, processing all the data together to emphasize the  dependencies.
-
-
 
 DEVELOPEMENT:
 ------------
