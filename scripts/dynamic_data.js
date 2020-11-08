@@ -47,7 +47,6 @@ $(function () {
             data: {
                 retrieved: {},
                 filtered: {},
-                filter: function () {},
                 display: function () {}
             }
         },
@@ -77,7 +76,6 @@ $(function () {
             data: {
                 retrieved: {},
                 filtered: {},
-                filter: function () {},
                 display: function () {}
             }
         },
@@ -107,38 +105,6 @@ $(function () {
             data: {
                 retrieved: {},
                 filtered: {},
-                filter: function () {
-
-                    // Narrow the list of events to the next 7 days
-                    let weekDays = configArray[0].data.retrieved.daily,
-                        weekEvents = [];
-
-                    // For 8 days from today
-                    for (let d = 0; d < weekDays.length; d++) {
-
-                        let count = 0;
-
-                        // TODO fix this //////
-                        weekEvents[d] = {}; // initialise object
-                        weekEvents[d].date = new Date(weekDays[d].dt * 1000); // Get the date for that day
-                        /////////
-
-                        // for each calendar event
-                        for (let e = 0; e < this.retrieved.length; e++) {
-
-                            const startingDay = new Date(this.retrieved[e].startDateTime);
-                            const endingDay = new Date(this.retrieved[e].endDateTime);
-
-                            if (weekDays[d].date >= startingDay && weekEvents[d].date < endingDay) {
-
-                                weekEvents[count] = this.retrieved[e];
-                                count++;
-
-                            }
-                        }
-                        return weekEvents; // DEBUG
-                    }
-                },
                 display: function () {}
             }
         }
@@ -171,17 +137,15 @@ $(function () {
 /* SINGLE API PROMISE CHAIN */
 
 // wrapping promise chain into a function to set the variable scope
-function retrieveApiData(configurationArray, index) {
+function retrieveApiData(configArray, i) {
     "use strict";
 
-    const subConfiguration = configurationArray[index];
-
-    return getGeolocation(subConfiguration) // "return" the chain to make it a promise!
+    return getGeolocation(configArray[i]) // "return" the chain to make it a promise!
         .catch(function (error) {
             console.log(error.message);
         })
         .then(function (geolocationResponse) {
-            return setCoordinates(subConfiguration, geolocationResponse);
+            return setCoordinates(configArray[i], geolocationResponse);
         })
         .then(function (coordinatesIncluded) {
             return setUrl(coordinatesIncluded); // set the coordinates (Geolocation/default)
@@ -193,7 +157,7 @@ function retrieveApiData(configurationArray, index) {
             return apiResponse.json(); // parse the data as an object
         })
         .then(function (apiData) {
-            return storeData(subConfiguration, apiData); // return a promise that stores the data
+            return storeData(configArray[i], apiData); // return a promise that stores the data
         })
         //  Separate error Handling
         .catch(function (error) {
@@ -310,19 +274,49 @@ function storeData(configObj, apiDataObj) {
 
 /* PROCESSING */
 
-function filterWeekEvents(configObj) {
+// Narrow the list of events to the next 8 days
+function filterWeekEvents(configArray) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
-            console.log("filterWeekEvents() executed"); // DEBUG
-            //            configObj.data.filtered = configObj.data.filter() ; // TODO comment
+            let calendarData = configArray[2].data,
+                nextDays = configArray[0].data.retrieved.daily,
+                comingEvents = [];
 
-            if (configObj) {
-                resolve(configObj);
+            // For 8 days from today
+            for (let d = 0; d < nextDays.length; d++) {
+                let count = 0;
+
+                comingEvents[d] = {}; // initialise object
+                comingEvents[d].date = new Date(nextDays[d].dt * 1000); // Get the date for that day
+                comingEvents[d].events = [];
+
+                // for each event of the council calendar
+                for (let e = 0; e < calendarData.retrieved.length; e++) {
+                    const startDate = new Date(calendarData.retrieved[e].startDateTime);
+                    const endDate = new Date(calendarData.retrieved[e].endDateTime);
+
+                    // if the event is ongoing
+                    if (comingEvents[d].date >= startDate && comingEvents[d].date < endDate) {
+                        comingEvents[d].events[count] = calendarData.retrieved[e]; // Add the event to the list of events that day
+                        count++;
+                    }
+                }
+            }
+
+//            console.log(comingEvents); // DEBUG
+            calendarData.filtered = comingEvents;
+
+            // TODO Understand the variable true value and scope
+            //            console.log(nextDays);
+            //            console.log(configArray[0].data.retrieved.daily);
+
+            if (configArray) {
+                resolve(configArray);
             } else {
-                reject(new Error("The data could not be filtered"));
+                reject(new Error("The calendar data could not be filtered"));
             }
 
         });
