@@ -333,23 +333,29 @@ function displayCurrent(configArray) {
     "use strict";
 
     var weatherData = configArray[0].data.raw,
-        i = "0",
-        timeTags = [],
-        dateTags = [],
-        temperatureTags = [],
+        currentTimeTags = [],
+        currentDateTags = [],
+
+        eventImageTags = [],
+        titleTags = [],
+        locationTags = [],
+        dateTimeFormattedTags = [],
         descriptionTags = [],
+        venueTags = [],
+//        temperatureTags = [],
         currentDateTime = "",
         currentTime = "",
         currentDate = "",
-        currentTemperature = "",
-        currentDescription = "";
+        description = "",
+//        currentTemperature = "",
+        i = "0";
 
 
     // Register the tags to change
-    dateTags = $(".currentDate");
-    timeTags = $(".currentTime");
-    temperatureTags = $(".temperature");
+    currentDateTags = $(".currentDate");
+    currentTimeTags = $(".currentTime");
     descriptionTags = $(".description");
+//    temperatureTags = $(".temperature");
 
     //Create new date and time object (*1000 to get milliseconds)
     currentDateTime = new Date(weatherData.current.dt * 1000);
@@ -357,28 +363,28 @@ function displayCurrent(configArray) {
     // Create separate strings
     currentDate = currentDateTime.toDateString();
     currentTime = currentDateTime.toTimeString().substr(0, 5);
-    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
-    currentDescription = weatherData.current.weather[0].description;
+    description = weatherData.current.weather[0].description;
+//    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
 
 
     // REPLACE content with textContent
     // Does not parse the string which Prevents HTML injection
     // Overwrites all the children nodes with one text node
 
-    for (i = 0; i < dateTags.length; i++) {
-        dateTags[i].textContent = currentDate;
+    for (i = 0; i < currentDateTags.length; i++) {
+        currentDateTags[i].textContent = currentDate;
     }
 
-    for (i = 0; i < timeTags.length; i++) {
-        timeTags[i].textContent = currentTime;
+    for (i = 0; i < currentTimeTags.length; i++) {
+        currentTimeTags[i].textContent = currentTime;
     }
 
-    for (i = 0; i < temperatureTags.length; i++) {
-        temperatureTags[i].textContent = currentTemperature;
-    }
+//    for (i = 0; i < temperatureTags.length; i++) {
+//        temperatureTags[i].textContent = currentTemperature;
+//    }
 
     for (i = 0; i < descriptionTags.length; i++) {
-        descriptionTags[i].textContent = currentDescription;
+        descriptionTags[i].textContent = description;
     }
 
 
