@@ -135,7 +135,7 @@ main em {
     clear: both;
 }
 
-.forecast p.date {
+.forecast p.currentDate {
     text-align: center;
 }
 

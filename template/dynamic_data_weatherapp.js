@@ -84,8 +84,8 @@ function dailyTable(weatherData) {
         d = weatherData.daily[i]; // data for that day
         currentWeek[i] = {}; // initialise object
 
-        currentWeek[i].date = new Date(d.dt * 1000); // Get the date of that day
-        currentWeek[i].day = days[currentWeek[i].date.getDay()];
+        currentWeek[i].currentDate = new Date(d.dt * 1000); // Get the date of that day
+        currentWeek[i].day = days[currentWeek[i].currentDate.getDay()];
         currentWeek[i].minTemperature = Math.round(d.temp.min);
         currentWeek[i].maxTemperature = Math.round(d.temp.max);
         currentWeek[i].description = d.weather[0].description;
@@ -216,8 +216,8 @@ function hourlyTable(weatherData) {
         d = weatherData.hourly[i]; // data for that hour
         next48Hours[i] = {}; // initialise object
 
-        next48Hours[i].date = new Date(d.dt * 1000); // Get the date of that day
-        next48Hours[i].hour = next48Hours[i].date.toTimeString().substr(0, 5);
+        next48Hours[i].currentDate = new Date(d.dt * 1000); // Get the date of that day
+        next48Hours[i].hour = next48Hours[i].currentDate.toTimeString().substr(0, 5);
         next48Hours[i].temperature = Math.round(d.temp);
         next48Hours[i].description = d.weather[0].description;
 
@@ -292,8 +292,8 @@ function minutelyTable(weatherData) {
         d = weatherData.minutely[i]; // data for that minute
         next60minutes[i] = {}; // initialise object
 
-        next60minutes[i].date = new Date(d.dt * 1000); // Get the date of that minute
-        next60minutes[i].minute = next60minutes[i].date.getMinutes();
+        next60minutes[i].currentDate = new Date(d.dt * 1000); // Get the date of that minute
+        next60minutes[i].minute = next60minutes[i].currentDate.getMinutes();
         next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
         next60minutes[i].precipitation = d.precipitation;
 
@@ -367,8 +367,8 @@ function currentMarkup(weatherData) {
 
 
     // Register the tags to change
-    dateTags = $(".date");
-    timeTags = $(".time");
+    dateTags = $(".currentDate");
+    timeTags = $(".currentTime");
     temperatureTags = $(".temperature");
     descriptionTags = $(".description");
 

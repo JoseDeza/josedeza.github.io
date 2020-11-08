@@ -283,7 +283,7 @@ function filterCalendar(configArray) {
                 let count = 0;
 
                 calendarData.filtered[d] = {}; // initialise object
-                calendarData.filtered[d].date = new Date(nextDays[d].dt * 1000); // Get the date for that day
+                calendarData.filtered[d].currentDate = new Date(nextDays[d].dt * 1000); // Get the date for that day
                 calendarData.filtered[d].events = [];
 
                 // for each event of the council calendar
@@ -292,7 +292,7 @@ function filterCalendar(configArray) {
                     const endDate = new Date(calendarData.raw[e].endDateTime);
 
                     // if the event is ongoing
-                    if (calendarData.filtered[d].date >= startDate && calendarData.filtered[d].date < endDate) {
+                    if (calendarData.filtered[d].currentDate >= startDate && calendarData.filtered[d].currentDate < endDate) {
                         calendarData.filtered[d].events[count] = calendarData.raw[e]; // Add the event to the list of events that day
                         count++;
                     }
@@ -327,42 +327,6 @@ function displayCalendar(configArray) {
 
 /*****/
 
-// Display the location Name
-function displayLocation(configArray) {
-
-    "use strict";
-
-    var i = 0,
-        locationComponents = {},
-        locationName = "",
-        locationTags = [];
-
-
-    locationComponents = configArray.results[i].components;
-
-    // Retrieved the city or town name depending on the data output
-    if (locationComponents.city) {
-        locationName = locationComponents.city;
-    } else if (locationComponents.town) {
-        locationName = locationComponents.town;
-    }
-
-    //        locationTag = $("<h1>").html(locationName); // Set the tag to display the time and date // html() vs text()
-    //        $("#current").append(locationTag); // Display the time and date
-
-
-    locationTags = $(".location");
-
-    for (i = 0; i < locationTags.length; i++) {
-        locationTags[i].textContent = locationName;
-    }
-
-//    console.log(configArray); //DEBUG
-
-}
-
-/*****/
-
 // Generate the Current weather report
 function displayCurrent(configArray) {
 
@@ -382,8 +346,8 @@ function displayCurrent(configArray) {
 
 
     // Register the tags to change
-    dateTags = $(".date");
-    timeTags = $(".time");
+    dateTags = $(".currentDate");
+    timeTags = $(".currentTime");
     temperatureTags = $(".temperature");
     descriptionTags = $(".description");
 
@@ -450,8 +414,8 @@ function displayMinutely(configArray) {
         d = weatherData.minutely[i]; // data for that minute
         next60minutes[i] = {}; // initialise object
 
-        next60minutes[i].date = new Date(d.dt * 1000); // Get the date of that minute
-        next60minutes[i].minute = next60minutes[i].date.getMinutes();
+        next60minutes[i].currentDate = new Date(d.dt * 1000); // Get the date of that minute
+        next60minutes[i].minute = next60minutes[i].currentDate.getMinutes();
         next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
         next60minutes[i].precipitation = Math.round(d.precipitation);
 
@@ -526,8 +490,8 @@ function displayHourly(configArray) {
         d = weatherData.hourly[i]; // data for that hour
         next48Hours[i] = {}; // initialise object
 
-        next48Hours[i].date = new Date(d.dt * 1000); // Get the date of that day
-        next48Hours[i].hour = next48Hours[i].date.toTimeString().substr(0, 5);
+        next48Hours[i].currentDate = new Date(d.dt * 1000); // Get the date of that day
+        next48Hours[i].hour = next48Hours[i].currentDate.toTimeString().substr(0, 5);
         next48Hours[i].temperature = Math.round(d.temp);
         next48Hours[i].description = d.weather[0].description;
 
@@ -611,8 +575,8 @@ function displayDaily(configArray) {
         d = weatherData.daily[i]; // data for that day
         currentWeek[i] = {}; // initialise object
 
-        currentWeek[i].date = new Date(d.dt * 1000); // Get the date of that day
-        currentWeek[i].day = days[currentWeek[i].date.getDay()];
+        currentWeek[i].currentDate = new Date(d.dt * 1000); // Get the date of that day
+        currentWeek[i].day = days[currentWeek[i].currentDate.getDay()];
         currentWeek[i].minTemperature = Math.round(d.temp.min);
         currentWeek[i].maxTemperature = Math.round(d.temp.max);
         currentWeek[i].description = d.weather[0].description;
