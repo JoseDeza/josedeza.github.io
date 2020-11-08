@@ -46,8 +46,8 @@ $(function () {
             },
             data: {
                 retrieved: {},
-                sorted: {},
-                sort: function () {},
+                filtered: {},
+                filter: function () {},
                 display: function () {}
             }
         },
@@ -76,8 +76,8 @@ $(function () {
             },
             data: {
                 retrieved: {},
-                sorted: {},
-                sort: function () {},
+                filtered: {},
+                filter: function () {},
                 display: function () {}
             }
         },
@@ -106,8 +106,8 @@ $(function () {
             },
             data: {
                 retrieved: {},
-                sorted: {},
-                sort: function () {
+                filtered: {},
+                filter: function () {
 
                     // Narrow the list of events to the next 7 days
                     let weekDays = configArray[0].data.retrieved.daily,
@@ -160,7 +160,7 @@ $(function () {
         .then(function (configured) {
             // Work with updated configuration
             console.log(configured); // DEBUG
-            return sortWeekEvents(configured);
+            return filterWeekEvents(configured);
         })
 
 
@@ -297,7 +297,7 @@ function storeData(configObj, apiDataObj) {
     return new Promise(
         function (resolve, reject) {
 
-            configObj.data.sort() = apiDataObj; // store the fetched Data in the relevant configuration field
+            configObj.data.retrieved = apiDataObj; // store the fetched Data in the relevant configuration field
 
             if (configObj) {
                 resolve(configObj);
@@ -310,18 +310,19 @@ function storeData(configObj, apiDataObj) {
 
 /* PROCESSING */
 
-function sortWeekEvents(configObj) {
+function filterWeekEvents(configObj) {
     "use strict";
 
     return new Promise(
         function (resolve, reject) {
 
-            configObj.data.sorted = configObj.data.sort() ; // TODO comment
+            console.log("filterWeekEvents() executed"); // DEBUG
+            //            configObj.data.filtered = configObj.data.filter() ; // TODO comment
 
             if (configObj) {
                 resolve(configObj);
             } else {
-                reject(new Error("The data could not be sorted"));
+                reject(new Error("The data could not be filtered"));
             }
 
         });
