@@ -283,7 +283,7 @@ function filterCalendar(configArray) {
                 let count = 0;
 
                 calendarData.filtered[d] = {}; // initialise object
-                calendarData.filtered[d].currentDate = new Date(nextDays[d].dt * 1000); // Get the date for that day
+                calendarData.filtered[d].date = new Date(nextDays[d].dt * 1000); // Get the date for that day
                 calendarData.filtered[d].events = [];
 
                 // for each event of the council calendar
@@ -292,7 +292,7 @@ function filterCalendar(configArray) {
                     const endDate = new Date(calendarData.raw[e].endDateTime);
 
                     // if the event is ongoing
-                    if (calendarData.filtered[d].currentDate >= startDate && calendarData.filtered[d].currentDate < endDate) {
+                    if (calendarData.filtered[d].date >= startDate && calendarData.filtered[d].date < endDate) {
                         calendarData.filtered[d].events[count] = calendarData.raw[e]; // Add the event to the list of events that day
                         count++;
                     }
@@ -327,64 +327,69 @@ function displayCalendar(configArray) {
 
 /*****/
 
+// TODO Create a function to populate the relevant tags based on the class
+function populateTags(className, configArray, index) {
+    "use strict";
+
+
+
+}
+
 // Generate the Current weather report
 function displayCurrent(configArray) {
-
     "use strict";
 
     var weatherData = configArray[0].data.raw,
+        calendarWeekData = configArray[2].data.filtered,
+        date = new Date(weatherData.current.dt * 1000), // instead of just Date() to keep consistency with weather data
+
         currentTimeTags = [],
         currentDateTags = [],
-
         eventImageTags = [],
         titleTags = [],
         locationTags = [],
         dateTimeFormattedTags = [],
         descriptionTags = [],
         venueTags = [],
-//        temperatureTags = [],
-        currentDateTime = "",
+        temperatureTags = [],
+
+        currentTemperature = "",
         currentTime = "",
         currentDate = "",
-        description = "",
-//        currentTemperature = "",
-        i = "0";
+        description = "";
 
 
     // Register the tags to change
     currentDateTags = $(".currentDate");
     currentTimeTags = $(".currentTime");
+    titleTags = $(".title");
+    locationTags = $(".location");
+    dateTimeFormattedTags = $(".dateTimeFormatted");
     descriptionTags = $(".description");
-//    temperatureTags = $(".temperature");
-
-    //Create new date and time object (*1000 to get milliseconds)
-    currentDateTime = new Date(weatherData.current.dt * 1000);
+    venueTags = $(".venue");
+    temperatureTags = $(".currentTemperature");
 
     // Create separate strings
-    currentDate = currentDateTime.toDateString();
-    currentTime = currentDateTime.toTimeString().substr(0, 5);
-    description = weatherData.current.weather[0].description;
-//    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
+    currentDate = date.toDateString();
+    currentTime = date.toTimeString().substr(0, 5);
+    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
+    description = calendarWeekData[0].events[0].description;
 
-
-    // REPLACE content with textContent
-    // Does not parse the string which Prevents HTML injection
-    // Overwrites all the children nodes with one text node
-
-    for (i = 0; i < currentDateTags.length; i++) {
+    // overwrite tag nodes with updated ones
+    for (let i = 0; i < currentDateTags.length; i++) {
         currentDateTags[i].textContent = currentDate;
     }
 
-    for (i = 0; i < currentTimeTags.length; i++) {
+    for (let i = 0; i < currentTimeTags.length; i++) {
         currentTimeTags[i].textContent = currentTime;
     }
 
-//    for (i = 0; i < temperatureTags.length; i++) {
-//        temperatureTags[i].textContent = currentTemperature;
-//    }
+    for (let i = 0; i < temperatureTags.length; i++) {
+        temperatureTags[i].textContent = currentTemperature;
+    }
 
-    for (i = 0; i < descriptionTags.length; i++) {
-        descriptionTags[i].textContent = description;
+    for (let i = 0; i < descriptionTags.length; i++) {
+        descriptionTags[i].innerHTML = description;
     }
 
 
@@ -472,7 +477,7 @@ function displayMinutely(configArray) {
     $("#minutely div").append(table1);
     $("#minutely div").append(table2);
 
-//    console.log(next60minutes); //DEBUG
+    //    console.log(next60minutes); //DEBUG
 
 }
 
@@ -548,7 +553,7 @@ function displayHourly(configArray) {
     $("#hourly div").append(table1);
     $("#hourly div").append(table2);
 
-//    console.log(next48Hours); //DEBUG
+    //    console.log(next48Hours); //DEBUG
 
 }
 
@@ -689,6 +694,6 @@ function displayDaily(configArray) {
     $("#daily div").append(graph);
 
 
-//    console.log(currentWeek); //DEBUG
+    //    console.log(currentWeek); //DEBUG
 
 }
