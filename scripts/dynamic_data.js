@@ -44,9 +44,10 @@ $(function () {
                     return apiCall;
                 } // Url to call
             },
-            response: {
-                data: {},
-                process: function () {},
+            data: {
+                retrieved: {},
+                sorted: {},
+                sort: function () {},
                 display: function () {}
             }
         },
@@ -73,9 +74,10 @@ $(function () {
                     return apiCall;
                 } // Url to call
             },
-            response: {
-                data: {},
-                process: function () {},
+            data: {
+                retrieved: {},
+                sorted: {},
+                sort: function () {},
                 display: function () {}
             }
         },
@@ -102,9 +104,49 @@ $(function () {
                     return apiCall;
                 } // Url to call
             },
-            response: {
-                data: {},
-                process: function () {},
+            data: {
+                retrieved: {},
+                sorted: {},
+                sort: function () {
+
+                    "use strict";
+                    console.log("sortWeek()"); //DEBUG
+
+                    return new Promise(
+                        function (resolve, reject) {
+
+                            // Narrow the list of events to the next 8 days
+                            let weatherData = configArray[0].data.retrieved,
+                                weekEvents = []; // Valid events for the next 8 days (based on Open Weather daily data)
+
+                            // Each day, for 8 days from today
+                            for (let day = 0; day < weatherData.daily.length; day++) {
+
+                                let date = new Date(weatherData.daily[day].dt * 1000), // set the day's date
+                                    eventCount = 0, // reset the day's events array index
+                                    weekEvents[day] = {}; // Initialise the data object
+
+                                // for each calendar event
+                                for (let event = 0; event < this.retrieved.length; event++) {
+
+                                    const startingDay = new Date(calendarData[event].startDateTime);
+                                    const endingDay = new Date(calendarData[event].endDateTime);
+
+                                    if (date >= startingDay && date < endingDay) {
+
+
+                                        eventCount++; // increment array index
+
+                                    }
+                                }
+
+                                this.sorted[day] = weekEvents[day]; // Store the events for that day
+                            }
+
+                            console.log(calendarData); // DEBUG
+
+                        });
+                },
                 display: function () {}
             }
         }
@@ -115,18 +157,18 @@ $(function () {
     // TODO Check if it is better practice to initialise the array length before adding elements
     //    promisesToSync.length = l;
 
+    // Initialise the data retrieving for each API
     for (let i = 0; i < configuration.length; i++) {
-        promisesToSync[i] = retrieveApiData(configuration, i); // Works fine to add the element to the array (intuition: JavaScripts Arrays are Objects!)
+        promisesToSync[i] = retrieveApiData(configuration, i); // Works fine to add the element to the array as with any Object
     }
 
+    // Wait for all the data to be retrieved
+    // Then process the data as a whole
     Promise.all(promisesToSync)
         .then(function (configured) {
-
             // Work with updated configuration
             console.log(configured); // DEBUG
-            targetNextDays(configured);
-
-            return configured;
+            return sortWeek(configured);
         })
 
 
@@ -134,7 +176,7 @@ $(function () {
 // CLOSE
 
 
-/* PROMISE CHAIN */
+/* SINGLE API PROMISE CHAIN */
 
 // wrapping promise chain into a function to set the variable scope
 function retrieveApiData(configurationArray, index) {
@@ -263,7 +305,7 @@ function storeData(configObj, apiDataObj) {
     return new Promise(
         function (resolve, reject) {
 
-            configObj.response.data = apiDataObj; // store the fetched Data in the relevant configuration field
+            configObj.data.retrieved = apiDataObj; // store the fetched Data in the relevant configuration field
 
             if (configObj) {
                 resolve(configObj);
@@ -276,51 +318,37 @@ function storeData(configObj, apiDataObj) {
 
 /* PROCESSING */
 
-function processLocationName(locationDataObj) {
+function sortWeek(configArray) {
 
     "use strict";
-    console.log("processLocationName()"); //DEBUG
-
-
-
-}
-
-function processWeather(weatherDataObj) {
-
-    "use strict";
-    //    console.log("processWeather()"); //DEBUG
-
-}
-
-function targetNextDays(configArray) {
-
-    "use strict";
-    //console.log("targetNextDays()"); //DEBUG
+    //console.log("sortWeek()"); //DEBUG
 
     return new Promise(
         function (resolve, reject) {
 
             // Narrow the list of events to the next 7 days
             let currentWeek = [],
-                weatherData = configArray[0].response.data,
-                calendarData = configArray[2].response.data;
+                weatherData = configArray[0].data.retrieved,
+                calendarData = configArray[2].data.retrieved;
 
+            // For 8 days from today
             for (let i = 0; i < weatherData.daily.length; i++) {
 
-                currentWeek[i] = {}; // initialise object
-                currentWeek[i].date = new Date(weatherData.daily[i].dt * 1000); // Get the date of that day
-//                currentWeek[i].date = new Date("2020-12-30T00:00:00"); // DEBUG
-//                console.log(currentWeek[i]); // DEBUG
+                let count = 0;
 
+                currentWeek[i] = {}; // initialise object
+                currentWeek[i].date = new Date(weatherData.daily[i].dt * 1000); // Get the date for that day
+
+                // for each calendar event
                 for (let j = 0; j < calendarData.length; j++) {
 
                     const eventStart = new Date(calendarData[j].startDateTime);
                     const eventEnd = new Date(calendarData[j].endDateTime);
 
                     if (currentWeek[i].date >= eventStart && currentWeek[i].date < eventEnd) {
-//                        console.log(calendarData[j]); // DEBUG
-//                        console.log(eventStart); // DEBUG
-//                        console.log(eventEnd); // DEBUG
+
+                        //                        console.log(calendarData[j]); // DEBUG
+                        configArray[2].data.processed[count] = calendarData[j];
 
                     }
                 }
@@ -329,9 +357,7 @@ function targetNextDays(configArray) {
 }
 
 
-
-
-/* MARKING */
+/* MARKING UP */
 
 // Display the calendar data
 function calendarMarkup(calendarData) {

@@ -1,0 +1,12 @@
+References:
+
+Promise Chain
+// Article:		https://www.digitalocean.com/community/tutorials/javascript-promises-for-dummies
+// Code:		https://jsbin.com/nifocu/1/edit?js,console
+
+Geolocation promise wrapping
+// Code:		https://gist.github.com/varmais/74586ec1854fe288d393
+
+Promise All
+// Article:		https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises
+// Code:		https://github.com/mdn/learning-area/blob/master/javascript/asynchronous/promises/promise-finally.html

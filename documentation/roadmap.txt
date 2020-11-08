@@ -1,0 +1,69 @@
+Trying to keep everything modular.
+
+Using weather date system instead of current Date() to base all data on common variables, to prevent contradictory information arising.
+
+Thought about using an event system to decouple dependencies between API channels.
+
+Meanwhile, processing all the data together to emphasize the  dependencies.
+
+
+
+DEVELOPEMENT:
+------------
+
+SORT THE DATA
+(1st - each time a visitor opens the app / On the weekly data to start)
+(2nd - On the server side / only when the remote calendar data has changed)
+> Narrow the list of events to the next 7 days:
+
+for each event in the array
+    for each of the seven next days dates
+        if the considered date is within the event period:  date >= response[i].startDateTime && date < response[i].endDateTime (on a per day basis)
+            record the event array index
+
+			
+DISPLAY THE DATA            
+> Filter the events to display based on set conditions
+            
+
+ENHANCE THE DATA
+> Detect outdoor events
+
+for each event in the array
+    search the following strings for "outdoor", "park", "garden", "street" etc. words and synonyms:
+    - response[i].title
+    - response[i].location
+    
+    loop
+    - response[i].customFields[j].value["..."]
+    ~response[i].customFields[j].label["Venue"] (value: "..." sibling of label: "venue")
+    ~response[i].customFields[j].label["Event Type"] (value: "..." sibling of label: "venue")
+
+> Add a property "outdoor" to each event (bool)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TO EXPLORE:
+-----------
+
+fetch data once per day? week? Month?
+store fetched data in a file?
+save fetched data as an object.
+do/not fetch data based on changes? (object comparison)
+recollect the opening and closing time of the events? (intelligent searching of the information fields)
