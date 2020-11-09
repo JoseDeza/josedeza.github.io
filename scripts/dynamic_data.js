@@ -384,6 +384,8 @@ function displayEvents(configArray) {
     let weatherData = configArray[0].data.raw,
         nextDays = configArray[2].data.filtered;
 
+
+
     setImageSource("eventImage", nextDays[0].events[0].eventImage.url);
 
     populateTags("currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);

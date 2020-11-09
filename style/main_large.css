@@ -13,7 +13,7 @@ nav {
     width: auto;
     margin: 5%;
     background-color: transparent;
-    /*    background-color: blue;*/
+/*        background-color: blue;*/
 }
 
 nav li {
@@ -23,6 +23,15 @@ nav li {
 
 nav li:hover {
     color: #fff;
+}
+
+#locality {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#locality li {
+    color: #000;
 }
 
 main,
@@ -46,24 +55,6 @@ main {
 }
 
 /*tmp*/
-/*
-main h3 {
-    font-weight: bold;
-    font-size: 1.5em;
-    margin-bottom: .7em;
-}
-*/
-
-/*tmp*/
-/*
-main h4 {
-    font-size: 1.3em;
-    margin: .7em 0;
-    margin-left: .7em;
-}
-*/
-
-/*tmp*/
 main div strong {
     font-weight: bold;
 }
@@ -76,8 +67,6 @@ main blockquote {
 /*tmp*/
 main p {
     margin: 0 2em 2%;
-}
-
 }
 
 /*tmp*/
@@ -174,19 +163,6 @@ main em {
 .forecast a.link:hover {
     color: #00A4FF;
     border-bottom: 1px solid rgba(0, 164, 255, .3);
-}
-
-.forecast h3 {
-    font-family: Garamond, serif;
-    font-size: 1.1em;
-    color: #999;
-    margin: 1% 2% 8%;
-}
-
-.forecast h4 {
-    font-size: 1.5em;
-    text-align: center;
-    margin: 0 2em 5%;
 }
 
 .forecast img {

@@ -53,11 +53,13 @@ nav li,
 }
 
 #locality {
-    background-color: #ddd;
-    border: 2px solid rgba(127, 127, 127, .4);
+    background-color: rgba(127, 127, 127, 1);
+    box-shadow: 0 0 0 5px rgba(127, 127, 127, .5)
 }
 
-#locality li {}
+#locality li {
+    color: #fff;
+}
 
 nav li {
     color: #aaa;
@@ -119,15 +121,13 @@ main section {
     padding: 1%;
 }
 
-/*
-}main section {
+main section {
     display: none;
 }
 
 main section:target {
     display: block;
 }
-*/
 
 main:last-child,
 .forecast:last-child {
@@ -256,24 +256,26 @@ main {
 }
 
 main h1 {
-    font-size: 2em;
     font-weight: bold;
-    margin: 5%;
+    margin: 0 5% 1.2em;
 }
 
 main h2 {
-    font-size: 1.6em;
-    margin: 4%;
+    margin: 0 5% .4em;
 }
 
 main h3 {
-    font-size: 1.4em;
-    margin: 4%;
+    margin: 0 5% 1.2em;
+    color: #999;
 }
 
 main h4 {
-    font-size: 1.2em;
-    margin: 3%;
+    margin: 0 5% .8em;
+}
+
+main p {
+    margin: 0 5% .8em;
+
 }
 
 main strong {
@@ -282,10 +284,6 @@ main strong {
 
 main blockquote {
     text-align: center;
-}
-
-main p {
-    margin: 0 3% .8em;
 }
 
 main ul {
@@ -302,7 +300,7 @@ main em {
 }
 
 /*TODO replace this quick fix*/
-main img{
+main img {
     padding-top: 5%;
 }
 
