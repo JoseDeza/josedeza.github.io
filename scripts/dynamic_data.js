@@ -81,7 +81,7 @@ $(function () {
                 settings: {
                     label: "Calendar",
                     useGeolocation: false, // Get Geolocation coordinates
-                    useFile: false // Use a local json file instead of calling the API
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -120,9 +120,9 @@ $(function () {
             console.log(configured);
             return filterCalendar(configured);
         })
-//        .then(function (filtered) {
-//            return displayCalendar(filtered);
-//        })
+        .then(function (filtered) {
+            return displayCalendar(filtered);
+        })
         .catch(function (error) {
             console.error(error.message);
         });
@@ -320,15 +320,21 @@ function filterCalendar(configArray) {
 function displayCalendar(configArray) {
     "use strict";
 
-    // TODO change to promise chain for later optimisation (ref. line 409)
-    // (in case the content is ready to be set before the markup is done
-    setEventsMarkup(configArray); // set the page tags
-    displayLocalInfo(configArray); // display the current time, temperature, location etc.
-    setEventsContent(configArray); // set the events content
-    displayDaily(configArray); // dusplay daily weather forecast
+    return new Promise(
+        function (resolve, reject) {
 
-    console.log(configArray); //DEBUG
+            setEventsMarkup(configArray); // set the page tags
+            displayLocalInfo(configArray); // display the current time, temperature, location etc.
+            displayWeekWeather(configArray); // dusplay daily weather forecast
+            displayEventsContent(configArray); // set the events content
 
+            if (configArray) {
+                resolve(configArray);
+            } else {
+                reject(new Error("The calendar could not be display."));
+            }
+
+        });
 }
 
 /*****/
@@ -337,26 +343,44 @@ function displayCalendar(configArray) {
 function displayLocalInfo(configArray) {
     "use strict";
 
-    let weatherData = configArray[0].data.raw;
+    return new Promise(
+        function (resolve, reject) {
 
-    populateTags(".currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
+            let weatherData = configArray[0].data.raw;
 
-    populateTags(".currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+            populateTags(".currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
 
-    populateTags(".currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
+            populateTags(".currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+
+            populateTags(".currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
+
+
+            if (configArray) {
+                resolve(configArray);
+            } else {
+                reject(new Error("The local info could not be displayed."));
+            }
+
+        });
+
+
 }
 
 /*****/
 
 // TODO Generate Events Markup
 function setEventsMarkup(configArray) {
+    "use strict"
 
-    let nextEvents = configArray[2].data.filtered[0].events;
+    return new Promise(
+        function (resolve, reject) {
 
-    nextEvents.forEach(function (event, index) {
-        document.getElementById("events").innerHTML +=
+            let nextEvents = configArray[2].data.filtered[0].events;
 
-            `<div id="event${index}" class="forecast clearFloats">
+            nextEvents.forEach(function (event, index) {
+                document.getElementById("events").innerHTML +=
+
+                    `<div id="event${index}" class="forecast clearFloats">
                         <img src="" alt="" class="eventImage">
                         <h1 class="title"></h1>
                         <h2 class="location"></h2>
@@ -364,216 +388,102 @@ function setEventsMarkup(configArray) {
                         <p class="description"></p>
                         <p class="venue"></p>
                     </div>`;
-    });
+            });
+
+            if (configArray) {
+                resolve(configArray);
+            } else {
+                reject(new Error("The HTML markup for the events could not be generated."));
+            }
+
+        });
 }
 
+// TODO fix BUG when there is no content or invlaid
 // populate the relevant tags based on the class name / requires Jquery
-function populateTags(selectorsCss, content, isHtmlBool) {
+function populateTags(selectorsCss, content) {
     "use strict";
 
-    let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
+    return new Promise(
+        function (resolve, reject) {
 
-    // overwrite tag nodes with updated ones
-    for (let i = 0; i < tags.length; i++) {
+            let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
 
-        if (isHtmlBool)
-            tags[i].innerHTML = content;
-        else
-            //            tags[i].textContent = content;
-            tags[i].innerHTML = content;
+            // TODO check is there is a more secure alternative than innerHTML
+            // overwrite tag nodes with updated ones
+            for (let i = 0; i < tags.length; i++) {
+                tags[i].innerHTML = content;
+            }
 
-    }
+            if (tags) {
+                resolve(tags);
+            } else {
+                reject(new Error("The content could not be populated completely."));
+            }
+
+        });
 }
 
+// TODO fix BUG when there is no url or invlaid
 // populate the images based on the url attributes / requires Jquery
 function setImageSource(selectorsCss, url) {
     "use strict";
 
-    let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
+    return new Promise(
+        function (resolve, reject) {
 
-    // overwrite tag nodes with updated ones
-    for (let i = 0; i < tags.length; i++)
-        tags[i].src = url;
+            let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
+
+            // overwrite tag nodes with updated ones
+            for (let i = 0; i < tags.length; i++) {
+                tags[i].src = url;
+            }
+
+            if (tags) {
+                resolve(tags);
+            } else {
+                reject(new Error("The images sources could not all be set."));
+            }
+        });
 }
 
 // TODO optimise this process!
 // Set the events content
-function setEventsContent(configArray) {
+function displayEventsContent(configArray) {
     "use strict";
 
-    let nextEvents = configArray[2].data.filtered[0].events;
+    return new Promise(
+        function (resolve, reject) {
 
-    nextEvents.forEach(function (event, index) {
+            let nextEvents = configArray[2].data.filtered[0].events;
 
-        setImageSource(`#event${index} .eventImage`, event.eventImage.url);
+            nextEvents.forEach(function (event, index) {
 
-        populateTags(`#event${index} .title`, event.title, false);
+                setImageSource(`#event${index} .eventImage`, event.eventImage.url); // TODO Fix this when no evemtImage
 
-        populateTags(`#event${index} .location`, event.location, false);
+                populateTags(`#event${index} .title`, event.title);
 
-        populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted, false);
+                populateTags(`#event${index} .location`, event.location);
 
-        populateTags(`#event${index} .description`, event.description, true);
+                populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted);
 
-        //    populateTags(`#event${index} .venue`, nextDays[0].events[index].venue, false); // TODO create venue object
+                populateTags(`#event${index} .description`, event.description);
 
-    });
-}
+                //    populateTags(`#event${index} .venue`, nextDays[0].events[index].venue); // TODO create venue object
 
-// Generate the Minutely weather forecast table
-function displayMinutely(configArray) {
+            });
 
-    "use strict";
+            if (configArray) {
+                resolve(configArray);
+            } else {
+                reject(new Error("The events could not all be displayed."));
+            }
 
-    var weatherData = configArray[0].data.raw,
-        i = 0,
-        l = weatherData.minutely.length,
-        d = {},
-        next60minutes = [],
-        row = "",
-        table1 = "",
-        table2 = "";
-
-    // Record the relevant data in an arrray of objects
-    for (i = 0; i < l; i += 5) {
-
-        d = weatherData.minutely[i]; // data for that minute
-        next60minutes[i] = {}; // initialise object
-
-        next60minutes[i].currentDate = new Date(d.dt * 1000); // Get the date of that minute
-        next60minutes[i].minute = next60minutes[i].currentDate.getMinutes();
-        next60minutes[i].passedMinutes = (next60minutes[i].minute + 60 - next60minutes[0].minute) % 60;
-        next60minutes[i].precipitation = Math.round(d.precipitation);
-
-    }
-
-    l = next60minutes.length;
-
-    // Set a New table
-    table1 = $("<table class='half-page stripped-format'>");
-    table2 = $("<table class='half-page stripped-format'>");
-
-    // Add data row by row
-    for (i = 0; i < 30; i += 5) {
-
-        //Set a new row
-        row = $("<tr>");
-
-        //Add name of the day in the row
-        if (i === 0) {
-            row.append("<th>For now</th>");
-        } else {
-            row.append("<th>In " + next60minutes[i].passedMinutes + " minutes</th>"); // Add the time
-        }
-
-        row.append("<td>" + next60minutes[i].precipitation + "% chances of rain</td>"); //Add the precipitation in the row
-        table1.append(row); //Add the row to the table
-
-    }
-
-    // Add data row by row
-    for (i = 30; i < 60; i += 5) {
-
-
-        //Set a new row
-        row = $("<tr>");
-
-        row.append("<th>In " + next60minutes[i].passedMinutes + " minutes</th>"); // Add the time
-        row.append("<td>" + next60minutes[i].precipitation + "% chances of rain</td>"); //Add the descritpion in the row
-        table1.append(row); //Add the row to the table
-
-        //Add the row to the table
-        table2.append(row);
-
-    }
-
-
-    //Add the the table
-    $("#minutely div").append(table1);
-    $("#minutely div").append(table2);
-
-    //    console.log(next60minutes); //DEBUG
-
-}
-
-// Generate the hourly weather forecast table
-function displayHourly(configArray) {
-
-    "use strict";
-
-    var weatherData = configArray[0].data.raw,
-        i = 0,
-        l = weatherData.hourly.length,
-        d = {},
-        next48Hours = [],
-        row = "",
-        table1 = "",
-        table2 = "";
-
-    // Record the relevant data in an arrray of objects
-    for (i = 0; i < l; i++) {
-
-        d = weatherData.hourly[i]; // data for that hour
-        next48Hours[i] = {}; // initialise object
-
-        next48Hours[i].currentDate = new Date(d.dt * 1000); // Get the date of that day
-        next48Hours[i].hour = next48Hours[i].currentDate.toTimeString().substr(0, 5);
-        next48Hours[i].temperature = Math.round(d.temp);
-        next48Hours[i].description = d.weather[0].description;
-
-    }
-
-    l = next48Hours.length;
-
-    // Set a New table
-    table1 = $("<table class='half-page stripped-format'>");
-    table2 = $("<table class='half-page stripped-format'>");
-
-    // Add data row by row
-    for (i = 0; i < 12; i++) {
-
-        //Set a new row
-        row = $("<tr>");
-
-        //Add name of the day in the row
-        if (i === 0) {
-            row.append("<th>For an hour</th>");
-        } else {
-            row.append("<th>At " + next48Hours[i].hour + "</th>"); // Add the time
-        }
-
-        row.append("<td>" + next48Hours[i].description + "</td>"); //Add the descritpion in the row
-        table1.append(row); //Add the row to the table
-
-    }
-
-    // Add data row by row
-    for (i = 12; i < 24; i++) {
-
-
-        //Set a new row
-        row = $("<tr>");
-
-        row.append("<th>At " + next48Hours[i].hour + "</th>"); // Add the time
-        row.append("<td>" + next48Hours[i].description + "</td>"); //Add the descritpion in the row
-        table1.append(row); //Add the row to the table
-
-        //Add the row to the table
-        table2.append(row);
-
-    }
-
-
-    //Add the the table
-    $("#hourly div").append(table1);
-    $("#hourly div").append(table2);
-
-    //    console.log(next48Hours); //DEBUG
-
+        });
 }
 
 // Generate the Daily weather forecast table
-function displayDaily(configArray) {
+function displayWeekWeather(configArray) {
 
     "use strict";
 
