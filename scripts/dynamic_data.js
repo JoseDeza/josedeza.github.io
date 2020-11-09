@@ -13,8 +13,8 @@ $(function () {
             {
                 settings: {
                     label: "Weather",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: false // Use a local json file instead of calling the API
+                    useGeolocation: true, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -54,7 +54,7 @@ $(function () {
             {
                 settings: {
                     label: "Location",
-                    useGeolocation: false, // Get Geolocation coordinates
+                    useGeolocation: true, // Get Geolocation coordinates
                     useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
@@ -82,8 +82,8 @@ $(function () {
             {
                 settings: {
                     label: "Calendar",
-                    useGeolocation: false, // Get Geolocation coordinates
-                    useFile: false // Use a local json file instead of calling the API
+                    useGeolocation: true, // Get Geolocation coordinates
+                    useFile: true // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
