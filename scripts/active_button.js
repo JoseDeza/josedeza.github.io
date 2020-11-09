@@ -10,9 +10,13 @@
 $(function () {
     "use strict";
 
-    // Add active class to the current button (highlight it)
+    // Display the "events" section on page load to overwrite stylesheet
+    window.onload = $("#events").css("display","block");
+
     let buttons = $("li.button");
 
+
+    // Add active class to the current button (highlight it)
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].onclick = function () {
             let current = $(".here");
