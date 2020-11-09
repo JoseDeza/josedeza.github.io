@@ -81,7 +81,7 @@ $(function () {
                 settings: {
                     label: "Calendar",
                     useGeolocation: false, // Get Geolocation coordinates
-                    useFile: true // Use a local json file instead of calling the API
+                    useFile: false // Use a local json file instead of calling the API
                 },
                 source: {
                     url: "",
@@ -117,11 +117,12 @@ $(function () {
     // Then process the data as a whole
     Promise.all(promisesToSync)
         .then(function (configured) {
+            console.log(configured);
             return filterCalendar(configured);
         })
-        .then(function (filtered) {
-            return displayCalendar(filtered);
-        })
+//        .then(function (filtered) {
+//            return displayCalendar(filtered);
+//        })
         .catch(function (error) {
             console.error(error.message);
         });
@@ -240,6 +241,8 @@ function setUrl(configObj) {
                 configObj.source.url = configObj.source.setApiCall(); // Set the relevant API call as url
             }
 
+            console.log(configObj.source.url);
+
             if (configObj) {
                 resolve(configObj);
             } else {
@@ -270,19 +273,6 @@ function storeData(configObj, apiDataObj) {
 
 
 /* FILTER */
-
-// TODO
-function streamlineCustomField(filteredDataObj) {
-
-    // for each custom field in event
-
-    // if there is a custom filed with label: "Venue"
-    //if(calendarData.filtered[day].events[i].customFields.label){
-    // ...eventsevents[i].venue = custom field "Venue" value.
-    //}
-
-
-}
 
 // Narrow the list of events to the next 8 days
 function filterCalendar(configArray) {
@@ -323,7 +313,6 @@ function filterCalendar(configArray) {
 
         });
 }
-
 
 /* DISPLAY */
 
