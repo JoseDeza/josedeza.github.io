@@ -429,13 +429,12 @@ function populateTags(selectorsCss, content) {
 function setImageSource(propertyName, eventObj, index) {
     "use strict";
 
-            let tags = $(`#event_${index} .${propertyName}`); // Find the tags (ref. line 383 for the id attribute)
+    let tags = $(`#event_${index} .${propertyName}`); // Find the tags (ref. line 383 for the id attribute)
 
-            // overwrite tag nodes with updated ones
-            for (let i = 0; i < tags.length; i++) {
-                if(eventObj[propertyName]) // if the sought property exists
-                tags[i].src = eventObj[propertyName].url; // Set the value of its property "url" as the image source
-            }
+    // if the sought property exists
+    if (eventObj[propertyName])
+        for (let i = 0; i < tags.length; i++)
+            tags[i].src = eventObj[propertyName].url; // Set the value of its property "url" as the image source
 }
 
 // TODO optimise this process!
@@ -452,13 +451,13 @@ function displayEventsContent(configArray) {
 
                 setImageSource("eventImage", event, index);
 
-                populateTags(`#event${index} .title`, event.title);
+                populateTags(`#event_${index} .title`, event.title);
 
-                populateTags(`#event${index} .location`, event.location);
-
-                populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted);
-
-                populateTags(`#event${index} .description`, event.description);
+                //                populateTags(`#event${index} .location`, event.location);
+                //
+                //                populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted);
+                //
+                //                populateTags(`#event${index} .description`, event.description);
 
                 //    populateTags(`#event${index} .venue`, nextDays[0].events[index].venue); // TODO create venue object
 
