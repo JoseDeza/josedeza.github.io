@@ -268,6 +268,20 @@ function storeData(configObj, apiDataObj) {
 
 /* FILTER */
 
+// TODO
+function streamlineCustomField(filteredDataObj) {
+
+    // for each custom field in event
+
+
+        // if there is a custom filed with label: "Venue"
+        //if(calendarData.filtered[day].events[i].customFields.label){
+        // ...eventsevents[i].venue = custom field "Venue" value.
+        //}
+
+
+}
+
 // Narrow the list of events to the next 8 days
 function filterCalendar(configArray) {
     "use strict";
@@ -327,7 +341,7 @@ function displayCalendar(configArray) {
 
 /*****/
 
-// TODO Create a function to populate the relevant tags based on the class
+// populate the relevant tags based on the class name / requires Jquery
 function populateTags(classNameString, content, isHtmlBool) {
     "use strict";
 
@@ -347,27 +361,48 @@ function populateTags(classNameString, content, isHtmlBool) {
     }
 }
 
+// populate the relevant tags based on the class name / requires Jquery
+function setImageSource(classNameString, url) {
+    "use strict";
+
+    let tags = [];
+
+    // Register the tags to change
+    tags = $("." + classNameString);
+    //    console.log(tags);
+
+    // overwrite tag nodes with updated ones
+    for (let i = 0; i < tags.length; i++) {
+        tags[i].src = url;
+    }
+
+
+}
+
 // Generate the Current weather report
 function displayCurrent(configArray) {
     "use strict";
 
-    populateTags("currentDate", (new Date(configArray[0].data.raw.current.dt * 1000).toDateString()), false);
+    let weatherData = configArray[0].data.raw,
+        nextDays = configArray[2].data.filtered;
 
-    populateTags("currentTime", (new Date(configArray[0].data.raw.current.dt * 1000).toTimeString().substr(0, 5)), false);
+    setImageSource("eventImage", nextDays[0].events[0].eventImage.url);
 
-    populateTags("currentTemperature", (Math.round(configArray[0].data.raw.current.temp) + "ºC"), false);
+    populateTags("currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
 
-    //    populateTags("eventImage", configArray[2].data.filtered[0].events[0].description, true);
+    populateTags("currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
 
-    populateTags("title", configArray[2].data.filtered[0].events[0].title, false);
+    populateTags("currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
 
-    populateTags("location", configArray[2].data.filtered[0].events[0].location, false);
+    populateTags("title", nextDays[0].events[0].title, false);
 
-    populateTags("dateTimeFormatted", configArray[2].data.filtered[0].events[0].dateTimeFormatted, false);
+    populateTags("location", nextDays[0].events[0].location, false);
 
-    populateTags("description", configArray[2].data.filtered[0].events[0].description, true);
+    populateTags("dateTimeFormatted", nextDays[0].events[0].dateTimeFormatted, false);
 
-//    populateTags("venue", configArray[2].data.filtered[0].events[0].venue, false); // TODO create venue object
+    populateTags("description", nextDays[0].events[0].description, true);
+
+    //    populateTags("venue", nextDays[0].events[0].venue, false); // TODO create venue object
 
 }
 

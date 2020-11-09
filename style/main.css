@@ -257,6 +257,7 @@ main {
 
 main h1 {
     font-size: 2em;
+    font-weight: bold;
     margin: 5%;
 }
 
@@ -298,6 +299,11 @@ main li {
 
 main em {
     font-weight: bold;
+}
+
+/*TODO replace this quick fix*/
+main img{
+    padding-top: 5%;
 }
 
 .forecast img {
