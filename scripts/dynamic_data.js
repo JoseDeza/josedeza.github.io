@@ -380,7 +380,7 @@ function setEventsMarkup(configArray) {
             nextEvents.forEach(function (event, index) {
                 document.getElementById("events").innerHTML +=
 
-                    `<div id="event${index}" class="forecast clearFloats">
+                    `<div id="event_${index}" class="forecast clearFloats">
                         <img src="" alt="" class="eventImage">
                         <h1 class="title"></h1>
                         <h2 class="location"></h2>
@@ -426,25 +426,16 @@ function populateTags(selectorsCss, content) {
 
 // TODO fix BUG when there is no url or invlaid
 // populate the images based on the url attributes / requires Jquery
-function setImageSource(selectorsCss, url) {
+function setImageSource(propertyName, eventObj, index) {
     "use strict";
 
-    return new Promise(
-        function (resolve, reject) {
-
-            let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
+            let tags = $(`#event_${index} .${propertyName}`); // Find the tags (ref. line 383 for the id attribute)
 
             // overwrite tag nodes with updated ones
             for (let i = 0; i < tags.length; i++) {
-                tags[i].src = url;
+                if(eventObj[propertyName]) // if the sought property exists
+                tags[i].src = eventObj[propertyName].url; // Set the value of its property "url" as the image source
             }
-
-            if (tags) {
-                resolve(tags);
-            } else {
-                reject(new Error("The images sources could not all be set."));
-            }
-        });
 }
 
 // TODO optimise this process!
@@ -459,7 +450,7 @@ function displayEventsContent(configArray) {
 
             nextEvents.forEach(function (event, index) {
 
-                setImageSource(`#event${index} .eventImage`, event.eventImage.url); // TODO Fix this when no evemtImage
+                setImageSource("eventImage", event, index);
 
                 populateTags(`#event${index} .title`, event.title);
 
