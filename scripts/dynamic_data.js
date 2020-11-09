@@ -328,21 +328,21 @@ function displayCalendar(configArray) {
 /*****/
 
 // TODO Create a function to populate the relevant tags based on the class
-function populateTags(classNameString, contentSourceObj, isHtmlBool) {
+function populateTags(classNameString, content, isHtmlBool) {
     "use strict";
 
     let tags = [];
 
     // Register the tags to change
-    tags = $("."+ classNameString);
-//    console.log(tags);
+    tags = $("." + classNameString);
+    //    console.log(tags);
 
     // overwrite tag nodes with updated ones
     for (let i = 0; i < tags.length; i++) {
-        if (isHtmlBool === true)
-            tags[i].innerHTML = contentSourceObj;
+        if (isHtmlBool)
+            tags[i].innerHTML = content;
         else {
-            tags[i].textContent = contentSourceObj;
+            tags[i].textContent = content;
         }
     }
 }
@@ -351,71 +351,23 @@ function populateTags(classNameString, contentSourceObj, isHtmlBool) {
 function displayCurrent(configArray) {
     "use strict";
 
-        populateTags("description",configArray[2].data.filtered[0].events[0].description,true);
+    populateTags("currentDate", (new Date(configArray[0].data.raw.current.dt * 1000).toDateString()), false);
 
-//    var calendarWeekData = configArray[2].data.filtered,
-//        //        weatherData = configArray[0].data.raw,
-//        //        date = new Date(weatherData.current.dt * 1000), // instead of just Date() to keep consistency with weather data
-//
-//        //        currentTimeTags = [],
-//        //        currentDateTags = [],
-//        //        eventImageTags = [],
-//        //        titleTags = [],
-//        //        locationTags = [],
-//        //        dateTimeFormattedTags = [],
-//        descriptionTags = [],
-//        //        venueTags = [],
-//        //        temperatureTags = [],
-//
-//        //        currentTemperature = "",
-//        //        currentTime = "",
-//        //        currentDate = "",
-//        description = "";
-//
-//
-//    // Register the tags to change
-//    //    currentDateTags = $(".currentDate");
-//    //    currentTimeTags = $(".currentTime");
-//    //    titleTags = $(".title");
-//    //    locationTags = $(".location");
-//    //    dateTimeFormattedTags = $(".dateTimeFormatted");
-//    descriptionTags = $(".description");
-//    //    venueTags = $(".venue");
-//    //    temperatureTags = $(".currentTemperature");
-//
-//    // Create separate strings
-//    //    currentDate = date.toDateString();
-//    //    currentTime = date.toTimeString().substr(0, 5);
-//    //    currentTemperature = Math.round(weatherData.current.temp) + "ºC";
-//    description = calendarWeekData[0].events[0].description;
-//
-//    // overwrite tag nodes with updated ones
-//    //    for (let i = 0; i < currentDateTags.length; i++) {
-//    //        currentDateTags[i].textContent = currentDate;
-//    //    }
-//    //
-//    //    for (let i = 0; i < currentTimeTags.length; i++) {
-//    //        currentTimeTags[i].textContent = currentTime;
-//    //    }
-//    //
-//    //    for (let i = 0; i < temperatureTags.length; i++) {
-//    //        temperatureTags[i].textContent = currentTemperature;
-//    //    }
-//
-//    for (let i = 0; i < descriptionTags.length; i++) {
-//        descriptionTags[i].innerHTML = description;
-//    }
+    populateTags("currentTime", (new Date(configArray[0].data.raw.current.dt * 1000).toTimeString().substr(0, 5)), false);
 
+    populateTags("currentTemperature", (Math.round(configArray[0].data.raw.current.temp) + "ºC"), false);
 
+    //    populateTags("eventImage", configArray[2].data.filtered[0].events[0].description, true);
 
-    //    console.log(weatherData);//DEBUG
-    //        console.log(dateTag);//DEBUG
-    //        console.log(timeTag);//DEBUG
-    //        console.log(weatherData.current.dt);//DEBUG
-    //        console.log(weatherData.current.temp);//DEBUG
-    //        console.log(weatherData.current.weather[0].description);//DEBUG
-    //        console.log();//DEBUG
+    populateTags("title", configArray[2].data.filtered[0].events[0].title, false);
 
+    populateTags("location", configArray[2].data.filtered[0].events[0].location, false);
+
+    populateTags("dateTimeFormatted", configArray[2].data.filtered[0].events[0].dateTimeFormatted, false);
+
+    populateTags("description", configArray[2].data.filtered[0].events[0].description, true);
+
+//    populateTags("venue", configArray[2].data.filtered[0].events[0].venue, false); // TODO create venue object
 
 }
 

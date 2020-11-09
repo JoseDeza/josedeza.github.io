@@ -255,21 +255,26 @@ main {
     letter-spacing: .05em;
 }
 
-/*tmp*/
+main h1 {
+    font-size: 2em;
+    margin: 5%;
+}
+
+main h2 {
+    font-size: 1.6em;
+    margin: 4%;
+}
+
 main h3 {
     font-size: 1.4em;
-    font-weight: bold;
-    margin-bottom: 4%;
+    margin: 4%;
 }
 
-/*tmp*/
 main h4 {
     font-size: 1.2em;
-    /*    margin: 1.5% 0;*/
-    margin-left: 2%;
+    margin: 3%;
 }
 
-/*tmp*/
 main strong {
     font-weight: bold;
 }
