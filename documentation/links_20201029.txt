@@ -1,0 +1,213 @@
+work 29/10/2020
+
+
+Manage access
+https://github.com/JoseDeza/u3174590_9394_Assessment3/settings/access
+
+Mastering Markdown · GitHub Guides
+https://guides.github.com/features/mastering-markdown/
+
+UC Home - University of Canberra
+https://www.canberra.edu.au/
+
+University of Canberra Login Service
+https://idp.canberra.edu.au/idp/profile/SAML2/Redirect/SSO?execution=e3s1
+
+10: Working with data - p5.js Tutorial - YouTube
+https://www.youtube.com/playlist?list=PLRqwX-V7Uu6a-SQiI4RtIwuOrLJGnel0r
+
+latentflip.com/loupe/
+http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D
+
+Trumba Features Overview
+https://www.trumba.com/connect/features/default.aspx
+
+What's on in Brisbane | Brisbane City Council
+https://www.brisbane.qld.gov.au/whats-on-in-brisbane
+
+Events | Cycling Brisbane
+https://www.cyclingbrisbane.com.au/events
+
+What's on in Brisbane search | Brisbane City Council
+https://www.brisbane.qld.gov.au/whats-on-and-events/search
+
+http://trumba.com/calendars/brisbane-city-council.json
+http://trumba.com/calendars/brisbane-city-council.json
+
+Login to your Weatherbit account.
+https://www.weatherbit.io/account/login?next=%2Faccount%2Fdashboard
+
+Weatherbit | Weather API Documentation
+https://www.weatherbit.io/api
+
+Current weather data - OpenWeatherMap
+https://openweathermap.org/current
+
+One Call API: weather data for any geographical coordinate - OpenWeatherMap
+https://openweathermap.org/api/one-call-api
+
+Migrate from Dark Sky API to OpenWeather One Call API - OpenWeatherMap
+https://openweathermap.org/darksky-openweather#match
+
+OpenCage Geocoder - Easy, Open, Worldwide, Affordable Geocoding
+https://opencagedata.com/
+
+OpenCage Geocoder API Documentation
+https://opencagedata.com/api
+
+OpenCage Geocoder API Documentation
+https://opencagedata.com/api
+
+OpenCage Geocoder Javascript Tutorial
+https://opencagedata.com/tutorials/geocode-in-javascript
+
+OpenCage Geocoder jQuery Tutorial
+https://opencagedata.com/tutorials/geocode-in-jquery
+
+OpenCage Geocoder Javascript Tutorial
+https://opencagedata.com/tutorials/geocode-in-javascript
+
+OpenCage Geocoder Node.js Tutorial
+https://opencagedata.com/tutorials/geocode-in-nodejs
+
+How to keep your OpenCage API key safe
+https://opencagedata.com/guides/how-to-protect-your-api-key
+
+6 Ways to Declare JavaScript Functions
+https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/
+
+Functions in JavaScript - GeeksforGeeks
+https://www.geeksforgeeks.org/functions-in-javascript/
+
+JavaScript Arrow Function
+https://www.w3schools.com/js/js_arrow_function.asp
+
+Functions - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+
+Arrow function expressions - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
+JavaScript Function call()
+https://www.w3schools.com/Js/js_function_call.asp
+
+JavaScript Functions vs Methods (and other helpful tips) | by Sun-Li Beatteay | Predict | Medium
+https://medium.com/predict/javascript-functions-vs-methods-and-other-helpful-tips-e58a621b1d27
+
+Beginner's guide to functional programming in JavaScript | Opensource.com
+https://opensource.com/article/17/6/functional-javascript
+
+HTTP Methods GET vs POST
+https://www.w3schools.com/tags/ref_httpmethods.asp
+
+jQuery get() Method
+https://www.w3schools.com/jquery/ajax_get.asp
+
+jQuery.get() | jQuery API Documentation
+https://api.jquery.com/jQuery.get/
+
+Using Fetch - Web APIs | MDN
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
+Fetching data from the server - Learn web development | MDN
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data
+
+The Fetch API. A modern replacement for XMLHttpRequest | by Swapnil Bangare | Beginner's Guide to Mobile Web Development | Medium
+https://medium.com/beginners-guide-to-mobile-web-development/the-fetch-api-2c962591f5c
+
+How to Fetch and Display JSON Data in HTML Using JavaScript – HowToCreateApps
+https://howtocreateapps.com/fetch-and-display-json-html-javascript/
+
+Vanilla.js — Getting Started | Developer for Life
+https://blog.jeremylikness.com/blog/2019-04-09_vanilla.jsgetting-started/
+
+Using Fetch | CSS-Tricks
+https://css-tricks.com/using-fetch/
+
+javascript - fetch response.json() and response.status - Stack Overflow
+https://stackoverflow.com/questions/47267221/fetch-response-json-and-response-status
+
+You may not need Axios - Dan Levy's Programming Blog
+https://danlevy.net/you-may-not-need-axios/
+
+Requesting APIs: Fetch vs XMLHttpRequest | by Deborah Inyang | Medium
+https://medium.com/@debbyinyang/using-apis-fetch-vs-xmlhttprequest-ca5f6d18d0a9
+
+XMLHttpRequest vs the Fetch API: What’s Best for Ajax in 2019? - Web Design Tips
+https://webdesigntips.blog/web-design/javascript/xmlhttprequest-vs-the-fetch-api-whats-best-for-ajax-in-2019/
+
+JavaScript Objects
+https://www.w3schools.com/js/js_objects.asp
+
+Working with objects - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects
+
+3 Ways To Access Object Properties in JavaScript
+https://dmitripavlutin.com/access-object-properties-javascript/
+
+JavaScript Methods
+https://www.w3schools.com/js/js_object_methods.asp
+
+JavaScript this
+https://www.w3schools.com/js/js_this.asp
+
+Object methods, "this"
+https://javascript.info/object-methods
+
+JavaScript Constructors
+https://www.w3schools.com/js/js_object_constructors.asp
+
+Tryit Editor v3.6
+https://www.w3schools.com/js/tryit.asp?filename=tryjs_object_constructor5
+
+Introducing asynchronous JavaScript - Learn web development | MDN
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
+
+How to return the result of an asynchronous function in JavaScript
+https://flaviocopes.com/how-to-return-result-asynchronous-function/
+
+JavaScript: What the heck is a Callback? | by Brandon Morelli | codeburst
+https://codeburst.io/javascript-what-the-heck-is-a-callback-aba4da2deced
+
+JavaScript Callbacks - What is a Callback function?
+https://www.freecodecamp.org/news/javascript-callback-functions-what-are-callbacks-in-js-and-how-to-use-them/
+
+jQuery Callback Function
+https://www.w3schools.com/jquery/jquery_callback.asp
+
+Understanding JavaScript Callbacks - YouTube
+https://www.youtube.com/watch?v=Nau-iEEgEoM
+
+Geolocation API - Web APIs | MDN
+https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+
+HTML Geolocation API
+https://www.w3schools.com/html/html5_geolocation.asp
+
+Getting Started With the JavaScript Fetch API
+https://blog.alexdevero.com/javascript-fetch-api/
+
+Using Promises - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+
+Promise - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+Promise() constructor - JavaScript | MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise
+
+Promise
+https://javascript.info/promise-basics
+
+JavaScript Promise Tutorial: Resolve, Reject, and Chaining in JS and ES6
+https://www.freecodecamp.org/news/javascript-es6-promises-for-beginners-resolve-reject-and-chaining-explained/
+
+JavaScript Promises for Dummies | DigitalOcean
+https://www.digitalocean.com/community/tutorials/javascript-promises-for-dummies
+
+Converting JavaScript callbacks to Promise and Async-Await & replacing Async-waterfall method with a Promise | by Rohan Paul | JavaScript In Plain English | Medium
+https://medium.com/javascript-in-plain-english/converting-javascript-callbacks-to-promise-and-async-await-replacing-async-waterfall-method-with-3c8b7487e0b9
+
+How to make a Promise out of a Callback function in JavaScript
+https://www.freecodecamp.org/news/how-to-make-a-promise-out-of-a-callback-function-in-javascript-d8ec35d1f981/
+
