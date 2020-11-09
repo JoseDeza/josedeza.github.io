@@ -121,6 +121,9 @@ $(function () {
         })
         .then(function (filtered) {
             return displayCalendar(filtered);
+        })
+        .catch(function (error) {
+            console.error(error.message);
         });
 
 });
@@ -273,7 +276,6 @@ function streamlineCustomField(filteredDataObj) {
 
     // for each custom field in event
 
-
     // if there is a custom filed with label: "Venue"
     //if(calendarData.filtered[day].events[i].customFields.label){
     // ...eventsevents[i].venue = custom field "Venue" value.
@@ -329,9 +331,12 @@ function filterCalendar(configArray) {
 function displayCalendar(configArray) {
     "use strict";
 
-    // Insert all the data to display inside the markup
-    displayEvents(configArray);
-    displayDaily(configArray);
+    // TODO change to promise chain for later optimisation (ref. line 409)
+    // (in case the content is ready to be set before the markup is done
+    setEventsMarkup(configArray); // set the page tags
+    displayLocalInfo(configArray); // display the current time, temperature, location etc.
+    setEventsContent(configArray); // set the events content
+    displayDaily(configArray); // dusplay daily weather forecast
 
     console.log(configArray); //DEBUG
 
@@ -339,89 +344,94 @@ function displayCalendar(configArray) {
 
 /*****/
 
+// Display the local information
+function displayLocalInfo(configArray) {
+    "use strict";
+
+    let weatherData = configArray[0].data.raw;
+
+    populateTags(".currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
+
+    populateTags(".currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+
+    populateTags(".currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
+}
+
+/*****/
+
 // TODO Generate Events Markup
 function setEventsMarkup(configArray) {
 
-    //            <div class="forecast clearFloats">
-    //                <img src="" alt="" class="eventImage">
-    //                <h1 class="title"></h1>
-    //                <h2 class="location"></h2>
-    //                <h3 class="dateTimeFormatted"></h3>
-    //                <p class="description"></p>
-    //                <p class="venue"></p>
-    //            </div>
+    let nextEvents = configArray[2].data.filtered[0].events;
 
+    nextEvents.forEach(function (event, index) {
+        document.getElementById("events").innerHTML +=
 
-
+            `<div id="event${index}" class="forecast clearFloats">
+                        <img src="" alt="" class="eventImage">
+                        <h1 class="title"></h1>
+                        <h2 class="location"></h2>
+                        <h3 class="dateTimeFormatted"></h3>
+                        <p class="description"></p>
+                        <p class="venue"></p>
+                    </div>`;
+    });
 }
 
 // populate the relevant tags based on the class name / requires Jquery
-function populateTags(accessorString, content, isHtmlBool) {
+function populateTags(selectorsCss, content, isHtmlBool) {
     "use strict";
 
-    let tags = [];
-
-    // Register the tags to change
-    tags = $(accessorString); // i.e. .class #id
-    console.log(tags);
+    let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
 
     // overwrite tag nodes with updated ones
     for (let i = 0; i < tags.length; i++) {
+
         if (isHtmlBool)
             tags[i].innerHTML = content;
-        else {
-            tags[i].textContent = content;
-        }
+        else
+            //            tags[i].textContent = content;
+            tags[i].innerHTML = content;
+
     }
 }
 
-// populate the relevant tags based on the class name / requires Jquery
-function setImageSource(accessorString, url) {
+// populate the images based on the url attributes / requires Jquery
+function setImageSource(selectorsCss, url) {
     "use strict";
 
-    let tags = [];
-
-    // Register the tags to change
-    tags = $(accessorString); // i.e. .class #id
-    //    console.log(tags);
+    let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
 
     // overwrite tag nodes with updated ones
-    for (let i = 0; i < tags.length; i++) {
+    for (let i = 0; i < tags.length; i++)
         tags[i].src = url;
-    }
-
-
 }
 
-// Generate the Current weather report
-function displayEvents(configArray) {
+// TODO optimise this process!
+// Set the events content
+function setEventsContent(configArray) {
     "use strict";
 
-    let weatherData = configArray[0].data.raw,
-        nextDays = configArray[2].data.filtered,
-        i = 0; // TEMP
+    let nextEvents = configArray[2].data.filtered[0].events;
 
-    setImageSource(`#event${i} .eventImage`, nextDays[0].events[i].eventImage.url);
+    nextEvents.forEach(function (event, index) {
 
-    populateTags(`#event${i} .currentDate`, (new Date(weatherData.current.dt * 1000).toDateString()), false);
+        setImageSource(`#event${index} .eventImage`, event.eventImage.url);
 
-    populateTags(`#event${i} .currentTime`, (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+        populateTags(`#event${index} .title`, event.title, false);
 
-    populateTags(`#event${i} .currentTemperature`, (Math.round(weatherData.current.temp) + "ºC"), false);
+        populateTags(`#event${index} .location`, event.location, false);
 
-    populateTags(`#event${i} .title`, nextDays[0].events[i].title, false);
+        populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted, false);
 
-    populateTags(`#event${i} .location`, nextDays[0].events[i].location, false);
+        populateTags(`#event${index} .description`, event.description, true);
 
-    populateTags(`#event${i} .dateTimeFormatted`, nextDays[0].events[i].dateTimeFormatted, false);
+        //    populateTags(`#event${index} .venue`, nextDays[0].events[index].venue, false); // TODO create venue object
 
-    populateTags(`#event${i} .description`, nextDays[0].events[i].description, true);
-
-    //    populateTags(`venue`, nextDays[0].events[0].venue, false); // TODO create venue object
-
+    });
 }
 
-// Generate the Minutely Forecast table
+// Generate the Minutely weather forecast table
 function displayMinutely(configArray) {
 
     "use strict";
@@ -497,7 +507,7 @@ function displayMinutely(configArray) {
 
 }
 
-// Generate the hourly Forecast table
+// Generate the hourly weather forecast table
 function displayHourly(configArray) {
 
     "use strict";
@@ -573,7 +583,7 @@ function displayHourly(configArray) {
 
 }
 
-// Generate the Daily Forecast table
+// Generate the Daily weather forecast table
 function displayDaily(configArray) {
 
     "use strict";

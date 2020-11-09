@@ -48,7 +48,7 @@ main {
     /*    font-size: 1em;*/
     letter-spacing: .05em;
     overflow: hidden;
-    min-height: 728px;
+/*    min-height: 728px;*/
     position: relative;
     border: 2px solid rgba(127, 127, 127, .4);
     color: #555;
