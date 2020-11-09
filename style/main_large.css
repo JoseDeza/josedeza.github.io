@@ -92,31 +92,31 @@ main em {
     border-radius: 8px;
 }
 
-.theme_1 .forecast {
+.theme_yellow .forecast {
     background-color: rgba(255, 255, 229, 0.7);
 }
 
-.theme_2 .forecast {
+.theme_grey .forecast {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-.theme_3 .forecast {
+.theme_green .forecast {
     background-color: rgba(236, 255, 229, 0.7);
 }
 
-.theme_4 .forecast {
+.theme_blue .forecast {
     background-color: rgba(229, 242, 255, 0.7);
 }
 
-.theme_5 .forecast {
+.theme_purple .forecast {
     background-color: rgba(238, 229, 255, 0.7);
 }
 
-.theme_6 .forecast {
+.theme_orange .forecast {
     background-color: rgba(255, 242, 229, 0.7);
 }
 
-.theme_7 .forecast {
+.theme_red .forecast {
     background-color: rgba(255, 229, 229, 0.7);
 }
 

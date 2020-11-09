@@ -75,31 +75,31 @@ nav li a {
     z-index: 10;
 }
 
-nav .theme_1:active {
+nav .theme_yellow:active {
     color: #ff0;
 }
 
-nav .theme_2:active {
+nav .theme_grey:active {
     color: #fff;
 }
 
-nav .theme_3:active {
+nav .theme_green:active {
     color: #3c0;
 }
 
-nav .theme_4:active {
+nav .theme_blue:active {
     color: #39f;
 }
 
-nav .theme_5:active {
+nav .theme_purple:active {
     color: #96f;
 }
 
-nav .theme_6:active {
+nav .theme_orange:active {
     color: #c60;
 }
 
-nav .theme_7:active {
+nav .theme_red:active {
     color: #f00;
 }
 
@@ -144,65 +144,65 @@ main:last-child,
     margin: 5% auto;
 }
 
-.theme_1 .forecast {
+.theme_yellow .forecast {
     background-color: rgba(255, 255, 229, 0.8);
 }
 
-.theme_2 .forecast {
+.theme_grey .forecast {
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-.theme_3 .forecast {
+.theme_green .forecast {
     background-color: rgba(236, 255, 229, 0.8);
 }
 
-.theme_4 .forecast {
+.theme_blue .forecast {
     background-color: rgba(229, 242, 255, 0.8);
 }
 
-.theme_5 .forecast {
+.theme_purple .forecast {
     background-color: rgba(238, 229, 255, 0.8);
 }
 
-.theme_6 .forecast {
+.theme_orange .forecast {
     background-color: rgba(255, 242, 229, 0.8);
 }
 
-.theme_7 .forecast {
+.theme_red .forecast {
     background-color: rgba(255, 229, 229, 0.8);
 }
 
-.theme_1 nav .here {
+.theme_yellow.here {
     color: #ff0;
     background-color: #7E7F00;
 }
 
-.theme_2 nav .here {
+.theme_grey.here {
     color: #fff;
     background-color: #7F7F7F;
 }
 
-.theme_3 nav .here {
+.theme_green.here {
     color: #3c0;
     background-color: #217F00;
 }
 
-.theme_4 nav .here {
+.theme_blue.here {
     color: #39f;
     background-color: #194D7F;
 }
 
-.theme_5 nav .here {
+.theme_purple.here {
     color: #96f;
     background-color: #4B337F;
 }
 
-.theme_6 nav .here {
+.theme_orange.here {
     color: #c60;
     background-color: #7F3F00;
 }
 
-.theme_7 nav .here {
+.theme_red.here {
     color: #f00;
     background-color: #7F0000;
 }

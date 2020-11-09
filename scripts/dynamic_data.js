@@ -1,3 +1,5 @@
+/// Author: José Deza ///
+
 /*global $*/
 
 /***** $(document).ready(function(){}); *****/
