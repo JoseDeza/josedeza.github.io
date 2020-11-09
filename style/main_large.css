@@ -25,12 +25,12 @@ nav li:hover {
     color: #fff;
 }
 
-#locality {
+#localInfo {
     background-color: transparent;
     box-shadow: none;
 }
 
-#locality li {
+#localInfo li {
     color: #000;
 }
 

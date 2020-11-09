@@ -274,10 +274,10 @@ function streamlineCustomField(filteredDataObj) {
     // for each custom field in event
 
 
-        // if there is a custom filed with label: "Venue"
-        //if(calendarData.filtered[day].events[i].customFields.label){
-        // ...eventsevents[i].venue = custom field "Venue" value.
-        //}
+    // if there is a custom filed with label: "Venue"
+    //if(calendarData.filtered[day].events[i].customFields.label){
+    // ...eventsevents[i].venue = custom field "Venue" value.
+    //}
 
 
 }
@@ -339,15 +339,31 @@ function displayCalendar(configArray) {
 
 /*****/
 
+// TODO Generate Events Markup
+function setEventsMarkup(configArray) {
+
+    //            <div class="forecast clearFloats">
+    //                <img src="" alt="" class="eventImage">
+    //                <h1 class="title"></h1>
+    //                <h2 class="location"></h2>
+    //                <h3 class="dateTimeFormatted"></h3>
+    //                <p class="description"></p>
+    //                <p class="venue"></p>
+    //            </div>
+
+
+
+}
+
 // populate the relevant tags based on the class name / requires Jquery
-function populateTags(classNameString, content, isHtmlBool) {
+function populateTags(accessorString, content, isHtmlBool) {
     "use strict";
 
     let tags = [];
 
     // Register the tags to change
-    tags = $("." + classNameString);
-    //    console.log(tags);
+    tags = $(accessorString); // i.e. .class #id
+    console.log(tags);
 
     // overwrite tag nodes with updated ones
     for (let i = 0; i < tags.length; i++) {
@@ -360,13 +376,13 @@ function populateTags(classNameString, content, isHtmlBool) {
 }
 
 // populate the relevant tags based on the class name / requires Jquery
-function setImageSource(classNameString, url) {
+function setImageSource(accessorString, url) {
     "use strict";
 
     let tags = [];
 
     // Register the tags to change
-    tags = $("." + classNameString);
+    tags = $(accessorString); // i.e. .class #id
     //    console.log(tags);
 
     // overwrite tag nodes with updated ones
@@ -382,27 +398,26 @@ function displayEvents(configArray) {
     "use strict";
 
     let weatherData = configArray[0].data.raw,
-        nextDays = configArray[2].data.filtered;
+        nextDays = configArray[2].data.filtered,
+        i = 0; // TEMP
 
+    setImageSource(`#event${i} .eventImage`, nextDays[0].events[i].eventImage.url);
 
+    populateTags(`#event${i} .currentDate`, (new Date(weatherData.current.dt * 1000).toDateString()), false);
 
-    setImageSource("eventImage", nextDays[0].events[0].eventImage.url);
+    populateTags(`#event${i} .currentTime`, (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
 
-    populateTags("currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
+    populateTags(`#event${i} .currentTemperature`, (Math.round(weatherData.current.temp) + "ºC"), false);
 
-    populateTags("currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+    populateTags(`#event${i} .title`, nextDays[0].events[i].title, false);
 
-    populateTags("currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
+    populateTags(`#event${i} .location`, nextDays[0].events[i].location, false);
 
-    populateTags("title", nextDays[0].events[0].title, false);
+    populateTags(`#event${i} .dateTimeFormatted`, nextDays[0].events[i].dateTimeFormatted, false);
 
-    populateTags("location", nextDays[0].events[0].location, false);
+    populateTags(`#event${i} .description`, nextDays[0].events[i].description, true);
 
-    populateTags("dateTimeFormatted", nextDays[0].events[0].dateTimeFormatted, false);
-
-    populateTags("description", nextDays[0].events[0].description, true);
-
-    //    populateTags("venue", nextDays[0].events[0].venue, false); // TODO create venue object
+    //    populateTags(`venue`, nextDays[0].events[0].venue, false); // TODO create venue object
 
 }
 

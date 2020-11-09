@@ -36,7 +36,7 @@ header {
 }
 
 nav,
-#locality {
+#localInfo {
     width: 100%;
     margin: 0 auto;
     background-color: #242424;
@@ -45,19 +45,19 @@ nav,
 }
 
 nav li,
-#locality li {
+#localInfo li {
     display: inline-block;
     margin: .2em auto;
     padding: auto;
     list-style: none;
 }
 
-#locality {
+#localInfo {
     background-color: rgba(127, 127, 127, 1);
     box-shadow: 0 0 0 5px rgba(127, 127, 127, .5)
 }
 
-#locality li {
+#localInfo li {
     color: #fff;
 }
 
