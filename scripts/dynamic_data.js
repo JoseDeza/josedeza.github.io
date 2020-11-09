@@ -348,11 +348,11 @@ function displayLocalInfo(configArray) {
 
             let weatherData = configArray[0].data.raw;
 
-            populateTags(".currentDate", (new Date(weatherData.current.dt * 1000).toDateString()), false);
+            populateTags(".currentDate", new Date(weatherData.current.dt * 1000).toDateString());
 
-            populateTags(".currentTime", (new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5)), false);
+            populateTags(".currentTime", new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5));
 
-            populateTags(".currentTemperature", (Math.round(weatherData.current.temp) + "ºC"), false);
+            populateTags(".currentTemperature", Math.round(weatherData.current.temp) + "ºC");
 
 
             if (configArray) {
@@ -399,32 +399,20 @@ function setEventsMarkup(configArray) {
         });
 }
 
-// TODO fix BUG when there is no content or invlaid
 // populate the relevant tags based on the class name / requires Jquery
 function populateTags(selectorsCss, content) {
     "use strict";
+    // Cannot rewrite as setImageSource() due to displayLocalInfo()
 
-    return new Promise(
-        function (resolve, reject) {
+    let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
 
-            let tags = $(selectorsCss); // Register the tags to change using CSS selectors (#id .class etc.)
+    // if the content is valid
+    if (content)
+        for (let i = 0; i < tags.length; i++)
+            tags[i].innerHTML = content;
 
-            // TODO check is there is a more secure alternative than innerHTML
-            // overwrite tag nodes with updated ones
-            for (let i = 0; i < tags.length; i++) {
-                tags[i].innerHTML = content;
-            }
-
-            if (tags) {
-                resolve(tags);
-            } else {
-                reject(new Error("The content could not be populated completely."));
-            }
-
-        });
 }
 
-// TODO fix BUG when there is no url or invlaid
 // populate the images based on the url attributes / requires Jquery
 function setImageSource(propertyName, eventObj, index) {
     "use strict";
@@ -453,13 +441,13 @@ function displayEventsContent(configArray) {
 
                 populateTags(`#event_${index} .title`, event.title);
 
-                //                populateTags(`#event${index} .location`, event.location);
-                //
-                //                populateTags(`#event${index} .dateTimeFormatted`, event.dateTimeFormatted);
-                //
-                //                populateTags(`#event${index} .description`, event.description);
+                populateTags(`#event_${index} .location`, event.location);
 
-                //    populateTags(`#event${index} .venue`, nextDays[0].events[index].venue); // TODO create venue object
+                populateTags(`#event_${index} .dateTimeFormatted`, event.dateTimeFormatted);
+
+                populateTags(`#event_${index} .description`, event.description);
+
+                //    populateTags(`#event_${index} .venue`, nextDays[0].events[index].venue); // TODO create venue object
 
             });
 
