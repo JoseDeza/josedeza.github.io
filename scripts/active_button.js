@@ -10,11 +10,12 @@
 $(function () {
     "use strict";
 
-    // Display the "events" section on page load to overwrite stylesheet
-    window.onload = $("#events").css("display","block");
+    // To make sure that the "events" section is visible on first visit
+    // Jumps to the "#events" anchor on load
+    window.onload = window.location.href = "#events";
+
 
     let buttons = $("li.button");
-
 
     // Add active class to the current button (highlight it)
     for (let i = 0; i < buttons.length; i++) {
