@@ -177,7 +177,7 @@ main em {
 }
 
 .forecast h3 {
-    font-family: rosemaryroman, Garamond, serif;
+    font-family: Garamond, serif;
     font-size: 1.1em;
     color: #999;
     margin: 1% 2% 8%;
@@ -205,13 +205,6 @@ main em {
     font-variant: normal;
     line-height: normal;
     font-size: 1em;
-}
-
-@font-face {
-    font-family: "rosemaryroman";
-    font-weight: normal;
-    font-style: normal;
-    src: url(../fonts/rosemaryroman.woff) format("woff"), url(../fonts/rosemaryroman.ttf) format("truetype");
 }
 
 @font-face {

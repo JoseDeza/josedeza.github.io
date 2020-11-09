@@ -330,10 +330,8 @@ function displayCalendar(configArray) {
     "use strict";
 
     // Insert all the data to display inside the markup
-    displayCurrent(configArray);
+    displayEvents(configArray);
     displayDaily(configArray);
-    displayHourly(configArray);
-    displayMinutely(configArray);
 
     console.log(configArray); //DEBUG
 
@@ -380,7 +378,7 @@ function setImageSource(classNameString, url) {
 }
 
 // Generate the Current weather report
-function displayCurrent(configArray) {
+function displayEvents(configArray) {
     "use strict";
 
     let weatherData = configArray[0].data.raw,
