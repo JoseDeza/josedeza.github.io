@@ -323,6 +323,7 @@ function displayCalendar(configArray) {
     return new Promise(
         function (resolve, reject) {
 
+            // TODO set as promise chain to prevent content set before markup?
             setEventsMarkup(configArray); // set the page tags
             displayLocalInfo(configArray); // display the current time, temperature, location etc.
             displayWeekWeather(configArray); // dusplay daily weather forecast
@@ -339,36 +340,7 @@ function displayCalendar(configArray) {
 
 /*****/
 
-// Display the local information
-function displayLocalInfo(configArray) {
-    "use strict";
-
-    return new Promise(
-        function (resolve, reject) {
-
-            let weatherData = configArray[0].data.raw;
-
-            populateTags(".currentDate", new Date(weatherData.current.dt * 1000).toDateString());
-
-            populateTags(".currentTime", new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5));
-
-            populateTags(".currentTemperature", Math.round(weatherData.current.temp) + "ºC");
-
-
-            if (configArray) {
-                resolve(configArray);
-            } else {
-                reject(new Error("The local info could not be displayed."));
-            }
-
-        });
-
-
-}
-
-/*****/
-
-// TODO Generate Events Markup
+// Generate Events Markup
 function setEventsMarkup(configArray) {
     "use strict"
 
@@ -425,8 +397,34 @@ function setImageSource(propertyName, eventObj, index) {
             tags[i].src = eventObj[propertyName].url; // Set the value of its property "url" as the image source
 }
 
-// TODO optimise this process!
-// Set the events content
+// Display the local information
+function displayLocalInfo(configArray) {
+    "use strict";
+
+    return new Promise(
+        function (resolve, reject) {
+
+            let weatherData = configArray[0].data.raw;
+
+            populateTags(".currentDate", new Date(weatherData.current.dt * 1000).toDateString());
+
+            populateTags(".currentTime", new Date(weatherData.current.dt * 1000).toTimeString().substr(0, 5));
+
+            populateTags(".currentTemperature", Math.round(weatherData.current.temp) + "ºC");
+
+
+            if (configArray) {
+                resolve(configArray);
+            } else {
+                reject(new Error("The local info could not be displayed."));
+            }
+
+        });
+
+
+}
+
+// Set the events content // TODO optimise this process! ref. line 326
 function displayEventsContent(configArray) {
     "use strict";
 
@@ -511,7 +509,7 @@ function displayWeekWeather(configArray) {
     l = currentWeek.length;
 
     // Set a New table
-    table = $("<table class='half-page stripped-format'>");
+    table = $("<table class='full-page stripped-format'>");
 
     // Add data row by row
     for (i = 0; i < l; i++) {
