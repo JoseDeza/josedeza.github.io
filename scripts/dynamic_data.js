@@ -668,7 +668,7 @@ function displayDaily(configArray) {
     //GRAPH
 
     // Set a New table for the graph
-    graph = $("<table class='temperatureGraph half-page stripped-format'>");
+    graph = $("<table class='temperatureGraph full-page stripped-format'>");
 
     // Add data row by row
     for (i = 0; i < l; i++) {

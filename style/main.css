@@ -358,16 +358,14 @@ tr {
 
 .full-page {
     clear: both;
-
     width: 96%;
 }
 
 .half-page {
     clear: none;
     float: left;
-
     min-width: 46%;
-    max-width: 100%;
+    max-width: 96%;
 }
 
 .half-page th,
