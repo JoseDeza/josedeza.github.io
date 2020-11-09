@@ -14,7 +14,6 @@ $(function () {
     // Jumps to the "#events" anchor on load
     window.onload = window.location.href = "#events";
 
-
     let buttons = $("li.button");
 
     // Add active class to the current button (highlight it)
